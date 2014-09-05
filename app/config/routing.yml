@@ -1,0 +1,4 @@
+rottenwood_barchart:
+    resource: "@RottenwoodBarchartBundle/Resources/config/routing.yml"
+    prefix:   /
+
