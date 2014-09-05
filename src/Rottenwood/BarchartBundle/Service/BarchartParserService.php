@@ -100,6 +100,7 @@ class BarchartParserService {
             "14DStochastic" => $table->find('tr', 7)->find('strong', 1)->plaintext,
             "Trend" => $table->find('tr', 8)->find('td', 1)->plaintext,
             "TrendStrength" => $table->find('tr', 8)->find('td', 3)->plaintext,
+            "TimeUnix" => time(),
         );
 
         // Очистка данных от лишних пробелов

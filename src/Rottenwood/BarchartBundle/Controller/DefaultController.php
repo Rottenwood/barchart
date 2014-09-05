@@ -8,10 +8,11 @@ class DefaultController extends Controller {
 
     public function indexAction() {
         $data = array();
+        $parser = $this->get("barchart.parser");
 
-        $service = $this->get("barchart.parser");
-
-        var_dump($service->getPrice("ESU4"));
+        // ESU4 : E-Mini SNP500
+        // ZSX14 : Soybeans (september 14)
+        var_dump($parser->getPrice("ZSX14"));
 
         return $this->render('RottenwoodBarchartBundle:Default:index.html.twig', $data);
     }
