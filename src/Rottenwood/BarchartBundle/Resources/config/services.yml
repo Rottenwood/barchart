@@ -1,7 +1,7 @@
 parameters:
-#    rottenwood_barchart.example.class: Rottenwood\BarchartBundle\Example
+    barchart.parser.class: Rottenwood\BarchartBundle\Service\BarchartParserService
 
 services:
-#    rottenwood_barchart.example:
-#        class: %rottenwood_barchart.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    barchart.parser:
+        class: %barchart.parser.class%
+        arguments: [@doctrine.orm.entity_manager, @kernel]

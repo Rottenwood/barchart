@@ -1,0 +1,6 @@
+# Конфиг для парсинга данных с сайта barchart
+
+# адреса страниц
+url:
+    price: "http://www.barchart.com/quotes/futures/"
+    technical: "http://www.barchart.com/opinions/futures/"
