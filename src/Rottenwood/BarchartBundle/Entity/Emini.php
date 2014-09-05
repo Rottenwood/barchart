@@ -9,7 +9,7 @@ namespace Rottenwood\BarchartBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Price
+ * E-Mini SNP500
  * @ORM\Table(name="emini")
  * @ORM\Entity(repositoryClass="Rottenwood\BarchartBundle\Entity\PriceRepository")
  */

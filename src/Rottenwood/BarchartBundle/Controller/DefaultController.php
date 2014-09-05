@@ -12,7 +12,9 @@ class DefaultController extends Controller {
 
         // ESU4 : E-Mini SNP500
         // ZSX14 : Soybeans (september 14)
-        var_dump($parser->getPrice("ZSX14"));
+//        var_dump($parser->getPrice("ZSX14"));
+
+        $parser->savePrice("ESU4");
 
         return $this->render('RottenwoodBarchartBundle:Default:index.html.twig', $data);
     }

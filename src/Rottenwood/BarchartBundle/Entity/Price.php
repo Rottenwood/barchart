@@ -71,7 +71,7 @@ class Price {
 
     /**
      * @var string
-     * @ORM\Column(name="unixtime", type="datetime")
+     * @ORM\Column(name="unixtime", type="string", length=20)
      */
     private $unixtime;
 
@@ -170,6 +170,108 @@ class Price {
      * @ORM\Column(name="trendstrength", type="string", length=255)
      */
     private $trendstrength;
+
+    /**
+     * @var string
+     * @ORM\Column(name="s_ad", type="string", length=255)
+     */
+    private $ad;
+
+    /**
+     * @var string
+     * @ORM\Column(name="s_mahilo", type="string", length=255)
+     */
+    private $mahilo;
+
+    /**
+     * @var string
+     * @ORM\Column(name="s_mavp", type="string", length=255)
+     */
+    private $s_mavp;
+
+    /**
+     * @var string
+     * @ORM\Column(name="s_macd", type="string", length=255)
+     */
+    private $s_macd;
+
+    /**
+     * @var string
+     * @ORM\Column(name="s_bollinger", type="string", length=255)
+     */
+    private $bollinger;
+
+    /**
+     * @var string
+     * @ORM\Column(name="m_cci", type="string", length=255)
+     */
+    private $m_cci;
+
+    /**
+     * @var string
+     * @ORM\Column(name="m_mavp", type="string", length=255)
+     */
+    private $m_mavp;
+
+    /**
+     * @var string
+     * @ORM\Column(name="m_macd", type="string", length=255)
+     */
+    private $m_macd;
+
+    /**
+     * @var string
+     * @ORM\Column(name="m_parabolic", type="string", length=255)
+     */
+    private $parabolic;
+
+    /**
+     * @var string
+     * @ORM\Column(name="l_cci", type="string", length=255)
+     */
+    private $l_cci;
+
+    /**
+     * @var string
+     * @ORM\Column(name="l_mavp", type="string", length=255)
+     */
+    private $l_mavp;
+
+    /**
+     * @var string
+     * @ORM\Column(name="l_macd", type="string", length=255)
+     */
+    private $l_macd;
+
+    /**
+     * @var string
+     * @ORM\Column(name="trendspotter", type="string", length=255)
+     */
+    private $trendspotter;
+
+    /**
+     * @var string
+     * @ORM\Column(name="s_average", type="string", length=255)
+     */
+    private $s_average;
+
+    /**
+     * @var string
+     * @ORM\Column(name="m_average", type="string", length=255)
+     */
+    private $m_average;
+
+    /**
+     * @var string
+     * @ORM\Column(name="l_average", type="string", length=255)
+     */
+    private $l_average;
+
+    /**
+     * @var string
+     * @ORM\Column(name="overall", type="string", length=255)
+     */
+    private $overall;
 
     /**
      * @param string $close
@@ -548,4 +650,243 @@ class Price {
     public function getUnixtime() {
         return $this->unixtime;
     }
+
+    /**
+     * @param string $ad
+     */
+    public function setAd($ad) {
+        $this->ad = $ad;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAd() {
+        return $this->ad;
+    }
+
+    /**
+     * @param string $bollinger
+     */
+    public function setBollinger($bollinger) {
+        $this->bollinger = $bollinger;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBollinger() {
+        return $this->bollinger;
+    }
+
+    /**
+     * @param string $l_average
+     */
+    public function setLAverage($l_average) {
+        $this->l_average = $l_average;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLAverage() {
+        return $this->l_average;
+    }
+
+    /**
+     * @param string $l_cci
+     */
+    public function setLCci($l_cci) {
+        $this->l_cci = $l_cci;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLCci() {
+        return $this->l_cci;
+    }
+
+    /**
+     * @param string $l_macd
+     */
+    public function setLMacd($l_macd) {
+        $this->l_macd = $l_macd;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLMacd() {
+        return $this->l_macd;
+    }
+
+    /**
+     * @param string $l_mavp
+     */
+    public function setLMavp($l_mavp) {
+        $this->l_mavp = $l_mavp;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLMavp() {
+        return $this->l_mavp;
+    }
+
+    /**
+     * @param string $m_average
+     */
+    public function setMAverage($m_average) {
+        $this->m_average = $m_average;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMAverage() {
+        return $this->m_average;
+    }
+
+    /**
+     * @param string $m_cci
+     */
+    public function setMCci($m_cci) {
+        $this->m_cci = $m_cci;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMCci() {
+        return $this->m_cci;
+    }
+
+    /**
+     * @param string $m_macd
+     */
+    public function setMMacd($m_macd) {
+        $this->m_macd = $m_macd;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMMacd() {
+        return $this->m_macd;
+    }
+
+    /**
+     * @param string $m_mavp
+     */
+    public function setMMavp($m_mavp) {
+        $this->m_mavp = $m_mavp;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMMavp() {
+        return $this->m_mavp;
+    }
+
+    /**
+     * @param string $mahilo
+     */
+    public function setMahilo($mahilo) {
+        $this->mahilo = $mahilo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMahilo() {
+        return $this->mahilo;
+    }
+
+    /**
+     * @param string $overall
+     */
+    public function setOverall($overall) {
+        $this->overall = $overall;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOverall() {
+        return $this->overall;
+    }
+
+    /**
+     * @param string $parabolic
+     */
+    public function setParabolic($parabolic) {
+        $this->parabolic = $parabolic;
+    }
+
+    /**
+     * @return string
+     */
+    public function getParabolic() {
+        return $this->parabolic;
+    }
+
+    /**
+     * @param string $s_average
+     */
+    public function setSAverage($s_average) {
+        $this->s_average = $s_average;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSAverage() {
+        return $this->s_average;
+    }
+
+    /**
+     * @param string $s_macd
+     */
+    public function setSMacd($s_macd) {
+        $this->s_macd = $s_macd;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSMacd() {
+        return $this->s_macd;
+    }
+
+    /**
+     * @param string $s_mavp
+     */
+    public function setSMavp($s_mavp) {
+        $this->s_mavp = $s_mavp;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSMavp() {
+        return $this->s_mavp;
+    }
+
+    /**
+     * @param string $trendspotter
+     */
+    public function setTrendspotter($trendspotter) {
+        $this->trendspotter = $trendspotter;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTrendspotter() {
+        return $this->trendspotter;
+    }
+
 }

@@ -100,7 +100,7 @@ class BarchartParserService {
             "14DStochastic" => $table->find('tr', 7)->find('strong', 1)->plaintext,
             "Trend" => $table->find('tr', 8)->find('td', 1)->plaintext,
             "TrendStrength" => $table->find('tr', 8)->find('td', 3)->plaintext,
-            "TimeUnix" => time(),
+            "UnixTime" => time(),
         );
 
         // Очистка данных от лишних пробелов
@@ -116,7 +116,7 @@ class BarchartParserService {
         $technicalDataArray = $this->parseLongTermIndicators($technicalDataArray);
         $technicalDataArray = $this->parseOverallIndicators($technicalDataArray);
 
-        $priceArray["indicator"] = $this->purifyArray($technicalDataArray);
+        $priceArray = array_merge($priceArray, $this->purifyArray($technicalDataArray));
 
         return $priceArray;
     }
@@ -188,6 +188,85 @@ class BarchartParserService {
         }
 
         return $pureArray;
+    }
+
+    // сохранение ценовых параметров в БД
+    public function savePrice($symbol) {
+        $symbolName = $this->symbolName($symbol);
+//        $symbolEntity = $this->em->getRepository("RottenwoodBarchartBundle:$symbolName");
+
+        $symbolData = $this->getPrice($symbol);
+
+        $symbolNamespacedName = "Rottenwood\\BarchartBundle\\Entity\\" . $symbolName;
+        $symbolEntity = new $symbolNamespacedName();
+
+        $symbolEntity->setType(1);
+        $symbolEntity->setSymbol($symbolData["Symbol"]);
+        $symbolEntity->setTitle($symbolData["Title"]);
+        $symbolEntity->setPrice($symbolData["Price"]);
+        $symbolEntity->setCommodity($symbolData["Commodity"]);
+        $symbolEntity->setExpiration($symbolData["Expiration"]);
+        $symbolEntity->setDate($symbolData["Date"]);
+        $symbolEntity->setTime($symbolData["Time"]);
+        $symbolEntity->setTimelocal($symbolData["TimeLocal"]);
+        $symbolEntity->setUnixtime($symbolData["UnixTime"]);
+        $symbolEntity->setHigh($symbolData["High"]);
+        $symbolEntity->setLow($symbolData["Low"]);
+        $symbolEntity->setOpen($symbolData["Open"]);
+        $symbolEntity->setClose($symbolData["Close"]);
+        $symbolEntity->setFivetwoweekhigh($symbolData["52WHigh"]);
+        $symbolEntity->setFivetwoweeklow($symbolData["52WLow"]);
+        $symbolEntity->setVolume($symbolData["Volume"]);
+        $symbolEntity->setOpeninterest($symbolData["OpenInterest"]);
+        $symbolEntity->setWeightedalpha($symbolData["WeightedAlpha"]);
+        $symbolEntity->setStandartdev($symbolData["StandartDev"]);
+        $symbolEntity->setTwentydaverage($symbolData["20DAverage"]);
+        $symbolEntity->setHundreddaverage($symbolData["100DAverage"]);
+        $symbolEntity->setFourteendrelstrength($symbolData["14DRelStrength"]);
+        $symbolEntity->setFourteendstochastic($symbolData["14DStochastic"]);
+        $symbolEntity->setTrend($symbolData["Trend"]);
+        $symbolEntity->setTrendstrength($symbolData["TrendStrength"]);
+
+        // индикаторы
+        $symbolEntity->setAd($symbolData["s.7-AD"]);
+        $symbolEntity->setBollinger($symbolData["s.20-Bollinger"]);
+        $symbolEntity->setLAverage($symbolData["LongTermAverage"]);
+        $symbolEntity->setLCci($symbolData["l.60-CCI"]);
+        $symbolEntity->setLMacd($symbolData["l.50-100-MACD"]);
+        $symbolEntity->setLMavp($symbolData["l.100-MAvsPrice"]);
+        $symbolEntity->setMAverage($symbolData["MidTermAverage"]);
+        $symbolEntity->setMCci($symbolData["m.40-CCI"]);
+        $symbolEntity->setMMacd($symbolData["m.20-100-MACD"]);
+        $symbolEntity->setMMavp($symbolData["m.50-MAvsPrice"]);
+        $symbolEntity->setMahilo($symbolData["s.10-8-MAHiloChannel"]);
+        $symbolEntity->setOverall($symbolData["OverallAverage"]);
+        $symbolEntity->setParabolic($symbolData["m.50-ParabolicTimePrice"]);
+        $symbolEntity->setSAverage($symbolData["ShortTermAverage"]);
+        $symbolEntity->setSMacd($symbolData["s.20-50-MACD"]);
+        $symbolEntity->setSMavp($symbolData["s.20-MAvsPrice"]);
+        $symbolEntity->setTrendspotter($symbolData["TrendSpotter"]);
+
+        $this->em->persist($symbolEntity);
+        $this->em->flush();
+
+        return true;
+
+    }
+
+    // соответствие символа имени сущности
+    private function symbolName($symbol) {
+        $symbolNames = array(
+            "ESU4" => "Emini",
+            "ZSX14" => "Soybeans",
+        );
+
+        if (array_key_exists($symbol, $symbolNames)) {
+            $symbolName = $symbolNames[$symbol];
+        } else {
+            throw new \Exception("Сущность для символа $symbol не найдена");
+        }
+
+        return $symbolName;
     }
 
 }
