@@ -258,6 +258,13 @@ class BarchartParserService {
         $symbolNames = array(
             "ESU4" => "Emini",
             "ZSX14" => "Soybeans",
+            "YMU4" => "DJMini",
+            "CLV4" => "CrudeOil",
+            "NGV4" => "NaturalGas",
+            "GCZ4" => "Gold",
+            "SIZ4" => "Silver",
+            "ZWZ4" => "Wheat",
+            "ZCZ4" => "Corn",
         );
 
         if (array_key_exists($symbol, $symbolNames)) {
