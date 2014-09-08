@@ -240,10 +240,11 @@ class BarchartParserService {
     /**
      * Создание объекта сущности символа и сохранение его в БД
      * @param $symbol
+     * @param $type
      * @return bool
      */
-    public function savePrice($symbol) {
-        $symbolName = $this->symbolName($symbol);
+    public function savePrice($symbol, $type) {
+        $symbolName = $this->symbolName($symbol, $type);
         $symbolData = $this->getPrice($symbol);
 
         $symbolNamespacedName = "Rottenwood\\BarchartBundle\\Entity\\" . $symbolName;
@@ -304,12 +305,13 @@ class BarchartParserService {
     /**
      * Поиск соответствия символа имени сущности
      * @param $symbol
-     * @return mixed
+     * @param $type
      * @throws \Exception
+     * @return mixed
      */
-    protected function symbolName($symbol) {
+    protected function symbolName($symbol, $type) {
         // получение соответствия символа сущности из конфига
-        $symbolNames = $this->config["symbols"];
+        $symbolNames = $this->config["symbols"][$type];
 
         if (array_key_exists($symbol, $symbolNames)) {
             $symbolName = $symbolNames[$symbol];
@@ -323,11 +325,12 @@ class BarchartParserService {
     /**
      * Парсинг и сохранение в БД цен массива символов
      * @param array $symbols
+     * @param       $type
      * @return bool
      */
-    protected function saveAllPrices($symbols) {
+    protected function saveAllPrices($symbols, $type) {
         foreach ($symbols as $symbol) {
-            $this->savePrice($symbol);
+            $this->savePrice($symbol, $type);
         }
 
         return true;
@@ -338,20 +341,10 @@ class BarchartParserService {
      * @return bool
      */
     public function saveAllFutures() {
+        $type = "futures";
+        $symbols = array_keys($this->config["symbols"][$type]);
 
-        $symbols = array(
-            "ESU4", // E-Mini SNP500
-            "ZSX14", // Soybeans
-            "YMU4", // DowJones Mini
-            "CLV4", // Crude Oil
-            "NGV4", // Natural Gas
-            "GCZ4", // Gold
-            "SIZ4", // Silver
-            "ZWZ4", // Wheat
-            "ZCZ4", // Corn
-        );
-
-        $this->saveAllPrices($symbols);
+        $this->saveAllPrices($symbols, $type);
 
         return true;
     }
