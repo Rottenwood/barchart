@@ -13,7 +13,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Парсер данных с сайта barchart.com
- * @date 05.09.2014
+ * @date 08.09.2014
  * @package Rottenwood\BarchartBundle\Service
  */
 class BarchartParserService {
@@ -28,7 +28,12 @@ class BarchartParserService {
         $this->config = $this->configLoad();
     }
 
-    private function configLoad() {
+    /**
+     * Загрузка файла конфигурации (barchart.yml)
+     * @return array
+     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     */
+    protected function configLoad() {
         $path = $this->kernel->locateResource("@RottenwoodBarchartBundle/Resources/config/barchart.yml");
         if (!is_string($path)) {
             throw new Exception("$path должен быть строкой.");
@@ -38,13 +43,24 @@ class BarchartParserService {
         return $config;
     }
 
-    private function parsePage($url, $symbol) {
+    /**
+     * Получение кода страницы с помощью HtmlDomParser
+     * @param $url
+     * @param $symbol
+     * @return mixed
+     */
+    protected function parsePage($url, $symbol) {
         $page = HtmlDomParser::file_get_html($url . $symbol);
 
         return $page;
     }
 
-    private function parseIndicator($tr) {
+    /**
+     * Техническая функция парсинга ряда и строки таблицы
+     * @param $tr
+     * @return array
+     */
+    protected function parseIndicator($tr) {
         $tableTech = $this->tableTech;
         $indicator = array();
 
@@ -55,7 +71,12 @@ class BarchartParserService {
         return $indicator;
     }
 
-    public function getPrice($symbol) {
+    /**
+     * Парсинг таблицы цен для выбранного инструмента
+     * @param $symbol
+     * @return array
+     */
+    protected function getPrice($symbol) {
         $url = $this->config["url"]["price"];
         $urlTechnical = $this->config["url"]["technical"];
 
@@ -74,7 +95,6 @@ class BarchartParserService {
         $month = date_parse(prev($titleArray))["month"];
 
         // Значения таблицы цен
-
         $priceArray = array(
             "Symbol" => $symbol,
             "Title" => $title,
@@ -121,7 +141,12 @@ class BarchartParserService {
         return $priceArray;
     }
 
-    private function parseShortTermIndicators($technicalDataArray = array()) {
+    /**
+     * Парсинг краткосрочных (суммарных) индикаторов
+     * @param array $technicalDataArray
+     * @return array
+     */
+    protected function parseShortTermIndicators($technicalDataArray = array()) {
         $technicalDataArray["s.7-AD"] = $this->parseIndicator(4);
         $technicalDataArray["s.10-8-MAHiloChannel"] = $this->parseIndicator(5);
         $technicalDataArray["s.20-MAvsPrice"] = $this->parseIndicator(6);
@@ -131,7 +156,12 @@ class BarchartParserService {
         return $technicalDataArray;
     }
 
-    private function parseMidTermIndicators($technicalDataArray = array()) {
+    /**
+     * Парсинг среднесрочных (суммарных) индикаторов
+     * @param array $technicalDataArray
+     * @return array
+     */
+    protected function parseMidTermIndicators($technicalDataArray = array()) {
         // Среднесрочные индикаторы
         $technicalDataArray["m.40-CCI"] = $this->parseIndicator(14);
         $technicalDataArray["m.50-MAvsPrice"] = $this->parseIndicator(15);
@@ -141,7 +171,12 @@ class BarchartParserService {
         return $technicalDataArray;
     }
 
-    private function parseLongTermIndicators($technicalDataArray = array()) {
+    /**
+     * Парсинг долгосрочных (суммарных) индикаторов
+     * @param array $technicalDataArray
+     * @return array
+     */
+    protected function parseLongTermIndicators($technicalDataArray = array()) {
         // Долгосрочные индикаторы
         $technicalDataArray["l.60-CCI"] = $this->parseIndicator(23);
         $technicalDataArray["l.100-MAvsPrice"] = $this->parseIndicator(24);
@@ -150,8 +185,12 @@ class BarchartParserService {
         return $technicalDataArray;
     }
 
-    private function parseOverallIndicators($technicalDataArray = array()) {
-        // Общие индикаторы
+    /**
+     * Парсинг общих (суммарных) индикаторов
+     * @param array $technicalDataArray
+     * @return array
+     */
+    protected function parseOverallIndicators($technicalDataArray = array()) {
         $technicalDataArray["TrendSpotter"] = $this->parseIndicator(1);
         $shortTermAverage = explode("&nbsp;", trim($this->tableTech->find('tr', 10)->find('td', 0)->plaintext));
         $technicalDataArray["ShortTermAverage"] = array($shortTermAverage[1]);
@@ -165,8 +204,12 @@ class BarchartParserService {
         return $technicalDataArray;
     }
 
-    private function trimArray($array = array()) {
-        // Очистка массива от лишних пробелов
+    /**
+     * Очистка массива от лишних пробелов
+     * @param array $array
+     * @return array
+     */
+    protected function trimArray($array = array()) {
         foreach ($array as $key => $value) {
             $array[$key] = trim(preg_replace("/\s+/", " ", $array[$key]));
         }
@@ -174,8 +217,12 @@ class BarchartParserService {
         return $array;
     }
 
-    private function purifyArray($array = array()) {
-        // Очистка массивов от лишних данных, пересборка массива
+    /**
+     * Очистка массивов от лишних данных, пересборка массива
+     * @param array $array
+     * @return array
+     */
+    protected function purifyArray($array = array()) {
         $pureArray = array();
         foreach ($array as $indicatorName => $indicatorValue) {
             foreach ($indicatorValue as $key => $value) {
@@ -190,11 +237,13 @@ class BarchartParserService {
         return $pureArray;
     }
 
-    // сохранение ценовых параметров в БД
+    /**
+     * Создание объекта сущности символа и сохранение его в БД
+     * @param $symbol
+     * @return bool
+     */
     public function savePrice($symbol) {
         $symbolName = $this->symbolName($symbol);
-//        $symbolEntity = $this->em->getRepository("RottenwoodBarchartBundle:$symbolName");
-
         $symbolData = $this->getPrice($symbol);
 
         $symbolNamespacedName = "Rottenwood\\BarchartBundle\\Entity\\" . $symbolName;
@@ -250,11 +299,15 @@ class BarchartParserService {
         $this->em->flush();
 
         return true;
-
     }
 
-    // соответствие символа имени сущности
-    private function symbolName($symbol) {
+    /**
+     * Поиск соответствия символа имени сущности
+     * @param $symbol
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function symbolName($symbol) {
         $symbolNames = array(
             "ESU4" => "Emini",
             "ZSX14" => "Soybeans",
@@ -274,6 +327,42 @@ class BarchartParserService {
         }
 
         return $symbolName;
+    }
+
+    /**
+     * Парсинг и сохранение в БД цен массива символов
+     * @param array $symbols
+     * @return bool
+     */
+    protected function saveAllPrices($symbols) {
+        foreach ($symbols as $symbol) {
+            $this->savePrice($symbol);
+        }
+
+        return true;
+    }
+
+    /**
+     * Парсинг и сохранение в БД основных фьючерсов
+     * @return bool
+     */
+    public function saveAllFutures() {
+
+        $symbols = array(
+            "ESU4", // E-Mini SNP500
+            "ZSX14", // Soybeans
+            "YMU4", // DowJones Mini
+            "CLV4", // Crude Oil
+            "NGV4", // Natural Gas
+            "GCZ4", // Gold
+            "SIZ4", // Silver
+            "ZWZ4", // Wheat
+            "ZCZ4", // Corn
+        );
+
+        $this->saveAllPrices($symbols);
+
+        return true;
     }
 
 }
