@@ -4,3 +4,16 @@
 url:
     price: "http://www.barchart.com/quotes/futures/"
     technical: "http://www.barchart.com/opinions/futures/"
+
+# кодовые обозначения (символы) торговых инструментов
+# и соответствующие им названия классов-сущностей
+symbols:
+    ESU4: "Emini"
+    ZSX14: "Soybeans"
+    YMU4: "DJMini"
+    CLV4: "CrudeOil"
+    NGV4: "NaturalGas"
+    GCZ4: "Gold"
+    SIZ4: "Silver"
+    ZWZ4: "Wheat"
+    ZCZ4: "Corn"
