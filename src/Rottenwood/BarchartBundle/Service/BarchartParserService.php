@@ -101,7 +101,7 @@ class BarchartParserService {
             "Price" => $html->find('div#divQuotePageHeader span#dtaLast', 0)->plaintext,
             "Commodity" => $titleArray[0],
             "Expiration" => $month . "." . $year,
-            "Date" => date("m.Y"),
+            "Date" => date("d.m.Y"),
             "Time" => $html->find('div#divQuotePageHeader span#dtaDate', 0)->plaintext,
             "TimeLocal" => date("g:iA T"),
             "High" => $table->find('tr', 1)->find('td', 1)->plaintext,
