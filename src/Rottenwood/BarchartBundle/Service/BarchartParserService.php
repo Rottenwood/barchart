@@ -49,7 +49,7 @@ class BarchartParserService {
      * @param $symbol
      * @return mixed
      */
-    protected function parsePage($url, $symbol) {
+    protected function parsePage($url, $symbol = '') {
         $page = HtmlDomParser::file_get_html($url . $symbol);
 
         return $page;
@@ -349,4 +349,34 @@ class BarchartParserService {
         return true;
     }
 
+    public function parseActualContracts() {
+        $urlAllFutures = $this->config["url"]["futuresall"];
+
+        $html = HtmlDomParser::file_get_html($urlAllFutures);
+
+        // Обработка таблицы фьючерсов
+        $tableEnergies = $html->find('table#dt2 tbody', 0);
+        $symbols['CrudeOil'] = $tableEnergies->find('tr', 1)->find('td', 1)->plaintext;
+        $symbols['NaturalGas'] = $tableEnergies->find('tr', 4)->find('td', 1)->plaintext;
+
+        $tableGrains = $html->find('table#dt4 tbody', 0);
+        $symbols['Wheat'] = $tableGrains->find('tr', 1)->find('td', 1)->plaintext;
+        $symbols['Corn'] = $tableGrains->find('tr', 2)->find('td', 1)->plaintext;
+        $symbols['Soybeans'] = $tableGrains->find('tr', 3)->find('td', 1)->plaintext;
+
+        $tableIndexes = $html->find('table#dt5 tbody', 0);
+        $symbols['Emini'] = $tableIndexes->find('tr', 1)->find('td', 1)->plaintext;
+        $symbols['DJMini'] = $tableIndexes->find('tr', 3)->find('td', 1)->plaintext;
+
+        $tableMetals = $html->find('table#dt7 tbody', 0);
+        $symbols['Gold'] = $tableMetals->find('tr', 1)->find('td', 1)->plaintext;
+        $symbols['Silver'] = $tableMetals->find('tr', 2)->find('td', 1)->plaintext;
+
+        foreach ($symbols as $key => $symbol) {
+            $symbols[$key] = explode(' ', $symbol);
+            $symbols[$key] = $symbols[$key][0];
+        }
+
+        return $symbols;
+    }
 }
