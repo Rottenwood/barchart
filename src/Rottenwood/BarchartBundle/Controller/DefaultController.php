@@ -10,9 +10,7 @@ class DefaultController extends Controller {
         $data = array();
         $parser = $this->get("barchart.parser");
 
-//        $parser->saveAllFutures();
-
-        $parser->parseActualContracts();
+        $parser->saveAllFutures();
 
         return $this->render('RottenwoodBarchartBundle:Default:index.html.twig', $data);
     }

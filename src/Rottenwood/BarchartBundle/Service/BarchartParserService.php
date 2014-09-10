@@ -5,6 +5,7 @@
  */
 
 namespace Rottenwood\BarchartBundle\Service;
+
 use Doctrine\ORM\EntityManager;
 use Sunra\PhpSimple\HtmlDomParser;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -13,10 +14,11 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Парсер данных с сайта barchart.com
- * @date 08.09.2014
+ * @date    10.09.2014
  * @package Rottenwood\BarchartBundle\Service
  */
 class BarchartParserService {
+
     private $em;
     private $kernel;
     private $config;
@@ -96,31 +98,31 @@ class BarchartParserService {
 
         // Значения таблицы цен
         $priceArray = array(
-            "Symbol" => $symbol,
-            "Title" => $title,
-            "Price" => $html->find('div#divQuotePageHeader span#dtaLast', 0)->plaintext,
-            "Commodity" => $titleArray[0],
-            "Expiration" => $month . "." . $year,
-            "Date" => date("d.m.Y"),
-            "Time" => $html->find('div#divQuotePageHeader span#dtaDate', 0)->plaintext,
-            "TimeLocal" => date("g:iA T"),
-            "High" => $table->find('tr', 1)->find('td', 1)->plaintext,
-            "Low" => $table->find('tr', 1)->find('td', 3)->plaintext,
-            "Open" => $table->find('tr', 3)->find('strong', 0)->plaintext,
-            "Close" => $table->find('tr', 3)->find('strong', 1)->plaintext,
-            "52WHigh" => $table->find('tr', 2)->find('span', 0)->plaintext,
-            "52WLow" => $table->find('tr', 2)->find('span', 4)->plaintext,
-            "Volume" => $table->find('tr', 4)->find('td#dtaVolume', 0)->plaintext,
-            "OpenInterest" => $table->find('tr', 4)->find('strong', 0)->plaintext,
-            "WeightedAlpha" => $table->find('tr', 5)->find('strong', 0)->plaintext,
-            "StandartDev" => $table->find('tr', 5)->find('strong', 1)->plaintext,
-            "20DAverage" => $table->find('tr', 6)->find('strong', 0)->plaintext,
-            "100DAverage" => $table->find('tr', 6)->find('strong', 1)->plaintext,
+            "Symbol"         => $symbol,
+            "Title"          => $title,
+            "Price"          => $html->find('div#divQuotePageHeader span#dtaLast', 0)->plaintext,
+            "Commodity"      => $titleArray[0],
+            "Expiration"     => $month . "." . $year,
+            "Date"           => date("d.m.Y"),
+            "Time"           => $html->find('div#divQuotePageHeader span#dtaDate', 0)->plaintext,
+            "TimeLocal"      => date("g:iA T"),
+            "High"           => $table->find('tr', 1)->find('td', 1)->plaintext,
+            "Low"            => $table->find('tr', 1)->find('td', 3)->plaintext,
+            "Open"           => $table->find('tr', 3)->find('strong', 0)->plaintext,
+            "Close"          => $table->find('tr', 3)->find('strong', 1)->plaintext,
+            "52WHigh"        => $table->find('tr', 2)->find('span', 0)->plaintext,
+            "52WLow"         => $table->find('tr', 2)->find('span', 4)->plaintext,
+            "Volume"         => $table->find('tr', 4)->find('td#dtaVolume', 0)->plaintext,
+            "OpenInterest"   => $table->find('tr', 4)->find('strong', 0)->plaintext,
+            "WeightedAlpha"  => $table->find('tr', 5)->find('strong', 0)->plaintext,
+            "StandartDev"    => $table->find('tr', 5)->find('strong', 1)->plaintext,
+            "20DAverage"     => $table->find('tr', 6)->find('strong', 0)->plaintext,
+            "100DAverage"    => $table->find('tr', 6)->find('strong', 1)->plaintext,
             "14DRelStrength" => $table->find('tr', 7)->find('strong', 0)->plaintext,
-            "14DStochastic" => $table->find('tr', 7)->find('strong', 1)->plaintext,
-            "Trend" => $table->find('tr', 8)->find('td', 1)->plaintext,
-            "TrendStrength" => $table->find('tr', 8)->find('td', 3)->plaintext,
-            "UnixTime" => time(),
+            "14DStochastic"  => $table->find('tr', 7)->find('strong', 1)->plaintext,
+            "Trend"          => $table->find('tr', 8)->find('td', 1)->plaintext,
+            "TrendStrength"  => $table->find('tr', 8)->find('td', 3)->plaintext,
+            "UnixTime"       => time(),
         );
 
         // Очистка данных от лишних пробелов
@@ -239,12 +241,12 @@ class BarchartParserService {
 
     /**
      * Создание объекта сущности символа и сохранение его в БД
+     * @param $symbolName
      * @param $symbol
-     * @param $type
+     * @internal param $entityName
      * @return bool
      */
-    public function savePrice($symbol, $type) {
-        $symbolName = $this->symbolName($symbol, $type);
+    public function savePrice($symbolName, $symbol) {
         $symbolData = $this->getPrice($symbol);
 
         $symbolNamespacedName = "Rottenwood\\BarchartBundle\\Entity\\" . $symbolName;
@@ -303,34 +305,13 @@ class BarchartParserService {
     }
 
     /**
-     * Поиск соответствия символа имени сущности
-     * @param $symbol
-     * @param $type
-     * @throws \Exception
-     * @return mixed
-     */
-    protected function symbolName($symbol, $type) {
-        // получение соответствия символа сущности из конфига
-        $symbolNames = $this->config["symbols"][$type];
-
-        if (array_key_exists($symbol, $symbolNames)) {
-            $symbolName = $symbolNames[$symbol];
-        } else {
-            throw new \Exception("Сущность для символа $symbol не найдена");
-        }
-
-        return $symbolName;
-    }
-
-    /**
      * Парсинг и сохранение в БД цен массива символов
      * @param array $symbols
-     * @param       $type
      * @return bool
      */
-    protected function saveAllPrices($symbols, $type) {
-        foreach ($symbols as $symbol) {
-            $this->savePrice($symbol, $type);
+    protected function saveAllPrices($symbols) {
+        foreach ($symbols as $symbolName => $symbol) {
+            $this->savePrice($symbolName, $symbol);
         }
 
         return true;
@@ -341,10 +322,9 @@ class BarchartParserService {
      * @return bool
      */
     public function saveAllFutures() {
-        $type = "futures";
-        $symbols = array_keys($this->config["symbols"][$type]);
+        $futures = $this->parseActualContracts();
 
-        $this->saveAllPrices($symbols, $type);
+        $this->saveAllPrices($futures);
 
         return true;
     }
@@ -372,9 +352,14 @@ class BarchartParserService {
         $symbols['Gold'] = $tableMetals->find('tr', 1)->find('td', 1)->plaintext;
         $symbols['Silver'] = $tableMetals->find('tr', 2)->find('td', 1)->plaintext;
 
+        // Приведение символов к нужному виду
         foreach ($symbols as $key => $symbol) {
             $symbols[$key] = explode(' ', $symbol);
             $symbols[$key] = $symbols[$key][0];
+            $lastTwoSymbols = substr($symbols[$key], -2);
+            $lastSymbol = substr($lastTwoSymbols, 1);
+            $symbolsString = substr($symbols[$key], 0, -2);
+            $symbols[$key] = $symbolsString . $lastSymbol;
         }
 
         return $symbols;
