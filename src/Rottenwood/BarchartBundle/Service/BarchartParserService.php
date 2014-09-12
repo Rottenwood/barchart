@@ -24,25 +24,10 @@ class BarchartParserService {
     private $config;
     private $tableTech;
 
-    public function __construct(EntityManager $em, Kernel $kernel) {
+    public function __construct(ConfigService $configService, EntityManager $em, Kernel $kernel) {
         $this->em = $em;
         $this->kernel = $kernel;
-        $this->config = $this->configLoad();
-    }
-
-    /**
-     * Загрузка файла конфигурации (barchart.yml)
-     * @return array
-     * @throws \Symfony\Component\Config\Definition\Exception\Exception
-     */
-    protected function configLoad() {
-        $path = $this->kernel->locateResource("@RottenwoodBarchartBundle/Resources/config/barchart.yml");
-        if (!is_string($path)) {
-            throw new Exception("$path должен быть строкой.");
-        }
-        $config = Yaml::parse(file_get_contents($path));
-
-        return $config;
+        $this->config = $configService->getConfig();
     }
 
     /**

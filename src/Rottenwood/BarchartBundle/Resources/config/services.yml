@@ -1,7 +1,15 @@
 parameters:
+    barchart.config.class: Rottenwood\BarchartBundle\Service\ConfigService
     barchart.parser.class: Rottenwood\BarchartBundle\Service\BarchartParserService
+    barchart.analytic.class: Rottenwood\BarchartBundle\Service\AnalyticService
 
 services:
+    barchart.config:
+        class: %barchart.config.class%
+        arguments: [@kernel]
     barchart.parser:
         class: %barchart.parser.class%
-        arguments: [@doctrine.orm.entity_manager, @kernel]
+        arguments: [@barchart.config, @doctrine.orm.entity_manager, @kernel]
+    barchart.analytic:
+        class: %barchart.analytic.class%
+        arguments: [@barchart.config, @doctrine.orm.entity_manager, @kernel]
