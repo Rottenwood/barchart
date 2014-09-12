@@ -9,7 +9,11 @@ namespace Rottenwood\BarchartBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Kernel;
 
-class AnalyticService {
+/**
+ * Сервис анализа данных технических индикаторов
+ * @package Rottenwood\BarchartBundle\Service
+ */
+class AnalizerService {
     private $em;
     private $kernel;
 

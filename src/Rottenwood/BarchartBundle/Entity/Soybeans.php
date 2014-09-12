@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Soybeans
  * @ORM\Table(name="soybeans")
- * @ORM\Entity(repositoryClass="Rottenwood\BarchartBundle\Entity\PriceRepository")
+ * @ORM\Entity(repositoryClass="Rottenwood\BarchartBundle\Repository\PriceRepository")
  */
 class Soybeans extends Price {
 

@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DJMini
  * @ORM\Table(name="djmini")
- * @ORM\Entity(repositoryClass="Rottenwood\BarchartBundle\Entity\PriceRepository")
+ * @ORM\Entity(repositoryClass="Rottenwood\BarchartBundle\Repository\PriceRepository")
  */
 class DJMini extends Price {
 
