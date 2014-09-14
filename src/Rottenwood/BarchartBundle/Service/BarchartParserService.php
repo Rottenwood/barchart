@@ -255,8 +255,8 @@ class BarchartParserService {
         $symbolEntity->setFivetwoweeklow($this->goodify($symbolData["52WLow"]));
         $symbolEntity->setVolume($this->goodify($symbolData["Volume"]));
         $symbolEntity->setOpeninterest($this->goodify($symbolData["OpenInterest"]));
-        $symbolEntity->setWeightedalpha($symbolData["WeightedAlpha"]);
-        $symbolEntity->setStandartdev($symbolData["StandartDev"]);
+        $symbolEntity->setWeightedalpha($this->antiPlus($symbolData["WeightedAlpha"]));
+        $symbolEntity->setStandartdev($this->antiPlus($symbolData["StandartDev"]));
         $symbolEntity->setTwentydaverage($this->goodify($symbolData["20DAverage"]));
         $symbolEntity->setHundreddaverage($this->goodify($symbolData["100DAverage"]));
         $symbolEntity->setFourteendrelstrength($this->goodify($symbolData["14DRelStrength"]));
@@ -359,9 +359,16 @@ class BarchartParserService {
             $priceFloat = preg_replace('/(.*)([-.])/', '', $price);
             $price = $priceInt . '.' . $priceFloat;
         }
-        $price = (float)$price;
 
-        return $price;
+        return (float)$price;
+    }
+
+    public function antiPlus($value) {
+        if (preg_match('/([+])/', $value)) {
+            $value = preg_replace('/([+])/', '', $value);
+        }
+
+        return (float)$value;
     }
 
     public function buySellToInt($value) {
@@ -397,6 +404,6 @@ class BarchartParserService {
 
         $indicatorValueInt = $indicatorStrengthProc * $indicatorDirection;
 
-        return $indicatorValueInt;
+        return (int)$indicatorValueInt;
     }
 }
