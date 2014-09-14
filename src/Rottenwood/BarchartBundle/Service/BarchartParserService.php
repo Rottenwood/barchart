@@ -278,10 +278,10 @@ class BarchartParserService {
         $symbolEntity->setSMacd($this->buySellToInt($symbolData["s.20-50-MACD"]));
         $symbolEntity->setSMavp($this->buySellToInt($symbolData["s.20-MAvsPrice"]));
         $symbolEntity->setTrendspotter($this->buySellToInt($symbolData["TrendSpotter"]));
-        $symbolEntity->setSAverage($this->buySellProcToInt($this->buySellToInt($symbolData["ShortTermAverage"])));
-        $symbolEntity->setMAverage($this->buySellProcToInt($this->buySellToInt($symbolData["MidTermAverage"])));
-        $symbolEntity->setLAverage($this->buySellProcToInt($this->buySellToInt($symbolData["LongTermAverage"])));
-        $symbolEntity->setOverall($this->buySellProcToInt($this->buySellToInt($symbolData["OverallAverage"])));
+        $symbolEntity->setSAverage($this->buySellProcToInt($symbolData["ShortTermAverage"]));
+        $symbolEntity->setMAverage($this->buySellProcToInt($symbolData["MidTermAverage"]));
+        $symbolEntity->setLAverage($this->buySellProcToInt($symbolData["LongTermAverage"]));
+        $symbolEntity->setOverall($this->buySellProcToInt($symbolData["OverallAverage"]));
 
         $this->em->persist($symbolEntity);
         $this->em->flush();
