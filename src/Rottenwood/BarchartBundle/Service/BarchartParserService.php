@@ -259,29 +259,29 @@ class BarchartParserService {
         $symbolEntity->setStandartdev($symbolData["StandartDev"]);
         $symbolEntity->setTwentydaverage($this->goodify($symbolData["20DAverage"]));
         $symbolEntity->setHundreddaverage($this->goodify($symbolData["100DAverage"]));
-        $symbolEntity->setFourteendrelstrength($symbolData["14DRelStrength"]);
-        $symbolEntity->setFourteendstochastic($symbolData["14DStochastic"]);
-        $symbolEntity->setTrend($symbolData["Trend"]);
+        $symbolEntity->setFourteendrelstrength($this->goodify($symbolData["14DRelStrength"]));
+        $symbolEntity->setFourteendstochastic($this->goodify($symbolData["14DStochastic"]));
+        $symbolEntity->setTrend($this->buySellToInt($symbolData["Trend"]));
         $symbolEntity->setTrendstrength($symbolData["TrendStrength"]);
 
         // индикаторы
-        $symbolEntity->setAd($symbolData["s.7-AD"]);
-        $symbolEntity->setBollinger($symbolData["s.20-Bollinger"]);
-        $symbolEntity->setLAverage($symbolData["LongTermAverage"]);
-        $symbolEntity->setLCci($symbolData["l.60-CCI"]);
-        $symbolEntity->setLMacd($symbolData["l.50-100-MACD"]);
-        $symbolEntity->setLMavp($symbolData["l.100-MAvsPrice"]);
-        $symbolEntity->setMAverage($symbolData["MidTermAverage"]);
-        $symbolEntity->setMCci($symbolData["m.40-CCI"]);
-        $symbolEntity->setMMacd($symbolData["m.20-100-MACD"]);
-        $symbolEntity->setMMavp($symbolData["m.50-MAvsPrice"]);
-        $symbolEntity->setMahilo($symbolData["s.10-8-MAHiloChannel"]);
-        $symbolEntity->setOverall($symbolData["OverallAverage"]);
-        $symbolEntity->setParabolic($symbolData["m.50-ParabolicTimePrice"]);
-        $symbolEntity->setSAverage($symbolData["ShortTermAverage"]);
-        $symbolEntity->setSMacd($symbolData["s.20-50-MACD"]);
-        $symbolEntity->setSMavp($symbolData["s.20-MAvsPrice"]);
-        $symbolEntity->setTrendspotter($symbolData["TrendSpotter"]);
+        $symbolEntity->setAd($this->buySellToInt($symbolData["s.7-AD"]));
+        $symbolEntity->setBollinger($this->buySellToInt($symbolData["s.20-Bollinger"]));
+        $symbolEntity->setLAverage($this->buySellToInt($symbolData["LongTermAverage"]));
+        $symbolEntity->setLCci($this->buySellToInt($symbolData["l.60-CCI"]));
+        $symbolEntity->setLMacd($this->buySellToInt($symbolData["l.50-100-MACD"]));
+        $symbolEntity->setLMavp($this->buySellToInt($symbolData["l.100-MAvsPrice"]));
+        $symbolEntity->setMAverage($this->buySellToInt($symbolData["MidTermAverage"]));
+        $symbolEntity->setMCci($this->buySellToInt($symbolData["m.40-CCI"]));
+        $symbolEntity->setMMacd($this->buySellToInt($symbolData["m.20-100-MACD"]));
+        $symbolEntity->setMMavp($this->buySellToInt($symbolData["m.50-MAvsPrice"]));
+        $symbolEntity->setMahilo($this->buySellToInt($symbolData["s.10-8-MAHiloChannel"]));
+        $symbolEntity->setOverall($this->buySellToInt($symbolData["OverallAverage"]));
+        $symbolEntity->setParabolic($this->buySellToInt($symbolData["m.50-ParabolicTimePrice"]));
+        $symbolEntity->setSAverage($this->buySellToInt($symbolData["ShortTermAverage"]));
+        $symbolEntity->setSMacd($this->buySellToInt($symbolData["s.20-50-MACD"]));
+        $symbolEntity->setSMavp($this->buySellToInt($symbolData["s.20-MAvsPrice"]));
+        $symbolEntity->setTrendspotter($this->buySellToInt($symbolData["TrendSpotter"]));
 
         $this->em->persist($symbolEntity);
         $this->em->flush();
@@ -362,5 +362,25 @@ class BarchartParserService {
         $price = (float)$price;
 
         return $price;
+    }
+
+    public function buySellToInt($value) {
+        switch ($value) {
+            default:
+                // Добавить сюда логирование иного сигнала
+                $indicatorDirection = 0;
+                break;
+            case 'Buy':
+                $indicatorDirection = 1;
+                break;
+            case 'Sell':
+                $indicatorDirection = -1;
+                break;
+            case 'Hold':
+                $indicatorDirection = 0;
+                break;
+        }
+
+        return $indicatorDirection;
     }
 }

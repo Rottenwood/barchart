@@ -21,4 +21,22 @@ class AnalizerService {
         $this->em = $em;
         $this->kernel = $kernel;
     }
+
+    public function analyseOverallCorn() {
+        $corns = $this->em->getRepository('RottenwoodBarchartBundle:Corn')->findAll();
+
+        foreach ($corns as $corn) {
+            $cornPrice = $corn->getPrice();
+            $cornOverall = $corn->getOverall();
+            var_dump($cornOverall);
+            foreach ($corns as $cornToCheck) {
+                $cornPriceCheck = $cornToCheck->getPrice();
+                $priceDiff = $cornPrice - $cornPriceCheck;
+                echo $priceDiff, '..';
+            }
+            var_dump('***************');
+        }
+
+        return true;
+    }
 }
