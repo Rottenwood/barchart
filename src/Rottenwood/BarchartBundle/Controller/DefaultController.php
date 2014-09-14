@@ -14,4 +14,5 @@ class DefaultController extends Controller {
 
         return $this->render('RottenwoodBarchartBundle:Default:index.html.twig', $data);
     }
+
 }

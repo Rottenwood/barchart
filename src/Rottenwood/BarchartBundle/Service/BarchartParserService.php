@@ -267,21 +267,21 @@ class BarchartParserService {
         // индикаторы
         $symbolEntity->setAd($this->buySellToInt($symbolData["s.7-AD"]));
         $symbolEntity->setBollinger($this->buySellToInt($symbolData["s.20-Bollinger"]));
-        $symbolEntity->setLAverage($this->buySellToInt($symbolData["LongTermAverage"]));
         $symbolEntity->setLCci($this->buySellToInt($symbolData["l.60-CCI"]));
         $symbolEntity->setLMacd($this->buySellToInt($symbolData["l.50-100-MACD"]));
         $symbolEntity->setLMavp($this->buySellToInt($symbolData["l.100-MAvsPrice"]));
-        $symbolEntity->setMAverage($this->buySellToInt($symbolData["MidTermAverage"]));
         $symbolEntity->setMCci($this->buySellToInt($symbolData["m.40-CCI"]));
         $symbolEntity->setMMacd($this->buySellToInt($symbolData["m.20-100-MACD"]));
         $symbolEntity->setMMavp($this->buySellToInt($symbolData["m.50-MAvsPrice"]));
         $symbolEntity->setMahilo($this->buySellToInt($symbolData["s.10-8-MAHiloChannel"]));
-        $symbolEntity->setOverall($this->buySellToInt($symbolData["OverallAverage"]));
         $symbolEntity->setParabolic($this->buySellToInt($symbolData["m.50-ParabolicTimePrice"]));
-        $symbolEntity->setSAverage($this->buySellToInt($symbolData["ShortTermAverage"]));
         $symbolEntity->setSMacd($this->buySellToInt($symbolData["s.20-50-MACD"]));
         $symbolEntity->setSMavp($this->buySellToInt($symbolData["s.20-MAvsPrice"]));
         $symbolEntity->setTrendspotter($this->buySellToInt($symbolData["TrendSpotter"]));
+        $symbolEntity->setSAverage($this->buySellProcToInt($this->buySellToInt($symbolData["ShortTermAverage"])));
+        $symbolEntity->setMAverage($this->buySellProcToInt($this->buySellToInt($symbolData["MidTermAverage"])));
+        $symbolEntity->setLAverage($this->buySellProcToInt($this->buySellToInt($symbolData["LongTermAverage"])));
+        $symbolEntity->setOverall($this->buySellProcToInt($this->buySellToInt($symbolData["OverallAverage"])));
 
         $this->em->persist($symbolEntity);
         $this->em->flush();
@@ -382,5 +382,21 @@ class BarchartParserService {
         }
 
         return $indicatorDirection;
+    }
+
+    public function buySellProcToInt($value) {
+        $buySell = preg_replace('/(.*)(\s)/', '', $value);
+
+        $indicatorDirection = $this->buySellToInt($buySell);
+
+        if ($indicatorDirection) {
+            $indicatorStrengthProc = preg_replace('/%(\s)(.*)/', '', $value);
+        } else {
+            $indicatorStrengthProc = 0;
+        }
+
+        $indicatorValueInt = $indicatorStrengthProc * $indicatorDirection;
+
+        return $indicatorValueInt;
     }
 }
