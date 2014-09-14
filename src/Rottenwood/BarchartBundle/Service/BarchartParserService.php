@@ -240,25 +240,25 @@ class BarchartParserService {
         $symbolEntity->setType(1);
         $symbolEntity->setSymbol($symbolData["Symbol"]);
         $symbolEntity->setTitle($symbolData["Title"]);
-        $symbolEntity->setPrice($symbolData["Price"]);
+        $symbolEntity->setPrice($this->goodify($symbolData["Price"]));
         $symbolEntity->setCommodity($symbolData["Commodity"]);
         $symbolEntity->setExpiration($symbolData["Expiration"]);
         $symbolEntity->setDate($symbolData["Date"]);
         $symbolEntity->setTime($symbolData["Time"]);
         $symbolEntity->setTimelocal($symbolData["TimeLocal"]);
         $symbolEntity->setUnixtime($symbolData["UnixTime"]);
-        $symbolEntity->setHigh($symbolData["High"]);
-        $symbolEntity->setLow($symbolData["Low"]);
-        $symbolEntity->setOpen($symbolData["Open"]);
-        $symbolEntity->setClose($symbolData["Close"]);
-        $symbolEntity->setFivetwoweekhigh($symbolData["52WHigh"]);
-        $symbolEntity->setFivetwoweeklow($symbolData["52WLow"]);
-        $symbolEntity->setVolume($symbolData["Volume"]);
-        $symbolEntity->setOpeninterest($symbolData["OpenInterest"]);
+        $symbolEntity->setHigh($this->goodify($symbolData["High"]));
+        $symbolEntity->setLow($this->goodify($symbolData["Low"]));
+        $symbolEntity->setOpen($this->goodify($symbolData["Open"]));
+        $symbolEntity->setClose($this->goodify($symbolData["Close"]));
+        $symbolEntity->setFivetwoweekhigh($this->goodify($symbolData["52WHigh"]));
+        $symbolEntity->setFivetwoweeklow($this->goodify($symbolData["52WLow"]));
+        $symbolEntity->setVolume($this->goodify($symbolData["Volume"]));
+        $symbolEntity->setOpeninterest($this->goodify($symbolData["OpenInterest"]));
         $symbolEntity->setWeightedalpha($symbolData["WeightedAlpha"]);
         $symbolEntity->setStandartdev($symbolData["StandartDev"]);
-        $symbolEntity->setTwentydaverage($symbolData["20DAverage"]);
-        $symbolEntity->setHundreddaverage($symbolData["100DAverage"]);
+        $symbolEntity->setTwentydaverage($this->goodify($symbolData["20DAverage"]));
+        $symbolEntity->setHundreddaverage($this->goodify($symbolData["100DAverage"]));
         $symbolEntity->setFourteendrelstrength($symbolData["14DRelStrength"]);
         $symbolEntity->setFourteendstochastic($symbolData["14DStochastic"]);
         $symbolEntity->setTrend($symbolData["Trend"]);
@@ -348,5 +348,19 @@ class BarchartParserService {
         }
 
         return $symbols;
+    }
+
+    public function goodify($price) {
+        $price = preg_replace('/(%)/', '', $price);
+        $price = preg_replace('/(,)/', '', $price);
+        $price = preg_replace('/(s)/', '', $price);
+        if (preg_match('/([-.])/', $price)) {
+            $priceInt = preg_replace('/([-.])(.*)/', '', $price);
+            $priceFloat = preg_replace('/(.*)([-.])/', '', $price);
+            $price = $priceInt . '.' . $priceFloat;
+        }
+        $price = (float)$price;
+
+        return $price;
     }
 }
