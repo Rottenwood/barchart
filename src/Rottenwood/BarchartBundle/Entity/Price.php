@@ -34,8 +34,8 @@ class Price {
     private $title;
 
     /**
-     * @var integer
-     * @ORM\Column(name="price", type="integer")
+     * @var float
+     * @ORM\Column(name="price", type="float")
      */
     private $price;
 
