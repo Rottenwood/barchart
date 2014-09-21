@@ -8,9 +8,6 @@ namespace Rottenwood\BarchartBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Sunra\PhpSimple\HtmlDomParser;
-use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Парсер данных с сайта barchart.com
@@ -20,13 +17,11 @@ use Symfony\Component\Yaml\Yaml;
 class BarchartParserService {
 
     private $em;
-    private $kernel;
     private $config;
     private $tableTech;
 
-    public function __construct(ConfigService $configService, EntityManager $em, Kernel $kernel) {
+    public function __construct(ConfigService $configService, EntityManager $em) {
         $this->em = $em;
-        $this->kernel = $kernel;
         $this->config = $configService->getConfig();
     }
 

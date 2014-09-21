@@ -8,7 +8,6 @@ namespace Rottenwood\BarchartBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Rottenwood\BarchartBundle\Entity\Price;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Сервис анализа данных технических индикаторов
@@ -17,15 +16,15 @@ use Symfony\Component\HttpKernel\Kernel;
 class AnalizerService {
 
     private $em;
-    private $kernel;
+    private $config;
     private $high = 0;
     private $highId = 0;
     private $low = 0;
     private $lowId = 0;
 
-    public function __construct(ConfigService $configService, EntityManager $em, Kernel $kernel) {
+    public function __construct(ConfigService $configService, EntityManager $em) {
         $this->em = $em;
-        $this->kernel = $kernel;
+        $this->config = $configService->getConfig();
     }
 
     public function analyseOverallCorn() {

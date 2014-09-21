@@ -9,7 +9,7 @@ services:
         arguments: [@kernel]
     barchart.parser:
         class: %barchart.parser.class%
-        arguments: [@barchart.config, @doctrine.orm.entity_manager, @kernel]
+        arguments: [@barchart.config, @doctrine.orm.entity_manager]
     barchart.analizer:
         class: %barchart.analizer.class%
-        arguments: [@barchart.config, @doctrine.orm.entity_manager, @kernel]
+        arguments: [@barchart.config, @doctrine.orm.entity_manager]
