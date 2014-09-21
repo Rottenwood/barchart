@@ -6,3 +6,10 @@ url:
     technical: "http://www.barchart.com/opinions/futures/"
     futuresall: "http://www.barchart.com/commodityfutures/All"
 
+# Настройки анализатора
+analizer:
+    # Период данных, используемых для сравнения результатов
+    horizon:
+        weeks: 1
+        days: 0
+        hours: 0
