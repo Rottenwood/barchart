@@ -7,6 +7,7 @@
 namespace Rottenwood\BarchartBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Rottenwood\BarchartBundle\Entity\Price;
 use Sunra\PhpSimple\HtmlDomParser;
 
 /**
@@ -230,12 +231,26 @@ class BarchartParserService {
         $symbolData = $this->getPrice($symbol);
 
         $symbolNamespacedName = "Rottenwood\\BarchartBundle\\Entity\\" . $symbolName;
+        $symbolRepositoryName = "RottenwoodBarchartBundle:" . $symbolName;
+
+        // Получение последней зафиксированной цены в БД для данного символа
+        /** @var Price $lastSymbolObject */
+        $lastPrice = $this->em->getRepository($symbolRepositoryName)->findLastPriceOfSymbol();
+
+        // Текущая цена символа
+        $price = $this->goodify($symbolData["Price"]);
+
+        // Если цена не изменилась
+        if ($lastPrice == $price) {
+            return false;
+        }
+
         $symbolEntity = new $symbolNamespacedName();
 
-        $symbolEntity->setType(1);
+        $symbolEntity->setType('1');
         $symbolEntity->setSymbol($symbolData["Symbol"]);
         $symbolEntity->setTitle($symbolData["Title"]);
-        $symbolEntity->setPrice($this->goodify($symbolData["Price"]));
+        $symbolEntity->setPrice($price);
         $symbolEntity->setCommodity($symbolData["Commodity"]);
         $symbolEntity->setExpiration($symbolData["Expiration"]);
         $symbolEntity->setDate($symbolData["Date"]);

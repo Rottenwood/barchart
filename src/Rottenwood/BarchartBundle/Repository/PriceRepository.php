@@ -47,4 +47,20 @@ class PriceRepository extends EntityRepository {
 
         return $result;
     }
+
+    /**
+     * Запрос самой последней цены
+     * @return double
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findLastPriceOfSymbol() {
+        $entity = $this->_entityName;
+
+        $query = $this->getEntityManager()->createQuery("SELECT e.price FROM $entity e ORDER BY e.id DESC");
+        $query->setMaxResults(1);
+        $result = $query->getSingleResult();
+
+        return $result['price'];
+    }
 }
