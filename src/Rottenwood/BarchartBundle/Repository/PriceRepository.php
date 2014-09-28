@@ -4,6 +4,7 @@ namespace Rottenwood\BarchartBundle\Repository;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 
 /**
  * PriceRepository
@@ -30,5 +31,20 @@ class PriceRepository extends EntityRepository {
             )
         );
         return $this->matching($criteria);
+    }
+
+    /**
+     * Возвращает количество записей в таблице
+     * @return mixed
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findHowManyPrices() {
+        $entity = $this->_entityName;
+
+        $query = $this->getEntityManager()->createQuery("SELECT MAX(e.id) FROM $entity e");
+        $result = $query->getSingleResult();
+
+        return $result;
     }
 }
