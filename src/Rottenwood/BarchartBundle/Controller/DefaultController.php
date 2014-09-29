@@ -15,6 +15,8 @@ class DefaultController extends Controller {
 
 //        $analizer->analyseOverallCorn();
 
+//        $parser->saveAllForex();
+
         return $this->render('RottenwoodBarchartBundle:Default:index.html.twig', $data);
     }
 }

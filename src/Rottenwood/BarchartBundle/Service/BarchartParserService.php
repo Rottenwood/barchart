@@ -9,6 +9,7 @@ namespace Rottenwood\BarchartBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Rottenwood\BarchartBundle\Entity\Price;
 use Sunra\PhpSimple\HtmlDomParser;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Парсер данных с сайта barchart.com
@@ -57,10 +58,23 @@ class BarchartParserService {
     /**
      * Парсинг таблицы цен для выбранного инструмента
      * @param $symbol
+     * @param int $type
      * @return array
      */
-    protected function getPrice($symbol) {
-        $url = $this->config["url"]["price"];
+    protected function getPrice($symbol, $type) {
+
+        // Определение типа контракта
+        if ($type == 1) {
+            // Если указан фьючерсный контракт
+            $url = $this->config["url"]["price"];
+        } elseif ($type == 2) {
+            // Если уканаза валютная пара
+            $url = $this->config["url"]["forex"]['GBPUSD'];
+            $symbol = '';
+        } else {
+            throw new Exception('Не указан тип контракта');
+        }
+
         $urlTechnical = $this->config["url"]["technical"];
 
         $html = $this->parsePage($url, $symbol);
@@ -224,11 +238,12 @@ class BarchartParserService {
      * Создание объекта сущности символа и сохранение его в БД
      * @param $symbolName
      * @param $symbol
+     * @param int $type
      * @internal param $entityName
      * @return bool
      */
-    public function savePrice($symbolName, $symbol) {
-        $symbolData = $this->getPrice($symbol);
+    public function savePrice($symbolName, $symbol, $type) {
+        $symbolData = $this->getPrice($symbol, $type);
 
         $symbolNamespacedName = "Rottenwood\\BarchartBundle\\Entity\\" . $symbolName;
         $symbolRepositoryName = "RottenwoodBarchartBundle:" . $symbolName;
@@ -302,14 +317,21 @@ class BarchartParserService {
     /**
      * Парсинг и сохранение в БД цен массива символов
      * @param array $symbols
+     * @param int $type
      * @return bool
      */
-    protected function saveAllPrices($symbols) {
+    protected function saveAllPrices($symbols, $type) {
         foreach ($symbols as $symbolName => $symbol) {
-            $this->savePrice($symbolName, $symbol);
+            $this->savePrice($symbolName, $symbol, $type);
         }
 
         return true;
+    }
+
+    public function saveAllForex() {
+        $type = 2; // тип контракта - валютная пара
+
+        $this->savePrice('GBPUSD', 'GBPUSD', $type);
     }
 
     /**
@@ -317,9 +339,10 @@ class BarchartParserService {
      * @return bool
      */
     public function saveAllFutures() {
+        $type = 1; // тип контракта - фьючерс
         $futures = $this->parseActualContracts();
 
-        $this->saveAllPrices($futures);
+        $this->saveAllPrices($futures, $type);
 
         return true;
     }

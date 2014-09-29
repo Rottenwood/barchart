@@ -5,6 +5,9 @@ url:
     price: "http://www.barchart.com/quotes/futures/"
     technical: "http://www.barchart.com/opinions/futures/"
     futuresall: "http://www.barchart.com/commodityfutures/All"
+    # Адреса страниц с данными о ценах валютных пар
+    forex:
+        GBPUSD: "http://www.barchart.com/quotes/forex/British_Pound/US_Dollar/%5EGBPUSD"
 
 # Настройки анализатора
 analizer:
