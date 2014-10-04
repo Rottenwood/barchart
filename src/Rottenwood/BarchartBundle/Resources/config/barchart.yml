@@ -8,6 +8,11 @@ url:
     # Адреса страниц с данными о ценах валютных пар
     forex:
         GBPUSD: "http://www.barchart.com/quotes/forex/British_Pound/US_Dollar/%5EGBPUSD"
+        EURUSD: "http://www.barchart.com/quotes/forex/Euro_Fx/US_Dollar/%5EEURUSD"
+        AUDUSD: "http://www.barchart.com/quotes/forex/Australian_Dollar/US_Dollar/%5EAUDUSD"
+        USDJPY: "http://www.barchart.com/quotes/forex/US_Dollar/Japanese_Yen/%5EUSDJPY"
+        USDCHF: "http://www.barchart.com/quotes/forex/US_Dollar/Swiss_Franc/%5EUSDCHF"
+        USDCAD: "http://www.barchart.com/quotes/forex/US_Dollar/Canadian_Dollar/%5EUSDCAD"
 
 # Настройки анализатора
 analizer:
