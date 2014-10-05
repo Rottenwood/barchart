@@ -15,7 +15,8 @@ class DefaultController extends Controller {
 
 //        $analizer->analyseOverallCorn();
 
-//        $parser->saveAllForex();
+//        var_dump($parser->getPrice('GBPUSD', 2));
+//        var_dump($parser->getPrice('NGX14', 1));
 
         return $this->render('RottenwoodBarchartBundle:Default:index.html.twig', $data);
     }

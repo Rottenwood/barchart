@@ -57,28 +57,29 @@ class BarchartParserService {
 
     /**
      * Парсинг таблицы цен для выбранного инструмента
-     * @param $symbol
+     * @param     $symbol
      * @param int $type
      * @return array
      */
-    protected function getPrice($symbol, $type) {
+    public function getPrice($symbol, $type) {
 
         // Определение типа контракта
         if ($type == 1) {
             // Если указан фьючерсный контракт
             $url = $this->config["url"]["price"];
+            $symbolName = $symbol;
         } elseif ($type == 2) {
             // Если уканаза валютная пара
             $url = $this->config["url"]["forex"]['GBPUSD'];
-            $symbol = '';
+            $symbolName = '';
         } else {
             throw new Exception('Не указан тип контракта');
         }
 
-        $urlTechnical = $this->config["url"]["technical"];
+        $urlTechnical = str_replace('quotes', 'opinions', $url);
 
-        $html = $this->parsePage($url, $symbol);
-        $htmlTechnical = $this->parsePage($urlTechnical, $symbol);
+        $html = $this->parsePage($url, $symbolName);
+        $htmlTechnical = $this->parsePage($urlTechnical, $symbolName);
 
         // Обработка таблицы цен
         $table = $html->find('table#main-content table table', 0);
@@ -97,7 +98,6 @@ class BarchartParserService {
             "Title"          => $title,
             "Price"          => $html->find('div#divQuotePageHeader span#dtaLast', 0)->plaintext,
             "Commodity"      => $titleArray[0],
-            "Expiration"     => $month . "." . $year,
             "Date"           => date("d.m.Y"),
             "Time"           => $html->find('div#divQuotePageHeader span#dtaDate', 0)->plaintext,
             "TimeLocal"      => date("g:iA T"),
@@ -107,7 +107,6 @@ class BarchartParserService {
             "Close"          => $table->find('tr', 3)->find('strong', 1)->plaintext,
             "52WHigh"        => $table->find('tr', 2)->find('span', 0)->plaintext,
             "52WLow"         => $table->find('tr', 2)->find('span', 4)->plaintext,
-            "Volume"         => $table->find('tr', 4)->find('td#dtaVolume', 0)->plaintext,
             "OpenInterest"   => $table->find('tr', 4)->find('strong', 0)->plaintext,
             "WeightedAlpha"  => $table->find('tr', 5)->find('strong', 0)->plaintext,
             "StandartDev"    => $table->find('tr', 5)->find('strong', 1)->plaintext,
@@ -119,6 +118,15 @@ class BarchartParserService {
             "TrendStrength"  => $table->find('tr', 8)->find('td', 3)->plaintext,
             "UnixTime"       => time(),
         );
+
+        // Специфические поля для различных типов контрактов
+        if ($type == 1) {
+            $priceArray['Volume'] = $table->find('tr', 4)->find('td#dtaVolume', 0)->plaintext;
+            $priceArray['Expiration'] = $month . "." . $year;
+        } elseif ($type == 2) {
+            $priceArray['AvgVolume'] = $priceArray['OpenInterest'];
+            unset($priceArray['AvgVolume']);
+        }
 
         // Очистка данных от лишних пробелов
         $priceArray = $this->trimArray($priceArray);
@@ -236,8 +244,8 @@ class BarchartParserService {
 
     /**
      * Создание объекта сущности символа и сохранение его в БД
-     * @param $symbolName
-     * @param $symbol
+     * @param     $symbolName
+     * @param     $symbol
      * @param int $type
      * @internal param $entityName
      * @return bool
@@ -262,7 +270,7 @@ class BarchartParserService {
 
         $symbolEntity = new $symbolNamespacedName();
 
-        $symbolEntity->setType('1');
+        $symbolEntity->setType($type);
         $symbolEntity->setSymbol($symbolData["Symbol"]);
         $symbolEntity->setTitle($symbolData["Title"]);
         $symbolEntity->setPrice($price);
@@ -317,7 +325,7 @@ class BarchartParserService {
     /**
      * Парсинг и сохранение в БД цен массива символов
      * @param array $symbols
-     * @param int $type
+     * @param int   $type
      * @return bool
      */
     protected function saveAllPrices($symbols, $type) {
@@ -331,6 +339,8 @@ class BarchartParserService {
     public function saveAllForex() {
         $type = 2; // тип контракта - валютная пара
 
+        $urlsAllForex = $this->config["url"]["forex"];
+
         $this->savePrice('GBPUSD', 'GBPUSD', $type);
     }
 
@@ -340,14 +350,14 @@ class BarchartParserService {
      */
     public function saveAllFutures() {
         $type = 1; // тип контракта - фьючерс
-        $futures = $this->parseActualContracts();
+        $futures = $this->parseActualFutures();
 
         $this->saveAllPrices($futures, $type);
 
         return true;
     }
 
-    public function parseActualContracts() {
+    private function parseActualFutures() {
         $urlAllFutures = $this->config["url"]["futuresall"];
 
         $html = HtmlDomParser::file_get_html($urlAllFutures);

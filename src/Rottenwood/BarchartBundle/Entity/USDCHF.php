@@ -9,6 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="USDCHF")
  * @ORM\Entity(repositoryClass="Rottenwood\BarchartBundle\Repository\PriceRepository")
  */
-class USDCHF extends Price {
+class USDCHF extends ForexPrice {
 
 }

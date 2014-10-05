@@ -5,7 +5,7 @@ namespace Rottenwood\BarchartBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /** @ORM\MappedSuperclass */
-class Price {
+abstract class Price {
 
     /**
      * @var integer
@@ -47,7 +47,7 @@ class Price {
 
     /**
      * @var string
-     * @ORM\Column(name="expiration", type="string", length=255)
+     * @ORM\Column(name="expiration", type="string", length=255, nullable=true)
      */
     private $expiration;
 
