@@ -7,6 +7,8 @@
 namespace Rottenwood\BarchartBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Rottenwood\BarchartBundle\Entity\ForexPrice;
+use Rottenwood\BarchartBundle\Entity\GBPUSD;
 use Rottenwood\BarchartBundle\Entity\Price;
 use Sunra\PhpSimple\HtmlDomParser;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -70,7 +72,7 @@ class BarchartParserService {
             $symbolName = $symbol;
         } elseif ($type == 2) {
             // Если уканаза валютная пара
-            $url = $this->config["url"]["forex"]['GBPUSD'];
+            $url = $this->config["url"]["forex"][$symbol];
             $symbolName = '';
         } else {
             throw new Exception('Не указан тип контракта');
@@ -274,6 +276,8 @@ class BarchartParserService {
 
         if ($type == 1) {
             $symbolEntity->setExpiration($symbolData["Expiration"]);
+        } else {
+            $symbolEntity->setExpiration('');
         }
 
         $symbolEntity->setDate($symbolData["Date"]);
@@ -340,6 +344,12 @@ class BarchartParserService {
         $type = 2; // тип контракта - валютная пара
 
         $urlsAllForex = $this->config["url"]["forex"];
+
+        foreach ($urlsAllForex as $currency => $currencyUrl) {
+            $this->savePrice($currency, $currency, $type);
+        }
+        die;
+
 
         $this->savePrice('GBPUSD', 'GBPUSD', $type);
     }

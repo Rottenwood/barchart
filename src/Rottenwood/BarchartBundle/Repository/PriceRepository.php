@@ -61,10 +61,10 @@ class PriceRepository extends EntityRepository {
         $query->setMaxResults(1);
         $result = $query->getResult();
 
-        if (array_key_exists('price', $result)) {
-            return $result['price'];
+        if ($result) {
+            $result = $result[0]['price'];
         }
 
-        return null;
+        return $result;
     }
 }

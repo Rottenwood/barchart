@@ -6,17 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Forex Price
- * @ORM\Entity
- * @ORM\AttributeOverrides({
- *      @ORM\AttributeOverride(name="openinterest",
- *          column=@ORM\Column(
- *              name     = "averagevolume",
- *              type     = "integer"
- *          )
- *      )
- * })
+ * @ORM\MappedSuperclass
  */
 abstract class ForexPrice extends Price {
-
-    private $openinterest;
 }

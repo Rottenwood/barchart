@@ -9,11 +9,9 @@ class DefaultController extends Controller {
     public function indexAction() {
         $data = array();
         $parser = $this->get("barchart.parser");
-        $analizer = $this->get("barchart.analizer");
 
         $parser->saveAllFutures();
-
-//        $parser->savePrice('GBPUSD', 'GBPUSD', 2);
+        $parser->saveAllForex();
 
         return $this->render('RottenwoodBarchartBundle:Default:index.html.twig', $data);
     }
