@@ -84,20 +84,12 @@ class BarchartParserService {
         // Обработка таблицы цен
         $table = $html->find('table#main-content table table', 0);
 
-        $title = $html->find('h1#symname', 0)->innertext;
-
-        // Расчет даты экспирации
-        $titleArray = explode(' ', $title);
-        end($titleArray);
-        $year = prev($titleArray);
-        $month = date_parse(prev($titleArray))["month"];
-
         // Значения таблицы цен
         $priceArray = array(
             "Symbol"         => $symbol,
-            "Title"          => $title,
+            "Title"          => $html->find('h1#symname', 0)->innertext,
             "Price"          => $html->find('div#divQuotePageHeader span#dtaLast', 0)->plaintext,
-            "Commodity"      => $titleArray[0],
+            //            "Commodity"      => $titleArray[0],
             "Date"           => date("d.m.Y"),
             "Time"           => $html->find('div#divQuotePageHeader span#dtaDate', 0)->plaintext,
             "TimeLocal"      => date("g:iA T"),
@@ -107,6 +99,7 @@ class BarchartParserService {
             "Close"          => $table->find('tr', 3)->find('strong', 1)->plaintext,
             "52WHigh"        => $table->find('tr', 2)->find('span', 0)->plaintext,
             "52WLow"         => $table->find('tr', 2)->find('span', 4)->plaintext,
+            "Volume"         => $table->find('tr', 4)->find('#dtaVolume', 0)->plaintext,
             "OpenInterest"   => $table->find('tr', 4)->find('strong', 0)->plaintext,
             "WeightedAlpha"  => $table->find('tr', 5)->find('strong', 0)->plaintext,
             "StandartDev"    => $table->find('tr', 5)->find('strong', 1)->plaintext,
@@ -121,11 +114,15 @@ class BarchartParserService {
 
         // Специфические поля для различных типов контрактов
         if ($type == 1) {
-            $priceArray['Volume'] = $table->find('tr', 4)->find('td#dtaVolume', 0)->plaintext;
+            // Расчет даты экспирации
+            $titleArray = explode(' ', $priceArray['Title']);
+            end($titleArray);
+            $year = prev($titleArray);
+            $month = date_parse(prev($titleArray))["month"];
+
             $priceArray['Expiration'] = $month . "." . $year;
         } elseif ($type == 2) {
-            $priceArray['AvgVolume'] = $priceArray['OpenInterest'];
-            unset($priceArray['AvgVolume']);
+            $priceArray['Title'] = substr($priceArray['Title'], 0, -12);
         }
 
         // Очистка данных от лишних пробелов
@@ -274,8 +271,11 @@ class BarchartParserService {
         $symbolEntity->setSymbol($symbolData["Symbol"]);
         $symbolEntity->setTitle($symbolData["Title"]);
         $symbolEntity->setPrice($price);
-        $symbolEntity->setCommodity($symbolData["Commodity"]);
-        $symbolEntity->setExpiration($symbolData["Expiration"]);
+
+        if ($type == 1) {
+            $symbolEntity->setExpiration($symbolData["Expiration"]);
+        }
+
         $symbolEntity->setDate($symbolData["Date"]);
         $symbolEntity->setTime($symbolData["Time"]);
         $symbolEntity->setTimelocal($symbolData["TimeLocal"]);

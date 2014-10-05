@@ -41,12 +41,6 @@ abstract class Price {
 
     /**
      * @var string
-     * @ORM\Column(name="commodity", type="string", length=255)
-     */
-    private $commodity;
-
-    /**
-     * @var string
      * @ORM\Column(name="expiration", type="string", length=255, nullable=true)
      */
     private $expiration;
@@ -313,20 +307,6 @@ abstract class Price {
      */
     public function getClose() {
         return $this->close;
-    }
-
-    /**
-     * @param string $commodity
-     */
-    public function setCommodity($commodity) {
-        $this->commodity = $commodity;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCommodity() {
-        return $this->commodity;
     }
 
     /**

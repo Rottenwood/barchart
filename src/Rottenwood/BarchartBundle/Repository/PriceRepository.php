@@ -59,8 +59,12 @@ class PriceRepository extends EntityRepository {
 
         $query = $this->getEntityManager()->createQuery("SELECT e.price FROM $entity e ORDER BY e.id DESC");
         $query->setMaxResults(1);
-        $result = $query->getSingleResult();
+        $result = $query->getResult();
 
-        return $result['price'];
+        if (array_key_exists('price', $result)) {
+            return $result['price'];
+        }
+
+        return null;
     }
 }
