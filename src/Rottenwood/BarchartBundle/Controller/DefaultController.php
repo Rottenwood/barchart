@@ -9,6 +9,8 @@ class DefaultController extends Controller {
     public function indexAction() {
         $data = array();
         $parser = $this->get("barchart.parser");
+//        $analizer = $this->get("barchart.analizer");
+//        $analizer->getPrices('Corn');
 
         $parser->saveAllFutures();
         $parser->saveAllForex();

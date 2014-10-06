@@ -42,10 +42,7 @@ class AnalizerService {
         $drawdown = 0;
         $drawdowns = 0;
 
-        $limitWeeks = $this->config['analizer']['horizon']['weeks'];
-        $limitDays = $this->config['analizer']['horizon']['days'];
-        $limitHours = $this->config['analizer']['horizon']['hours'];
-        $limit = $limitWeeks * 5 * 19 + $limitDays * 19 + $limitHours;
+        $limit = $this->getLimit();
         $limitTwice = $limit * 2;
 
         // Получаем нужное количество объектов-цен
@@ -70,7 +67,7 @@ class AnalizerService {
                 }
             };
             var_dump($profit);
-//            $grossProfit = $grossProfit + $profit['highProfit'];
+            //            $grossProfit = $grossProfit + $profit['highProfit'];
             $grossProfit = $grossProfit + $profit['profit'];
             $drawdown = $drawdown + $profit['lowProfit'];
 
@@ -140,4 +137,38 @@ class AnalizerService {
 
         return $return;
     }
+
+    /**
+     * Получение массива цен запрашиваемого инструмента
+     * @param string $symbol    Название торгового символа
+     * @param int    $priceFrom Запрос цен начиная с данного id
+     * @param int    $bars      Запрашиваемое количество цен
+     * @return array
+     */
+    public function getPrices($symbol, $priceFrom = 1, $bars = 0) {
+        $symbolRepositoryName = "RottenwoodBarchartBundle:" . $symbol;
+
+        // Если количество анализируемых цен не указано, берем их из конфига
+        if ($bars == 0) {
+            $bars = $this->getLimit();
+        }
+
+        $prices = $this->em->getRepository($symbolRepositoryName)->findPricesFromId($priceFrom, $bars);
+
+        return $prices;
+    }
+
+    /**
+     * Определение горизонта для анализа
+     * @return integer
+     */
+    private function getLimit() {
+        $limitWeeks = $this->config['analizer']['horizon']['weeks'];
+        $limitDays = $this->config['analizer']['horizon']['days'];
+        $limitHours = $this->config['analizer']['horizon']['hours'];
+        $limit = $limitWeeks * 5 * 19 + $limitDays * 19 + $limitHours;
+
+        return $limit;
+    }
+
 }
