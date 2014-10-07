@@ -348,10 +348,8 @@ class BarchartParserService {
         foreach ($urlsAllForex as $currency => $currencyUrl) {
             $this->savePrice($currency, $currency, $type);
         }
-        die;
 
-
-        $this->savePrice('GBPUSD', 'GBPUSD', $type);
+        return true;
     }
 
     /**
