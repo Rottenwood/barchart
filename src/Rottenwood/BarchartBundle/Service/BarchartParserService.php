@@ -349,7 +349,7 @@ class BarchartParserService {
             $this->savePrice($currency, $currency, $type);
         }
 
-        $this->savePrice('GBPUSD', 'GBPUSD', $type);
+        return true;
     }
 
     /**
