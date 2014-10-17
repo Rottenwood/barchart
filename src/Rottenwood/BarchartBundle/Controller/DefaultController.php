@@ -3,17 +3,18 @@
 namespace Rottenwood\BarchartBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class DefaultController extends Controller {
 
+    /**
+     * @Template()
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction() {
-        $data = array();
-        $parser = $this->get("barchart.parser");
+//        $parser = $this->get("barchart.parser");
 //        $analizer = $this->get("barchart.analizer");
 
-        $parser->saveAllFutures();
-        $parser->saveAllForex();
-
-        return $this->render('RottenwoodBarchartBundle:Default:index.html.twig', $data);
+        return array();
     }
 }
