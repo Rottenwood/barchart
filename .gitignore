@@ -10,8 +10,5 @@ app/bootstrap*
 app/config/parameters.ini
 app/config/parameters.yml
 
-# Composer
-composer.lock
-
 # PhpStorm
 .idea/

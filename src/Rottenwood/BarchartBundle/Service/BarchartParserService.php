@@ -15,7 +15,6 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Парсер данных с сайта barchart.com
- * @date    10.09.2014
  * @package Rottenwood\BarchartBundle\Service
  */
 class BarchartParserService {
@@ -91,7 +90,6 @@ class BarchartParserService {
             "Symbol"         => $symbol,
             "Title"          => $html->find('h1#symname', 0)->innertext,
             "Price"          => $html->find('div#divQuotePageHeader span#dtaLast', 0)->plaintext,
-            //            "Commodity"      => $titleArray[0],
             "Date"           => date("d.m.Y"),
             "Time"           => $html->find('div#divQuotePageHeader span#dtaDate', 0)->plaintext,
             "TimeLocal"      => date("g:iA T"),
@@ -299,7 +297,7 @@ class BarchartParserService {
         $symbolEntity->setFourteendrelstrength($this->goodify($symbolData["14DRelStrength"]));
         $symbolEntity->setFourteendstochastic($this->goodify($symbolData["14DStochastic"]));
         $symbolEntity->setTrend($this->buySellToInt($symbolData["Trend"]));
-        $symbolEntity->setTrendstrength($symbolData["TrendStrength"]);
+        $symbolEntity->setTrendstrength($symbolData["TrendStrength"] == '&nbsp;' ? 0 : $symbolData["TrendStrength"]);
 
         // индикаторы
         $symbolEntity->setAd($this->buySellToInt($symbolData["s.7-AD"]));
