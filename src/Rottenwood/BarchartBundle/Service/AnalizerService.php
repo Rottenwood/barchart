@@ -149,9 +149,7 @@ class AnalizerService {
         $symbolRepositoryName = "RottenwoodBarchartBundle:" . $symbol;
 
         // Если количество анализируемых цен не указано, берем их из конфига
-        if ($bars == 0) {
-            $bars = $this->getLimit();
-        }
+        $bars = $bars ?: $this->getLimit();
 
         $prices = $this->em->getRepository($symbolRepositoryName)->findPricesFromId($priceFrom, $bars);
 
