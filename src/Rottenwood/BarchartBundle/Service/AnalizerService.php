@@ -84,12 +84,28 @@ class AnalizerService {
     }
 
     /**
+     * Получение массива цен запрашиваемого инструмента
+     * @param string $symbol    Название торгового символа
+     * @param int    $priceFrom Запрос цен начиная с данного id
+     * @param int    $bars      Запрашиваемое количество цен
+     * @return array
+     */
+    public function getPrices($symbol, $priceFrom = 1, $bars = 0) {
+        $symbolRepositoryName = "RottenwoodBarchartBundle:" . $symbol;
+
+        // Если количество анализируемых цен не указано, берем их из конфига
+        $bars = $bars ?: $this->getLimit();
+
+        return $this->em->getRepository($symbolRepositoryName)->findPricesFromId($priceFrom, $bars);
+    }
+
+    /**
      * Расчет результата торговой позиции
      * @param Price $priceObject
      * @param Price $priceCompareObject
      * @return array
      */
-    protected function analyseProfit(Price $priceObject, Price $priceCompareObject) {
+    private function analyseProfit(Price $priceObject, Price $priceCompareObject) {
         $return = array();
         $direction = $priceObject->getOverall();
 
@@ -139,24 +155,6 @@ class AnalizerService {
     }
 
     /**
-     * Получение массива цен запрашиваемого инструмента
-     * @param string $symbol    Название торгового символа
-     * @param int    $priceFrom Запрос цен начиная с данного id
-     * @param int    $bars      Запрашиваемое количество цен
-     * @return array
-     */
-    public function getPrices($symbol, $priceFrom = 1, $bars = 0) {
-        $symbolRepositoryName = "RottenwoodBarchartBundle:" . $symbol;
-
-        // Если количество анализируемых цен не указано, берем их из конфига
-        $bars = $bars ?: $this->getLimit();
-
-        $prices = $this->em->getRepository($symbolRepositoryName)->findPricesFromId($priceFrom, $bars);
-
-        return $prices;
-    }
-
-    /**
      * Определение горизонта для анализа
      * @return integer
      */
@@ -164,9 +162,8 @@ class AnalizerService {
         $limitWeeks = $this->config['analizer']['horizon']['weeks'];
         $limitDays = $this->config['analizer']['horizon']['days'];
         $limitHours = $this->config['analizer']['horizon']['hours'];
-        $limit = $limitWeeks * 5 * 19 + $limitDays * 19 + $limitHours;
 
-        return $limit;
+        return $limitWeeks * 5 * 19 + $limitDays * 19 + $limitHours;
     }
 
 }

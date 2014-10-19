@@ -12,9 +12,10 @@ class DefaultController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction() {
+        $data = array();
 //        $parser = $this->get("barchart.parser");
 //        $analizer = $this->get("barchart.analizer");
 
-        return array();
+        return $data;
     }
 }
