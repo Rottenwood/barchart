@@ -14,8 +14,7 @@ use Rottenwood\BarchartBundle\Entity\Price;
  * @date    22.09.2014
  * @package Rottenwood\BarchartBundle\Service
  */
-class AnalizerService
-{
+class AnalizerService {
 
     private $em;
     private $config;
@@ -25,8 +24,7 @@ class AnalizerService
     private $lowId = 0;
     private $lastProfit;
 
-    public function __construct(ConfigService $configService, EntityManager $em)
-    {
+    public function __construct(ConfigService $configService, EntityManager $em) {
         $this->em = $em;
         $this->config = $configService->getConfig();
     }
@@ -38,8 +36,7 @@ class AnalizerService
      * @var $limit
      * @return $this
      */
-    public function analyseOverallCorn()
-    {
+    public function analyseOverallCorn() {
         $profit = array();
         $grossProfit = 0;
         $drawdown = 0;
@@ -91,8 +88,7 @@ class AnalizerService
      * @param int    $bars      Запрашиваемое количество цен
      * @return array
      */
-    public function getPrices($symbol, $priceFrom = 1, $bars = 0)
-    {
+    public function getPrices($symbol, $priceFrom = 1, $bars = 0) {
         $symbolRepositoryName = "RottenwoodBarchartBundle:" . $symbol;
 
         // Если количество анализируемых цен не указано, берем их из конфига
@@ -107,11 +103,38 @@ class AnalizerService
      * @param string $indicator
      * @return mixed
      */
-    public function indicator(Price $price, $indicator)
-    {
+    public function indicator(Price $price, $indicator) {
         $indicatorName = 'get' . $indicator;
 
         return $price->$indicatorName();
+    }
+
+    /**
+     * //TODO: нуждается в тестировании
+     * Фильтрация последовательности цен, которые соответствуют серии одинаковых показателей индикатора
+     * @param     $prices
+     * @param     $indicator
+     * @param     $direction
+     * @param int $series
+     * @return array
+     */
+    public function indicatorSeriesSignal($prices, $indicator, $direction, $series = 0) {
+        $series = $series ?: $this->config['analizer']['series'];
+        $indicatorName = 'get' . $indicator;
+
+        $resultPrices = array();
+        foreach ($prices as $key => $price) {
+            $counter = 0;
+            foreach ($prices as $priceForAnalize) {
+                if ($priceForAnalize->$indicatorName() == $direction) {
+                    $counter++;
+                }
+            }
+
+            $resultPrices[] = ($counter != $series) ?: $price;
+        }
+
+        return $resultPrices;
     }
 
     /**
@@ -120,8 +143,7 @@ class AnalizerService
      * @param Price $priceCompareObject
      * @return array
      */
-    private function analyseProfit(Price $priceObject, Price $priceCompareObject)
-    {
+    private function analyseProfit(Price $priceObject, Price $priceCompareObject) {
         $return = array();
         $direction = $priceObject->getOverall();
 
@@ -174,8 +196,7 @@ class AnalizerService
      * Определение горизонта для анализа
      * @return integer
      */
-    private function getLimit()
-    {
+    private function getLimit() {
         $limitWeeks = $this->config['analizer']['horizon']['weeks'];
         $limitDays = $this->config['analizer']['horizon']['days'];
         $limitHours = $this->config['analizer']['horizon']['hours'];
