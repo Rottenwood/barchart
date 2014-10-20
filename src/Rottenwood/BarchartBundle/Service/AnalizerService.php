@@ -14,7 +14,8 @@ use Rottenwood\BarchartBundle\Entity\Price;
  * @date    22.09.2014
  * @package Rottenwood\BarchartBundle\Service
  */
-class AnalizerService {
+class AnalizerService
+{
 
     private $em;
     private $config;
@@ -24,7 +25,8 @@ class AnalizerService {
     private $lowId = 0;
     private $lastProfit;
 
-    public function __construct(ConfigService $configService, EntityManager $em) {
+    public function __construct(ConfigService $configService, EntityManager $em)
+    {
         $this->em = $em;
         $this->config = $configService->getConfig();
     }
@@ -36,7 +38,8 @@ class AnalizerService {
      * @var $limit
      * @return $this
      */
-    public function analyseOverallCorn() {
+    public function analyseOverallCorn()
+    {
         $profit = array();
         $grossProfit = 0;
         $drawdown = 0;
@@ -46,9 +49,7 @@ class AnalizerService {
         $limitTwice = $limit * 2;
 
         // Получаем нужное количество объектов-цен
-        $corns = $this->em
-            ->getRepository('RottenwoodBarchartBundle:Corn')
-            ->findPricesFromId(1, $limitTwice);
+        $corns = $this->em->getRepository('RottenwoodBarchartBundle:Corn')->findPricesFromId(1, $limitTwice);
 
         // Обработка полученных цен
         $cornsArray = $corns->toArray();
@@ -90,7 +91,8 @@ class AnalizerService {
      * @param int    $bars      Запрашиваемое количество цен
      * @return array
      */
-    public function getPrices($symbol, $priceFrom = 1, $bars = 0) {
+    public function getPrices($symbol, $priceFrom = 1, $bars = 0)
+    {
         $symbolRepositoryName = "RottenwoodBarchartBundle:" . $symbol;
 
         // Если количество анализируемых цен не указано, берем их из конфига
@@ -100,12 +102,26 @@ class AnalizerService {
     }
 
     /**
+     * Определение показаний индикатора по выбранной цене
+     * @param Price  $price
+     * @param string $indicator
+     * @return mixed
+     */
+    public function indicator(Price $price, $indicator)
+    {
+        $indicatorName = 'get' . $indicator;
+
+        return $price->$indicatorName();
+    }
+
+    /**
      * Расчет результата торговой позиции
      * @param Price $priceObject
      * @param Price $priceCompareObject
      * @return array
      */
-    private function analyseProfit(Price $priceObject, Price $priceCompareObject) {
+    private function analyseProfit(Price $priceObject, Price $priceCompareObject)
+    {
         $return = array();
         $direction = $priceObject->getOverall();
 
@@ -158,7 +174,8 @@ class AnalizerService {
      * Определение горизонта для анализа
      * @return integer
      */
-    private function getLimit() {
+    private function getLimit()
+    {
         $limitWeeks = $this->config['analizer']['horizon']['weeks'];
         $limitDays = $this->config['analizer']['horizon']['days'];
         $limitHours = $this->config['analizer']['horizon']['hours'];
