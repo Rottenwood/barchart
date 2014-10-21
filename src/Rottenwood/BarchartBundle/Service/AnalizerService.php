@@ -157,7 +157,7 @@ class AnalizerService {
 
         return $resultPrices;
     }
-    
+
     /**
      * Получение имен для усредненных групп индикаторов
      * @return array
@@ -168,6 +168,19 @@ class AnalizerService {
             self::AVERAGE_MIDDLETERM => 'Средний показатель среднесрочных индикаторов',
             self::AVERAGE_LONGTERM => 'Средний показатель долгосрочных индикаторов',
             self::AVERAGE_OVERALL => 'Средний показатель всех индикаторов',
+        );
+    }
+
+    /**
+     * Получение имени геттера для усредненных групп индикаторов
+     * @return array
+     */
+    private function getAverageFunctionName() {
+        return array(
+            self::AVERAGE_SHORTTERM => 'getSAverage',
+            self::AVERAGE_MIDDLETERM => 'getMAverage',
+            self::AVERAGE_LONGTERM => 'getLAverage',
+            self::AVERAGE_OVERALL => 'getOverall',
         );
     }
 
