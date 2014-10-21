@@ -83,9 +83,9 @@ class AnalizerService {
 
     /**
      * Получение массива цен запрашиваемого инструмента
-     * @param string $symbol    Название торгового символа
-     * @param int    $priceFrom Запрос цен начиная с данного id
-     * @param int    $bars      Запрашиваемое количество цен
+     * @param string $symbol Название торгового символа
+     * @param int $priceFrom Запрос цен начиная с данного id
+     * @param int $bars Запрашиваемое количество цен
      * @return array
      */
     public function getPrices($symbol, $priceFrom = 1, $bars = 0) {
@@ -99,7 +99,7 @@ class AnalizerService {
 
     /**
      * Определение показаний индикатора по выбранной цене
-     * @param Price  $price
+     * @param Price $price
      * @param string $indicator
      * @return mixed
      */
@@ -112,9 +112,9 @@ class AnalizerService {
     /**
      * //TODO: нуждается в тестировании
      * Фильтрация последовательности цен, которые соответствуют серии одинаковых показателей индикатора
-     * @param     $prices
-     * @param     $indicator
-     * @param     $direction
+     * @param Price[] $prices
+     * @param         $indicator
+     * @param         $direction
      * @param int $series
      * @return array
      */
@@ -125,7 +125,7 @@ class AnalizerService {
         $resultPrices = array();
         foreach ($prices as $key => $price) {
             $counter = 0;
-            foreach ($prices as $priceForAnalize) {
+            foreach (array_slice($prices, $key) as $priceForAnalize) {
                 if ($priceForAnalize->$indicatorName() == $direction) {
                     $counter++;
                 }
