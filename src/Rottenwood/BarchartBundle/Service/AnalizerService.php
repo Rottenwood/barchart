@@ -15,6 +15,10 @@ use Rottenwood\BarchartBundle\Entity\Price;
  * @package Rottenwood\BarchartBundle\Service
  */
 class AnalizerService {
+    const AVERAGE_SHORTTERM = 1;
+    const AVERAGE_MIDDLETERM = 2;
+    const AVERAGE_LONGTERM = 3;
+    const AVERAGE_OVERALL = 4;
 
     private $em;
     private $config;
@@ -140,8 +144,8 @@ class AnalizerService {
     /**
      * //TODO: нуждается в тестировании
      * Фильтрация массива цен на соответствие тренду
-     * @param $prices
-     * @param $trend
+     * @param Price[] $prices
+     * @param integer $trend
      * @return array
      */
     public function trendFilter($prices, $trend) {
@@ -152,6 +156,19 @@ class AnalizerService {
         }
 
         return $resultPrices;
+    }
+    
+    /**
+     * Получение имен для усредненных групп индикаторов
+     * @return array
+     */
+    public function getAverageNames() {
+        return array(
+            self::AVERAGE_SHORTTERM => 'Средний показатель краткосрочных индикаторов',
+            self::AVERAGE_MIDDLETERM => 'Средний показатель среднесрочных индикаторов',
+            self::AVERAGE_LONGTERM => 'Средний показатель долгосрочных индикаторов',
+            self::AVERAGE_OVERALL => 'Средний показатель всех индикаторов',
+        );
     }
 
     /**
