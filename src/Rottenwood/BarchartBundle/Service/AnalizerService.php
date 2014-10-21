@@ -138,6 +138,23 @@ class AnalizerService {
     }
 
     /**
+     * //TODO: нуждается в тестировании
+     * Фильтрация массива цен на соответствие тренду
+     * @param $prices
+     * @param $trend
+     * @return array
+     */
+    public function trendFilter($prices, $trend) {
+        $resultPrices = array();
+        foreach ($prices as $price) {
+            /** @var Price $price */
+            $resultPrices[] = ($price->getTrend() != $trend) ?: $price;
+        }
+
+        return $resultPrices;
+    }
+
+    /**
      * Расчет результата торговой позиции
      * @param Price $priceObject
      * @param Price $priceCompareObject
