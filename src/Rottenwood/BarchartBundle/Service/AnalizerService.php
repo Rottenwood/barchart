@@ -159,6 +159,34 @@ class AnalizerService {
     }
 
     /**
+     * //TODO: нуждается в тестировании
+     * Фильтрация массива цен на соответствие показателю усредненной группы индикаторов
+     * @param Price[] $prices   Массив цен
+     * @param integer $average  1 - shortTermAverage, 2 - middleTermAverage, 3 - longTermAverage, 4 - overall
+     * @param integer $percent
+     * @return array
+     * @throws \Exception
+     */
+    public function averageFilter($prices, $average, $percent) {
+        $averageIndicatorName = $this->getAverageFunctionName($average);
+
+        if (!$averageIndicatorName) {
+            throw new \Exception("Функция усреднения $average не найдена");
+        }
+
+        $resultPrices = array();
+        foreach ($prices as $price) {
+            $averageResult = $price->$averageIndicatorName();
+
+            if ($percent >= 0 && $averageResult >= $percent || $percent < 0 && $averageResult < $percent) {
+                $resultPrices[] = $price;
+            }
+        }
+
+        return $resultPrices;
+    }
+    
+    /**
      * Получение имен для усредненных групп индикаторов
      * @return array
      */
@@ -173,15 +201,18 @@ class AnalizerService {
 
     /**
      * Получение имени геттера для усредненных групп индикаторов
+     * @param integer $average
      * @return array
      */
-    private function getAverageFunctionName() {
-        return array(
+    private function getAverageFunctionName($average) {
+        $averageFunctionNames = array(
             self::AVERAGE_SHORTTERM => 'getSAverage',
             self::AVERAGE_MIDDLETERM => 'getMAverage',
             self::AVERAGE_LONGTERM => 'getLAverage',
             self::AVERAGE_OVERALL => 'getOverall',
         );
+
+        return $averageFunctionNames[$average];
     }
 
     /**
