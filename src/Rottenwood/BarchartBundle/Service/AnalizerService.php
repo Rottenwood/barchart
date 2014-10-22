@@ -37,7 +37,6 @@ class AnalizerService {
      * Анализ (тестовый), находится в разработке
      * Количество часов (полей) для запроса из БД
      * В торговой неделе 5 дней, в торговом дне 19 часов
-     * @var $limit
      * @return $this
      */
     public function analyseOverallCorn() {
@@ -87,9 +86,9 @@ class AnalizerService {
 
     /**
      * Получение массива цен запрашиваемого инструмента
-     * @param string $symbol Название торгового символа
-     * @param int $priceFrom Запрос цен начиная с данного id
-     * @param int $bars Запрашиваемое количество цен
+     * @param string $symbol    Название торгового символа
+     * @param int    $priceFrom Запрос цен начиная с данного id
+     * @param int    $bars      Запрашиваемое количество цен
      * @return array
      */
     public function getPrices($symbol, $priceFrom = 1, $bars = 0) {
@@ -103,7 +102,7 @@ class AnalizerService {
 
     /**
      * Определение показаний индикатора по выбранной цене
-     * @param Price $price
+     * @param Price  $price
      * @param string $indicator
      * @return mixed
      */
@@ -117,9 +116,9 @@ class AnalizerService {
      * //TODO: нуждается в тестировании
      * Фильтрация последовательности цен, которые соответствуют серии одинаковых показателей индикатора
      * @param Price[] $prices
-     * @param         $indicator
-     * @param         $direction
-     * @param int $series
+     * @param string  $indicator
+     * @param int     $direction
+     * @param int     $series
      * @return array
      */
     public function indicatorSeriesSignal($prices, $indicator, $direction, $series = 0) {
@@ -145,7 +144,7 @@ class AnalizerService {
      * //TODO: нуждается в тестировании
      * Фильтрация массива цен на соответствие тренду
      * @param Price[] $prices
-     * @param integer $trend
+     * @param int     $trend
      * @return array
      */
     public function trendFilter($prices, $trend) {
@@ -161,9 +160,9 @@ class AnalizerService {
     /**
      * //TODO: нуждается в тестировании
      * Фильтрация массива цен на соответствие показателю усредненной группы индикаторов
-     * @param Price[] $prices   Массив цен
-     * @param integer $average  1 - shortTermAverage, 2 - middleTermAverage, 3 - longTermAverage, 4 - overall
-     * @param integer $percent
+     * @param Price[] $prices  Массив цен
+     * @param int     $average 1 - shortTermAverage, 2 - middleTermAverage, 3 - longTermAverage, 4 - overall
+     * @param int     $percent
      * @return array
      * @throws \Exception
      */
@@ -185,7 +184,42 @@ class AnalizerService {
 
         return $resultPrices;
     }
-    
+
+    /**
+     * //TODO: нуждается в тестировании
+     * Фильтрация массива цен по заданному или среднему объему
+     * @param Price[] $prices
+     * @param int     $volume
+     * @param bool    $lowerThan больше
+     * @return array
+     */
+    public function volumeFilter($prices, $volume = 0, $lowerThan = false) {
+        // Если не указан объем, расчет среднего объема для массива цен
+        if (!$volume) {
+            $volumeAverage = array();
+            foreach ($prices as $priceObject) {
+                $volumeAverage[] = $priceObject->getVolume();
+            }
+
+            $volume = array_sum($volumeAverage) / count($volumeAverage);
+        }
+
+        $resultPrices = array();
+        foreach ($prices as $price) {
+            if ($lowerThan) {
+                if ($price->getVolume() <= $volume) {
+                    $resultPrices[] = $price;
+                }
+            } else {
+                if ($price->getVolume() >= $volume) {
+                    $resultPrices[] = $price;
+                }
+            }
+        }
+
+        return $resultPrices;
+    }
+
     /**
      * Получение имен для усредненных групп индикаторов
      * @return array
