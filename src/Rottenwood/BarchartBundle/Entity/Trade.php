@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Trade
  *
- * @ORM\Table()
+ * @ORM\Table(name="trades")
  * @ORM\Entity
  */
 class Trade
