@@ -36,11 +36,11 @@ class Trade {
     private $symbol;
 
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column(name="direction", type="string", length=255)
+     * @ORM\Column(name="direction", type="boolean")
      */
-    private $direction;
+    private $directionBuy;
 
     /**
      * @var float
@@ -150,24 +150,17 @@ class Trade {
     }
 
     /**
-     * Set direction
-     *
-     * @param string $direction
-     * @return Trade
+     * @return boolean
      */
-    public function setDirection($direction) {
-        $this->direction = $direction;
-
-        return $this;
+    public function isDirectionBuy() {
+        return $this->directionBuy;
     }
 
     /**
-     * Get direction
-     *
-     * @return string
+     * @param boolean $directionBuy
      */
-    public function getDirection() {
-        return $this->direction;
+    public function setDirectionBuy($directionBuy) {
+        $this->directionBuy = $directionBuy;
     }
 
     /**
