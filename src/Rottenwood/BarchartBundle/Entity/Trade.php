@@ -112,17 +112,10 @@ class Trade {
     private $closeDate;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="creation_date", type="datetime")
-     */
-    private $creationDate;
-
-    /**
      * @ORM\PrePersist
      */
     public function prePersistCallback() {
-        $this->setCreationDate(new \Datetime());
+        $this->setOpenDate(new \Datetime());
     }
 
     /**
@@ -300,20 +293,6 @@ class Trade {
      */
     public function setCloseDate($closeDate) {
         $this->closeDate = $closeDate;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreationDate() {
-        return $this->creationDate;
-    }
-
-    /**
-     * @param \DateTime $creationDate
-     */
-    public function setCreationDate($creationDate) {
-        $this->creationDate = $creationDate;
     }
 
     /**
