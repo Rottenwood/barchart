@@ -7,11 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Trade
  *
- * @ORM\Table()
+ * @ORM\Table(name="trades")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
-class Trade
-{
+class Trade {
     /**
      * @var integer
      *
@@ -73,25 +73,37 @@ class Trade
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="openTime", type="datetime")
+     * @ORM\Column(name="open_date", type="datetime")
      */
-    private $openTime;
+    private $openDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="closeTime", type="datetime")
+     * @ORM\Column(name="close_date", type="datetime")
      */
-    private $closeTime;
+    private $closeDate;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="creation_date", type="datetime")
+     */
+    private $creationDate;
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistCallback() {
+        $this->setCreationDate(new \Datetime());
+    }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -101,8 +113,7 @@ class Trade
      * @param string $symbol
      * @return Trade
      */
-    public function setSymbol($symbol)
-    {
+    public function setSymbol($symbol) {
         $this->symbol = $symbol;
 
         return $this;
@@ -111,10 +122,9 @@ class Trade
     /**
      * Get symbol
      *
-     * @return string 
+     * @return string
      */
-    public function getSymbol()
-    {
+    public function getSymbol() {
         return $this->symbol;
     }
 
@@ -124,8 +134,7 @@ class Trade
      * @param string $direction
      * @return Trade
      */
-    public function setDirection($direction)
-    {
+    public function setDirection($direction) {
         $this->direction = $direction;
 
         return $this;
@@ -134,10 +143,9 @@ class Trade
     /**
      * Get direction
      *
-     * @return string 
+     * @return string
      */
-    public function getDirection()
-    {
+    public function getDirection() {
         return $this->direction;
     }
 
@@ -147,8 +155,7 @@ class Trade
      * @param float $open
      * @return Trade
      */
-    public function setOpen($open)
-    {
+    public function setOpen($open) {
         $this->open = $open;
 
         return $this;
@@ -157,10 +164,9 @@ class Trade
     /**
      * Get open
      *
-     * @return float 
+     * @return float
      */
-    public function getOpen()
-    {
+    public function getOpen() {
         return $this->open;
     }
 
@@ -170,8 +176,7 @@ class Trade
      * @param float $close
      * @return Trade
      */
-    public function setClose($close)
-    {
+    public function setClose($close) {
         $this->close = $close;
 
         return $this;
@@ -180,10 +185,9 @@ class Trade
     /**
      * Get close
      *
-     * @return float 
+     * @return float
      */
-    public function getClose()
-    {
+    public function getClose() {
         return $this->close;
     }
 
@@ -193,8 +197,7 @@ class Trade
      * @param float $high
      * @return Trade
      */
-    public function setHigh($high)
-    {
+    public function setHigh($high) {
         $this->high = $high;
 
         return $this;
@@ -203,10 +206,9 @@ class Trade
     /**
      * Get high
      *
-     * @return float 
+     * @return float
      */
-    public function getHigh()
-    {
+    public function getHigh() {
         return $this->high;
     }
 
@@ -216,8 +218,7 @@ class Trade
      * @param float $drawdown
      * @return Trade
      */
-    public function setDrawdown($drawdown)
-    {
+    public function setDrawdown($drawdown) {
         $this->drawdown = $drawdown;
 
         return $this;
@@ -226,10 +227,9 @@ class Trade
     /**
      * Get drawdown
      *
-     * @return float 
+     * @return float
      */
-    public function getDrawdown()
-    {
+    public function getDrawdown() {
         return $this->drawdown;
     }
 
@@ -239,8 +239,7 @@ class Trade
      * @param float $volume
      * @return Trade
      */
-    public function setVolume($volume)
-    {
+    public function setVolume($volume) {
         $this->volume = $volume;
 
         return $this;
@@ -249,56 +248,51 @@ class Trade
     /**
      * Get volume
      *
-     * @return float 
+     * @return float
      */
-    public function getVolume()
-    {
+    public function getVolume() {
         return $this->volume;
     }
 
     /**
-     * Set openTime
-     *
-     * @param \DateTime $openTime
-     * @return Trade
+     * @return \DateTime
      */
-    public function setOpenTime($openTime)
-    {
-        $this->openTime = $openTime;
-
-        return $this;
+    public function getCloseDate() {
+        return $this->closeDate;
     }
 
     /**
-     * Get openTime
-     *
-     * @return \DateTime 
+     * @param \DateTime $closeDate
      */
-    public function getOpenTime()
-    {
-        return $this->openTime;
+    public function setCloseDate($closeDate) {
+        $this->closeDate = $closeDate;
     }
 
     /**
-     * Set closeTime
-     *
-     * @param \DateTime $closeTime
-     * @return Trade
+     * @return \DateTime
      */
-    public function setCloseTime($closeTime)
-    {
-        $this->closeTime = $closeTime;
-
-        return $this;
+    public function getCreationDate() {
+        return $this->creationDate;
     }
 
     /**
-     * Get closeTime
-     *
-     * @return \DateTime 
+     * @param \DateTime $creationDate
      */
-    public function getCloseTime()
-    {
-        return $this->closeTime;
+    public function setCreationDate($creationDate) {
+        $this->creationDate = $creationDate;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getOpenDate() {
+        return $this->openDate;
+    }
+
+    /**
+     * @param \DateTime $openDate
+     */
+    public function setOpenDate($openDate) {
+        $this->openDate = $openDate;
     }
 }
