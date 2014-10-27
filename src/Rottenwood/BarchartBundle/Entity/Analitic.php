@@ -37,7 +37,6 @@ class Analitic {
 
     /**
      * @ORM\ManyToMany(targetEntity="Strategy", inversedBy="authors")
-     * @ORM\JoinTable()
      **/
     private $strategies;
 

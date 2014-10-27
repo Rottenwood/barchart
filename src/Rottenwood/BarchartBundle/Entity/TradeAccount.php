@@ -2,6 +2,7 @@
 
 namespace Rottenwood\BarchartBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,11 +30,11 @@ class TradeAccount {
     private $name;
 
     /**
-     * @var string
+     * @var Analitic
      *
-     * @ORM\Column(name="author", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="Analitic")
      */
-    private $author;
+    private $analitic;
 
     /**
      * @var integer
@@ -64,11 +65,15 @@ class TradeAccount {
     private $equity;
 
     /**
-     * @var string
+     * @var Trade[]
      *
-     * @ORM\Column(name="trades", type="string", length=255)
+     * @ORM\OneToMany(targetEntity="Trade", mappedBy="account")
      */
     private $trades;
+
+    function __construct() {
+        $this->trades = new ArrayCollection();
+    }
 
     /**
      * @ORM\PrePersist
@@ -108,24 +113,17 @@ class TradeAccount {
     }
 
     /**
-     * Set author
-     *
-     * @param string $author
-     * @return TradeAccount
+     * @return Analitic
      */
-    public function setAuthor($author) {
-        $this->author = $author;
-
-        return $this;
+    public function getAnalitic() {
+        return $this->analitic;
     }
 
     /**
-     * Get author
-     *
-     * @return string
+     * @param Analitic $analitic
      */
-    public function getAuthor() {
-        return $this->author;
+    public function setAnalitic($analitic) {
+        $this->analitic = $analitic;
     }
 
     /**

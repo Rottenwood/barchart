@@ -22,6 +22,13 @@ class Trade {
     private $id;
 
     /**
+     * @var TradeAccount
+     *
+     * @ORM\ManyToOne(targetEntity="TradeAccount", inversedBy="trades")
+     */
+    private $account;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="symbol", type="string", length=255)
@@ -105,6 +112,20 @@ class Trade {
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * @return TradeAccount
+     */
+    public function getAccount() {
+        return $this->account;
+    }
+
+    /**
+     * @param TradeAccount $account
+     */
+    public function setAccount($account) {
+        $this->account = $account;
     }
 
     /**
