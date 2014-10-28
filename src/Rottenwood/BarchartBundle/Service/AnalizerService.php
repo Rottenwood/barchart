@@ -221,6 +221,16 @@ class AnalizerService {
     }
 
     /**
+     * Фильтрация по показанию индикатора
+     * @param Price[] $prices
+     * @param string  $indicator
+     * @param float   $value
+     */
+    public function indicatorFilter($prices, $indicator, $value) {
+
+    }
+
+    /**
      * Получение имен для усредненных групп индикаторов
      * @return array
      */
