@@ -119,6 +119,13 @@ class Trade {
     }
 
     /**
+     * Установка времени закрытия сделки
+     */
+    public function closeTrade() {
+        $this->setCloseDate(new \Datetime());
+    }
+
+    /**
      * Get id
      *
      * @return integer
