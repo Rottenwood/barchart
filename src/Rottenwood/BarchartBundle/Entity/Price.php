@@ -7,6 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 /** @ORM\MappedSuperclass */
 abstract class Price {
 
+    const TREND_STRENGTH_NONE = 0;
+    const TREND_STRENGTH_MINIMUM = 1;
+    const TREND_STRENGTH_WEAK = 2;
+    const TREND_STRENGTH_AVERAGE = 3;
+    const TREND_STRENGTH_STRONG = 4;
+    const TREND_STRENGTH_MAXIMUM = 5;
+
     /**
      * @var integer
      * @ORM\Column(name="id", type="integer")
@@ -867,5 +874,20 @@ abstract class Price {
      */
     public function getWeightedalpha() {
         return $this->weightedalpha;
+    }
+
+    /**
+     * Получение массива соответствий уровней силы тренда их ключам в БД
+     * @return array
+     */
+    public static function getTrendStrengthName() {
+        return array(
+            self::TREND_STRENGTH_NONE => '&nbsp;',
+            self::TREND_STRENGTH_MINIMUM => 'Minimum',
+            self::TREND_STRENGTH_WEAK => 'Weak',
+            self::TREND_STRENGTH_AVERAGE => 'Average',
+            self::TREND_STRENGTH_STRONG => 'Strong',
+            self::TREND_STRENGTH_MAXIMUM => 'Maximum',
+        );
     }
 }

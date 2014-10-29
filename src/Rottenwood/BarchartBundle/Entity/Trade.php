@@ -320,7 +320,7 @@ class Trade {
      * Получение массива названий сущностей для торговых символов
      * @return array
      */
-    public function getSymbolName() {
+    public static function getSymbolName() {
         return array(
             self::SYMBOL_FUTURES_CORN => 'Corn',
             self::SYMBOL_FUTURES_CRUDEOIL => 'CrudeOil',
