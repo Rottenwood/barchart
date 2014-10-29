@@ -11,6 +11,22 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  */
 class Signal {
+
+    const INDICATOR_7_DAY_AVERAGE_DIRECTION = 1;
+    const INDICATOR_10_8_DAY_MOVING_AVERAGE_HILO_CHANNEL = 2;
+    const INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE = 3;
+    const INDICATOR_20_50_DAY_MACD = 4;
+    const INDICATOR_20_DAY_BOLLINGER_BANDS = 5;
+
+    const INDICATOR_40_DAY_COMMIDITY_CHANNEL_INDEX = 6;
+    const INDICATOR_50_DAY_MOVING_AVERAGE_VS_PRICE = 7;
+    const INDICATOR_20_100_DAY_MACD = 8;
+    const INDICATOR_50_DAY_PARABOLIC_TIME_PRICE = 9;
+
+    const INDICATOR_60_DAY_COMMODITY_CHANNEL_INDEX = 10;
+    const INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE = 11;
+    const INDICATOR_50_100_DAY_MACD = 12;
+
     /**
      * @var integer
      *
@@ -42,11 +58,11 @@ class Signal {
     private $filters;
 
     /**
-     * @var string
+     * @var array
      *
-     * @ORM\Column(name="indicatorsValues", type="string", length=255)
+     * @ORM\Column(name="indicators", type="simple_array")
      */
-    private $indicatorsValues;
+    private $indicators;
 
 
     /**
@@ -122,23 +138,39 @@ class Signal {
     }
 
     /**
-     * Set indicatorsValues
-     *
-     * @param string $indicatorsValues
-     * @return Signal
+     * @return array
      */
-    public function setIndicatorsValues($indicatorsValues) {
-        $this->indicatorsValues = $indicatorsValues;
-
-        return $this;
+    public function getIndicators() {
+        return $this->indicators;
     }
 
     /**
-     * Get indicatorsValues
-     *
-     * @return string
+     * @param array $indicators
      */
-    public function getIndicatorsValues() {
-        return $this->indicatorsValues;
+    public function setIndicators($indicators) {
+        $this->indicators = $indicators;
+    }
+
+    /**
+     * Массив соответствия индикаторам методов из сущности Price
+     * @return array
+     */
+    public static function getIndicatorsMethodNames() {
+        return array(
+            self::INDICATOR_7_DAY_AVERAGE_DIRECTION => 'Ad',
+            self::INDICATOR_10_8_DAY_MOVING_AVERAGE_HILO_CHANNEL => 'Mahilo',
+            self::INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE => 'SMavp',
+            self::INDICATOR_20_50_DAY_MACD => 'SMacd',
+            self::INDICATOR_20_DAY_BOLLINGER_BANDS => 'Bollinger',
+
+            self::INDICATOR_40_DAY_COMMIDITY_CHANNEL_INDEX => 'MCci',
+            self::INDICATOR_50_DAY_MOVING_AVERAGE_VS_PRICE => 'MMavp',
+            self::INDICATOR_20_100_DAY_MACD => 'MMacd',
+            self::INDICATOR_50_DAY_PARABOLIC_TIME_PRICE => 'Parabolic',
+
+            self::INDICATOR_60_DAY_COMMODITY_CHANNEL_INDEX => 'LCci',
+            self::INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE => 'LMavp',
+            self::INDICATOR_50_100_DAY_MACD => 'LMacd',
+        );
     }
 }

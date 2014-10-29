@@ -7,6 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 /** @ORM\MappedSuperclass */
 abstract class Price {
 
+    const TREND_STRENGTH_NONE = 0;
+    const TREND_STRENGTH_MINIMUM = 1;
+    const TREND_STRENGTH_WEAK = 2;
+    const TREND_STRENGTH_AVERAGE = 3;
+    const TREND_STRENGTH_STRONG = 4;
+    const TREND_STRENGTH_MAXIMUM = 5;
+
     /**
      * @var integer
      * @ORM\Column(name="id", type="integer")
@@ -181,13 +188,13 @@ abstract class Price {
      * @var integer
      * @ORM\Column(name="s_mavp", type="integer")
      */
-    private $s_mavp;
+    private $sMavp;
 
     /**
      * @var integer
      * @ORM\Column(name="s_macd", type="integer")
      */
-    private $s_macd;
+    private $sMacd;
 
     /**
      * @var integer
@@ -199,19 +206,19 @@ abstract class Price {
      * @var integer
      * @ORM\Column(name="m_cci", type="integer")
      */
-    private $m_cci;
+    private $mCci;
 
     /**
      * @var integer
      * @ORM\Column(name="m_mavp", type="integer")
      */
-    private $m_mavp;
+    private $mMavp;
 
     /**
      * @var integer
      * @ORM\Column(name="m_macd", type="integer")
      */
-    private $m_macd;
+    private $mMacd;
 
     /**
      * @var integer
@@ -223,19 +230,19 @@ abstract class Price {
      * @var integer
      * @ORM\Column(name="l_cci", type="integer")
      */
-    private $l_cci;
+    private $lCci;
 
     /**
      * @var integer
      * @ORM\Column(name="l_mavp", type="integer")
      */
-    private $l_mavp;
+    private $lMavp;
 
     /**
      * @var integer
      * @ORM\Column(name="l_macd", type="integer")
      */
-    private $l_macd;
+    private $lMacd;
 
     /**
      * @var integer
@@ -247,19 +254,19 @@ abstract class Price {
      * @var integer
      * @ORM\Column(name="s_average", type="integer")
      */
-    private $s_average;
+    private $sAverage;
 
     /**
      * @var integer
      * @ORM\Column(name="m_average", type="integer")
      */
-    private $m_average;
+    private $mAverage;
 
     /**
      * @var integer
      * @ORM\Column(name="l_average", type="integer")
      */
-    private $l_average;
+    private $lAverage;
 
     /**
      * @var integer
@@ -436,59 +443,59 @@ abstract class Price {
     }
 
     /**
-     * @param int $l_average
+     * @param int $lAverage
      */
-    public function setLAverage($l_average) {
-        $this->l_average = $l_average;
+    public function setLAverage($lAverage) {
+        $this->lAverage = $lAverage;
     }
 
     /**
      * @return int
      */
     public function getLAverage() {
-        return $this->l_average;
+        return $this->lAverage;
     }
 
     /**
-     * @param int $l_cci
+     * @param int $lCci
      */
-    public function setLCci($l_cci) {
-        $this->l_cci = $l_cci;
+    public function setLCci($lCci) {
+        $this->lCci = $lCci;
     }
 
     /**
      * @return int
      */
     public function getLCci() {
-        return $this->l_cci;
+        return $this->lCci;
     }
 
     /**
-     * @param int $l_macd
+     * @param int $lMacd
      */
-    public function setLMacd($l_macd) {
-        $this->l_macd = $l_macd;
+    public function setLMacd($lMacd) {
+        $this->lMacd = $lMacd;
     }
 
     /**
      * @return int
      */
     public function getLMacd() {
-        return $this->l_macd;
+        return $this->lMacd;
     }
 
     /**
-     * @param int $l_mavp
+     * @param int $lMavp
      */
-    public function setLMavp($l_mavp) {
-        $this->l_mavp = $l_mavp;
+    public function setLMavp($lMavp) {
+        $this->lMavp = $lMavp;
     }
 
     /**
      * @return int
      */
     public function getLMavp() {
-        return $this->l_mavp;
+        return $this->lMavp;
     }
 
     /**
@@ -506,59 +513,59 @@ abstract class Price {
     }
 
     /**
-     * @param int $m_average
+     * @param int $mAverage
      */
-    public function setMAverage($m_average) {
-        $this->m_average = $m_average;
+    public function setMAverage($mAverage) {
+        $this->mAverage = $mAverage;
     }
 
     /**
      * @return int
      */
     public function getMAverage() {
-        return $this->m_average;
+        return $this->mAverage;
     }
 
     /**
-     * @param int $m_cci
+     * @param int $mCci
      */
-    public function setMCci($m_cci) {
-        $this->m_cci = $m_cci;
+    public function setMCci($mCci) {
+        $this->mCci = $mCci;
     }
 
     /**
      * @return int
      */
     public function getMCci() {
-        return $this->m_cci;
+        return $this->mCci;
     }
 
     /**
-     * @param int $m_macd
+     * @param int $mMacd
      */
-    public function setMMacd($m_macd) {
-        $this->m_macd = $m_macd;
+    public function setMMacd($mMacd) {
+        $this->mMacd = $mMacd;
     }
 
     /**
      * @return int
      */
     public function getMMacd() {
-        return $this->m_macd;
+        return $this->mMacd;
     }
 
     /**
-     * @param int $m_mavp
+     * @param int $mMavp
      */
-    public function setMMavp($m_mavp) {
-        $this->m_mavp = $m_mavp;
+    public function setMMavp($mMavp) {
+        $this->mMavp = $mMavp;
     }
 
     /**
      * @return int
      */
     public function getMMavp() {
-        return $this->m_mavp;
+        return $this->mMavp;
     }
 
     /**
@@ -646,45 +653,45 @@ abstract class Price {
     }
 
     /**
-     * @param int $s_average
+     * @param int $sAverage
      */
-    public function setSAverage($s_average) {
-        $this->s_average = $s_average;
+    public function setSAverage($sAverage) {
+        $this->sAverage = $sAverage;
     }
 
     /**
      * @return int
      */
     public function getSAverage() {
-        return $this->s_average;
+        return $this->sAverage;
     }
 
     /**
-     * @param int $s_macd
+     * @param int $sMacd
      */
-    public function setSMacd($s_macd) {
-        $this->s_macd = $s_macd;
+    public function setSMacd($sMacd) {
+        $this->sMacd = $sMacd;
     }
 
     /**
      * @return int
      */
     public function getSMacd() {
-        return $this->s_macd;
+        return $this->sMacd;
     }
 
     /**
-     * @param int $s_mavp
+     * @param int $sMavp
      */
-    public function setSMavp($s_mavp) {
-        $this->s_mavp = $s_mavp;
+    public function setSMavp($sMavp) {
+        $this->sMavp = $sMavp;
     }
 
     /**
      * @return int
      */
     public function getSMavp() {
-        return $this->s_mavp;
+        return $this->sMavp;
     }
 
     /**
@@ -867,5 +874,20 @@ abstract class Price {
      */
     public function getWeightedalpha() {
         return $this->weightedalpha;
+    }
+
+    /**
+     * Получение массива соответствий уровней силы тренда их ключам в БД
+     * @return array
+     */
+    public static function getTrendStrengthName() {
+        return array(
+            self::TREND_STRENGTH_NONE => '&nbsp;',
+            self::TREND_STRENGTH_MINIMUM => 'Minimum',
+            self::TREND_STRENGTH_WEAK => 'Weak',
+            self::TREND_STRENGTH_AVERAGE => 'Average',
+            self::TREND_STRENGTH_STRONG => 'Strong',
+            self::TREND_STRENGTH_MAXIMUM => 'Maximum',
+        );
     }
 }
