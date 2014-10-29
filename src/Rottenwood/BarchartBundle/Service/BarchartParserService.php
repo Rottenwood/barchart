@@ -87,29 +87,29 @@ class BarchartParserService {
 
         // Значения таблицы цен
         $priceArray = array(
-            "Symbol"         => $symbol,
-            "Title"          => $html->find('h1#symname', 0)->innertext,
-            "Price"          => $html->find('div#divQuotePageHeader span#dtaLast', 0)->plaintext,
-            "Date"           => date("d.m.Y"),
-            "Time"           => $html->find('div#divQuotePageHeader span#dtaDate', 0)->plaintext,
-            "TimeLocal"      => date("g:iA T"),
-            "High"           => $table->find('tr', 1)->find('td', 1)->plaintext,
-            "Low"            => $table->find('tr', 1)->find('td', 3)->plaintext,
-            "Open"           => $table->find('tr', 3)->find('strong', 0)->plaintext,
-            "Close"          => $table->find('tr', 3)->find('strong', 1)->plaintext,
-            "52WHigh"        => $table->find('tr', 2)->find('span', 0)->plaintext,
-            "52WLow"         => $table->find('tr', 2)->find('span', 4)->plaintext,
-            "Volume"         => $table->find('tr', 4)->find('#dtaVolume', 0)->plaintext,
-            "OpenInterest"   => $table->find('tr', 4)->find('strong', 0)->plaintext,
-            "WeightedAlpha"  => $table->find('tr', 5)->find('strong', 0)->plaintext,
-            "StandartDev"    => $table->find('tr', 5)->find('strong', 1)->plaintext,
-            "20DAverage"     => $table->find('tr', 6)->find('strong', 0)->plaintext,
-            "100DAverage"    => $table->find('tr', 6)->find('strong', 1)->plaintext,
+            "Symbol" => $symbol,
+            "Title" => $html->find('h1#symname', 0)->innertext,
+            "Price" => $html->find('div#divQuotePageHeader span#dtaLast', 0)->plaintext,
+            "Date" => date("d.m.Y"),
+            "Time" => $html->find('div#divQuotePageHeader span#dtaDate', 0)->plaintext,
+            "TimeLocal" => date("g:iA T"),
+            "High" => $table->find('tr', 1)->find('td', 1)->plaintext,
+            "Low" => $table->find('tr', 1)->find('td', 3)->plaintext,
+            "Open" => $table->find('tr', 3)->find('strong', 0)->plaintext,
+            "Close" => $table->find('tr', 3)->find('strong', 1)->plaintext,
+            "52WHigh" => $table->find('tr', 2)->find('span', 0)->plaintext,
+            "52WLow" => $table->find('tr', 2)->find('span', 4)->plaintext,
+            "Volume" => $table->find('tr', 4)->find('#dtaVolume', 0)->plaintext,
+            "OpenInterest" => $table->find('tr', 4)->find('strong', 0)->plaintext,
+            "WeightedAlpha" => $table->find('tr', 5)->find('strong', 0)->plaintext,
+            "StandartDev" => $table->find('tr', 5)->find('strong', 1)->plaintext,
+            "20DAverage" => $table->find('tr', 6)->find('strong', 0)->plaintext,
+            "100DAverage" => $table->find('tr', 6)->find('strong', 1)->plaintext,
             "14DRelStrength" => $table->find('tr', 7)->find('strong', 0)->plaintext,
-            "14DStochastic"  => $table->find('tr', 7)->find('strong', 1)->plaintext,
-            "Trend"          => $table->find('tr', 8)->find('td', 1)->plaintext,
-            "TrendStrength"  => $table->find('tr', 8)->find('td', 3)->plaintext,
-            "UnixTime"       => time(),
+            "14DStochastic" => $table->find('tr', 7)->find('strong', 1)->plaintext,
+            "Trend" => $table->find('tr', 8)->find('td', 1)->plaintext,
+            "TrendStrength" => $table->find('tr', 8)->find('td', 3)->plaintext,
+            "UnixTime" => time(),
         );
 
         // Специфические поля для различных типов контрактов
@@ -454,5 +454,14 @@ class BarchartParserService {
         $indicatorValueInt = $indicatorStrengthProc * $indicatorDirection;
 
         return (int)$indicatorValueInt;
+    }
+
+    /**
+     * Получение номера, соответствующего названию уровня силы тренда
+     * @param string $value
+     * @return int
+     */
+    private function trendStrengthToInt($value) {
+        return array_search($value, Price::getTrendStrengthName());
     }
 }
