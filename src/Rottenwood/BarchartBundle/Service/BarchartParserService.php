@@ -7,8 +7,6 @@
 namespace Rottenwood\BarchartBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use Rottenwood\BarchartBundle\Entity\ForexPrice;
-use Rottenwood\BarchartBundle\Entity\GBPUSD;
 use Rottenwood\BarchartBundle\Entity\Price;
 use Sunra\PhpSimple\HtmlDomParser;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -90,9 +88,7 @@ class BarchartParserService {
             "Symbol" => $symbol,
             "Title" => $html->find('h1#symname', 0)->innertext,
             "Price" => $html->find('div#divQuotePageHeader span#dtaLast', 0)->plaintext,
-            "Date" => date("d.m.Y"),
-            "Time" => $html->find('div#divQuotePageHeader span#dtaDate', 0)->plaintext,
-            "TimeLocal" => date("g:iA T"),
+//            "Time" => $html->find('div#divQuotePageHeader span#dtaDate', 0)->plaintext,
             "High" => $table->find('tr', 1)->find('td', 1)->plaintext,
             "Low" => $table->find('tr', 1)->find('td', 3)->plaintext,
             "Open" => $table->find('tr', 3)->find('strong', 0)->plaintext,
@@ -109,7 +105,6 @@ class BarchartParserService {
             "14DStochastic" => $table->find('tr', 7)->find('strong', 1)->plaintext,
             "Trend" => $table->find('tr', 8)->find('td', 1)->plaintext,
             "TrendStrength" => $table->find('tr', 8)->find('td', 3)->plaintext,
-            "UnixTime" => time(),
         );
 
         // Специфические поля для различных типов контрактов
@@ -265,6 +260,7 @@ class BarchartParserService {
             return false;
         }
 
+        /** @var Price $symbolEntity */
         $symbolEntity = new $symbolNamespacedName();
 
         $symbolEntity->setType($type);
@@ -278,10 +274,6 @@ class BarchartParserService {
             $symbolEntity->setExpiration('');
         }
 
-        $symbolEntity->setDate($symbolData["Date"]);
-        $symbolEntity->setTime($symbolData["Time"]);
-        $symbolEntity->setTimelocal($symbolData["TimeLocal"]);
-        $symbolEntity->setUnixtime($symbolData["UnixTime"]);
         $symbolEntity->setHigh($this->goodify($symbolData["High"]));
         $symbolEntity->setLow($this->goodify($symbolData["Low"]));
         $symbolEntity->setOpen($this->goodify($symbolData["Open"]));
@@ -292,30 +284,30 @@ class BarchartParserService {
         $symbolEntity->setOpeninterest($this->goodify($symbolData["OpenInterest"]));
         $symbolEntity->setWeightedalpha($this->antiPlus($symbolData["WeightedAlpha"]));
         $symbolEntity->setStandartdev($this->antiPlus($symbolData["StandartDev"]));
-        $symbolEntity->setTwentydaverage($this->goodify($symbolData["20DAverage"]));
-        $symbolEntity->setHundreddaverage($this->goodify($symbolData["100DAverage"]));
-        $symbolEntity->setFourteendrelstrength($this->goodify($symbolData["14DRelStrength"]));
-        $symbolEntity->setFourteendstochastic($this->goodify($symbolData["14DStochastic"]));
+        $symbolEntity->setTwentyDayAverage($this->goodify($symbolData["20DAverage"]));
+        $symbolEntity->setHundredDayAverage($this->goodify($symbolData["100DAverage"]));
+        $symbolEntity->setFourteenDayRelStrength($this->goodify($symbolData["14DRelStrength"]));
+        $symbolEntity->setFourteenDayStochastic($this->goodify($symbolData["14DStochastic"]));
         $symbolEntity->setTrend($this->buySellToInt($symbolData["Trend"]));
         $symbolEntity->setTrendstrength($symbolData["TrendStrength"] == '&nbsp;' ? 0 : $symbolData["TrendStrength"]);
 
         // индикаторы
         $symbolEntity->setAd($this->buySellToInt($symbolData["s.7-AD"]));
         $symbolEntity->setBollinger($this->buySellToInt($symbolData["s.20-Bollinger"]));
-        $symbolEntity->setLCci($this->buySellToInt($symbolData["l.60-CCI"]));
-        $symbolEntity->setLMacd($this->buySellToInt($symbolData["l.50-100-MACD"]));
-        $symbolEntity->setLMavp($this->buySellToInt($symbolData["l.100-MAvsPrice"]));
-        $symbolEntity->setMCci($this->buySellToInt($symbolData["m.40-CCI"]));
-        $symbolEntity->setMMacd($this->buySellToInt($symbolData["m.20-100-MACD"]));
-        $symbolEntity->setMMavp($this->buySellToInt($symbolData["m.50-MAvsPrice"]));
+        $symbolEntity->setLongtermCci($this->buySellToInt($symbolData["l.60-CCI"]));
+        $symbolEntity->setLongtermMacd($this->buySellToInt($symbolData["l.50-100-MACD"]));
+        $symbolEntity->setLongtermMavp($this->buySellToInt($symbolData["l.100-MAvsPrice"]));
+        $symbolEntity->setMediumtermCci($this->buySellToInt($symbolData["m.40-CCI"]));
+        $symbolEntity->setMediumtermMacd($this->buySellToInt($symbolData["m.20-100-MACD"]));
+        $symbolEntity->setMediumtermMavp($this->buySellToInt($symbolData["m.50-MAvsPrice"]));
         $symbolEntity->setMahilo($this->buySellToInt($symbolData["s.10-8-MAHiloChannel"]));
         $symbolEntity->setParabolic($this->buySellToInt($symbolData["m.50-ParabolicTimePrice"]));
         $symbolEntity->setSMacd($this->buySellToInt($symbolData["s.20-50-MACD"]));
         $symbolEntity->setSMavp($this->buySellToInt($symbolData["s.20-MAvsPrice"]));
         $symbolEntity->setTrendspotter($this->buySellToInt($symbolData["TrendSpotter"]));
-        $symbolEntity->setSAverage($this->buySellProcToInt($symbolData["ShortTermAverage"]));
-        $symbolEntity->setMAverage($this->buySellProcToInt($symbolData["MidTermAverage"]));
-        $symbolEntity->setLAverage($this->buySellProcToInt($symbolData["LongTermAverage"]));
+        $symbolEntity->setShorttermAverage($this->buySellProcToInt($symbolData["ShortTermAverage"]));
+        $symbolEntity->setMediumtermAverage($this->buySellProcToInt($symbolData["MidTermAverage"]));
+        $symbolEntity->setLongtermAverage($this->buySellProcToInt($symbolData["LongTermAverage"]));
         $symbolEntity->setOverall($this->buySellProcToInt($symbolData["OverallAverage"]));
 
         $this->em->persist($symbolEntity);

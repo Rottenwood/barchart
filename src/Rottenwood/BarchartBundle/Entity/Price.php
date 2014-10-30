@@ -4,7 +4,10 @@ namespace Rottenwood\BarchartBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/** @ORM\MappedSuperclass */
+/**
+ * @ORM\MappedSuperclass
+ * @ORM\HasLifecycleCallbacks
+ */
 abstract class Price {
 
     const TREND_STRENGTH_NONE = 0;
@@ -53,28 +56,10 @@ abstract class Price {
     private $expiration;
 
     /**
-     * @var string
-     * @ORM\Column(name="date", type="string", length=255)
+     * @var \DateTime
+     * @ORM\Column(name="date", type="datetime")
      */
     private $date;
-
-    /**
-     * @var string
-     * @ORM\Column(name="time", type="string", length=255)
-     */
-    private $time;
-
-    /**
-     * @var string
-     * @ORM\Column(name="timelocal", type="string", length=255)
-     */
-    private $timelocal;
-
-    /**
-     * @var integer
-     * @ORM\Column(name="unixtime", type="integer")
-     */
-    private $unixtime;
 
     /**
      * @var float
@@ -104,13 +89,13 @@ abstract class Price {
      * @var float
      * @ORM\Column(name="52whigh", type="float")
      */
-    private $fivetwoweekhigh;
+    private $fiveTwoWeekHigh;
 
     /**
      * @var float
      * @ORM\Column(name="52wlow", type="float")
      */
-    private $fivetwoweeklow;
+    private $fiveTwoWeekLow;
 
     /**
      * @var integer
@@ -120,45 +105,45 @@ abstract class Price {
 
     /**
      * @var integer
-     * @ORM\Column(name="openinterest", type="integer")
+     * @ORM\Column(name="open_interest", type="integer")
      */
-    private $openinterest;
+    private $openInterest;
 
     /**
      * @var float
-     * @ORM\Column(name="weightedalpha", type="float")
+     * @ORM\Column(name="weighted_alpha", type="float")
      */
-    private $weightedalpha;
+    private $weightedAlpha;
 
     /**
      * @var float
-     * @ORM\Column(name="standartdev", type="float")
+     * @ORM\Column(name="standart_dev", type="float")
      */
-    private $standartdev;
+    private $standartDev;
 
     /**
      * @var float
      * @ORM\Column(name="20daverage", type="float")
      */
-    private $twentydaverage;
+    private $twentyDayAverage;
 
     /**
      * @var float
      * @ORM\Column(name="100daverage", type="float")
      */
-    private $hundreddaverage;
+    private $hundredDayAverage;
 
     /**
      * @var float
      * @ORM\Column(name="14drelstrength", type="float")
      */
-    private $fourteendrelstrength;
+    private $fourteenDayRelStrength;
 
     /**
      * @var float
      * @ORM\Column(name="14dstochastic", type="float")
      */
-    private $fourteendstochastic;
+    private $fourteenDayStochastic;
 
     /**
      * @var integer
@@ -168,9 +153,9 @@ abstract class Price {
 
     /**
      * @var string
-     * @ORM\Column(name="trendstrength", type="string", length=255)
+     * @ORM\Column(name="trend_strength", type="string", length=255)
      */
-    private $trendstrength;
+    private $trendStrength;
 
     /**
      * @var integer
@@ -182,7 +167,7 @@ abstract class Price {
      * @var integer
      * @ORM\Column(name="s_mahilo", type="integer")
      */
-    private $mahilo;
+    private $maHilo;
 
     /**
      * @var integer
@@ -206,19 +191,19 @@ abstract class Price {
      * @var integer
      * @ORM\Column(name="m_cci", type="integer")
      */
-    private $mCci;
+    private $mediumtermCci;
 
     /**
      * @var integer
      * @ORM\Column(name="m_mavp", type="integer")
      */
-    private $mMavp;
+    private $mediumtermMavp;
 
     /**
      * @var integer
      * @ORM\Column(name="m_macd", type="integer")
      */
-    private $mMacd;
+    private $mediumtermMacd;
 
     /**
      * @var integer
@@ -230,19 +215,19 @@ abstract class Price {
      * @var integer
      * @ORM\Column(name="l_cci", type="integer")
      */
-    private $lCci;
+    private $longtermCci;
 
     /**
      * @var integer
      * @ORM\Column(name="l_mavp", type="integer")
      */
-    private $lMavp;
+    private $longtermMavp;
 
     /**
      * @var integer
      * @ORM\Column(name="l_macd", type="integer")
      */
-    private $lMacd;
+    private $longtermMacd;
 
     /**
      * @var integer
@@ -254,25 +239,32 @@ abstract class Price {
      * @var integer
      * @ORM\Column(name="s_average", type="integer")
      */
-    private $sAverage;
+    private $shorttermAverage;
 
     /**
      * @var integer
      * @ORM\Column(name="m_average", type="integer")
      */
-    private $mAverage;
+    private $mediumtermAverage;
 
     /**
      * @var integer
      * @ORM\Column(name="l_average", type="integer")
      */
-    private $lAverage;
+    private $longtermAverage;
 
     /**
      * @var integer
      * @ORM\Column(name="overall", type="integer")
      */
     private $overall;
+
+    /**
+     * @return int
+     */
+    public function getAd() {
+        return $this->ad;
+    }
 
     /**
      * @param int $ad
@@ -284,8 +276,8 @@ abstract class Price {
     /**
      * @return int
      */
-    public function getAd() {
-        return $this->ad;
+    public function getBollinger() {
+        return $this->bollinger;
     }
 
     /**
@@ -296,10 +288,10 @@ abstract class Price {
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getBollinger() {
-        return $this->bollinger;
+    public function getClose() {
+        return $this->close;
     }
 
     /**
@@ -310,31 +302,17 @@ abstract class Price {
     }
 
     /**
-     * @return float
-     */
-    public function getClose() {
-        return $this->close;
-    }
-
-    /**
-     * @param string $date
-     */
-    public function setDate($date) {
-        $this->date = $date;
-    }
-
-    /**
-     * @return string
+     * @return \DateTime
      */
     public function getDate() {
         return $this->date;
     }
 
     /**
-     * @param string $expiration
+     * @param \DateTime $date
      */
-    public function setExpiration($expiration) {
-        $this->expiration = $expiration;
+    public function setDate($date) {
+        $this->date = $date;
     }
 
     /**
@@ -345,59 +323,73 @@ abstract class Price {
     }
 
     /**
-     * @param float $fivetwoweekhigh
+     * @param string $expiration
      */
-    public function setFivetwoweekhigh($fivetwoweekhigh) {
-        $this->fivetwoweekhigh = $fivetwoweekhigh;
+    public function setExpiration($expiration) {
+        $this->expiration = $expiration;
     }
 
     /**
      * @return float
      */
-    public function getFivetwoweekhigh() {
-        return $this->fivetwoweekhigh;
+    public function getFiveTwoWeekHigh() {
+        return $this->fiveTwoWeekHigh;
     }
 
     /**
-     * @param float $fivetwoweeklow
+     * @param float $fiveTwoWeekHigh
      */
-    public function setFivetwoweeklow($fivetwoweeklow) {
-        $this->fivetwoweeklow = $fivetwoweeklow;
-    }
-
-    /**
-     * @return float
-     */
-    public function getFivetwoweeklow() {
-        return $this->fivetwoweeklow;
-    }
-
-    /**
-     * @param float $fourteendrelstrength
-     */
-    public function setFourteendrelstrength($fourteendrelstrength) {
-        $this->fourteendrelstrength = $fourteendrelstrength;
+    public function setFiveTwoWeekHigh($fiveTwoWeekHigh) {
+        $this->fiveTwoWeekHigh = $fiveTwoWeekHigh;
     }
 
     /**
      * @return float
      */
-    public function getFourteendrelstrength() {
-        return $this->fourteendrelstrength;
+    public function getFiveTwoWeekLow() {
+        return $this->fiveTwoWeekLow;
     }
 
     /**
-     * @param float $fourteendstochastic
+     * @param float $fiveTwoWeekLow
      */
-    public function setFourteendstochastic($fourteendstochastic) {
-        $this->fourteendstochastic = $fourteendstochastic;
+    public function setFiveTwoWeekLow($fiveTwoWeekLow) {
+        $this->fiveTwoWeekLow = $fiveTwoWeekLow;
     }
 
     /**
      * @return float
      */
-    public function getFourteendstochastic() {
-        return $this->fourteendstochastic;
+    public function getFourteenDayRelStrength() {
+        return $this->fourteenDayRelStrength;
+    }
+
+    /**
+     * @param float $fourteenDayRelStrength
+     */
+    public function setFourteenDayRelStrength($fourteenDayRelStrength) {
+        $this->fourteenDayRelStrength = $fourteenDayRelStrength;
+    }
+
+    /**
+     * @return float
+     */
+    public function getFourteenDayStochastic() {
+        return $this->fourteenDayStochastic;
+    }
+
+    /**
+     * @param float $fourteenDayStochastic
+     */
+    public function setFourteenDayStochastic($fourteenDayStochastic) {
+        $this->fourteenDayStochastic = $fourteenDayStochastic;
+    }
+
+    /**
+     * @return float
+     */
+    public function getHigh() {
+        return $this->high;
     }
 
     /**
@@ -410,22 +402,22 @@ abstract class Price {
     /**
      * @return float
      */
-    public function getHigh() {
-        return $this->high;
+    public function getHundredDayAverage() {
+        return $this->hundredDayAverage;
     }
 
     /**
-     * @param float $hundreddaverage
+     * @param float $hundredDayAverage
      */
-    public function setHundreddaverage($hundreddaverage) {
-        $this->hundreddaverage = $hundreddaverage;
+    public function setHundredDayAverage($hundredDayAverage) {
+        $this->hundredDayAverage = $hundredDayAverage;
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function getHundreddaverage() {
-        return $this->hundreddaverage;
+    public function getId() {
+        return $this->id;
     }
 
     /**
@@ -438,71 +430,57 @@ abstract class Price {
     /**
      * @return int
      */
-    public function getId() {
-        return $this->id;
+    public function getLongtermAverage() {
+        return $this->longtermAverage;
     }
 
     /**
-     * @param int $lAverage
+     * @param int $longtermAverage
      */
-    public function setLAverage($lAverage) {
-        $this->lAverage = $lAverage;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLAverage() {
-        return $this->lAverage;
-    }
-
-    /**
-     * @param int $lCci
-     */
-    public function setLCci($lCci) {
-        $this->lCci = $lCci;
+    public function setLongtermAverage($longtermAverage) {
+        $this->longtermAverage = $longtermAverage;
     }
 
     /**
      * @return int
      */
-    public function getLCci() {
-        return $this->lCci;
+    public function getLongtermCci() {
+        return $this->longtermCci;
     }
 
     /**
-     * @param int $lMacd
+     * @param int $longtermCci
      */
-    public function setLMacd($lMacd) {
-        $this->lMacd = $lMacd;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLMacd() {
-        return $this->lMacd;
-    }
-
-    /**
-     * @param int $lMavp
-     */
-    public function setLMavp($lMavp) {
-        $this->lMavp = $lMavp;
+    public function setLongtermCci($longtermCci) {
+        $this->longtermCci = $longtermCci;
     }
 
     /**
      * @return int
      */
-    public function getLMavp() {
-        return $this->lMavp;
+    public function getLongtermMacd() {
+        return $this->longtermMacd;
     }
 
     /**
-     * @param float $low
+     * @param int $longtermMacd
      */
-    public function setLow($low) {
-        $this->low = $low;
+    public function setLongtermMacd($longtermMacd) {
+        $this->longtermMacd = $longtermMacd;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLongtermMavp() {
+        return $this->longtermMavp;
+    }
+
+    /**
+     * @param int $longtermMavp
+     */
+    public function setLongtermMavp($longtermMavp) {
+        $this->longtermMavp = $longtermMavp;
     }
 
     /**
@@ -513,80 +491,80 @@ abstract class Price {
     }
 
     /**
-     * @param int $mAverage
+     * @param float $low
      */
-    public function setMAverage($mAverage) {
-        $this->mAverage = $mAverage;
+    public function setLow($low) {
+        $this->low = $low;
     }
 
     /**
      * @return int
      */
-    public function getMAverage() {
-        return $this->mAverage;
+    public function getMaHilo() {
+        return $this->maHilo;
     }
 
     /**
-     * @param int $mCci
+     * @param int $maHilo
      */
-    public function setMCci($mCci) {
-        $this->mCci = $mCci;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMCci() {
-        return $this->mCci;
-    }
-
-    /**
-     * @param int $mMacd
-     */
-    public function setMMacd($mMacd) {
-        $this->mMacd = $mMacd;
+    public function setMaHilo($maHilo) {
+        $this->maHilo = $maHilo;
     }
 
     /**
      * @return int
      */
-    public function getMMacd() {
-        return $this->mMacd;
+    public function getMediumtermAverage() {
+        return $this->mediumtermAverage;
     }
 
     /**
-     * @param int $mMavp
+     * @param int $mediumtermAverage
      */
-    public function setMMavp($mMavp) {
-        $this->mMavp = $mMavp;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMMavp() {
-        return $this->mMavp;
-    }
-
-    /**
-     * @param int $mahilo
-     */
-    public function setMahilo($mahilo) {
-        $this->mahilo = $mahilo;
+    public function setMediumtermAverage($mediumtermAverage) {
+        $this->mediumtermAverage = $mediumtermAverage;
     }
 
     /**
      * @return int
      */
-    public function getMahilo() {
-        return $this->mahilo;
+    public function getMediumtermCci() {
+        return $this->mediumtermCci;
     }
 
     /**
-     * @param float $open
+     * @param int $mediumtermCci
      */
-    public function setOpen($open) {
-        $this->open = $open;
+    public function setMediumtermCci($mediumtermCci) {
+        $this->mediumtermCci = $mediumtermCci;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMediumtermMacd() {
+        return $this->mediumtermMacd;
+    }
+
+    /**
+     * @param int $mediumtermMacd
+     */
+    public function setMediumtermMacd($mediumtermMacd) {
+        $this->mediumtermMacd = $mediumtermMacd;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMediumtermMavp() {
+        return $this->mediumtermMavp;
+    }
+
+    /**
+     * @param int $mediumtermMavp
+     */
+    public function setMediumtermMavp($mediumtermMavp) {
+        $this->mediumtermMavp = $mediumtermMavp;
     }
 
     /**
@@ -597,17 +575,31 @@ abstract class Price {
     }
 
     /**
-     * @param int $openinterest
+     * @param float $open
      */
-    public function setOpeninterest($openinterest) {
-        $this->openinterest = $openinterest;
+    public function setOpen($open) {
+        $this->open = $open;
     }
 
     /**
      * @return int
      */
-    public function getOpeninterest() {
-        return $this->openinterest;
+    public function getOpenInterest() {
+        return $this->openInterest;
+    }
+
+    /**
+     * @param int $openInterest
+     */
+    public function setOpenInterest($openInterest) {
+        $this->openInterest = $openInterest;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOverall() {
+        return $this->overall;
     }
 
     /**
@@ -620,8 +612,8 @@ abstract class Price {
     /**
      * @return int
      */
-    public function getOverall() {
-        return $this->overall;
+    public function getParabolic() {
+        return $this->parabolic;
     }
 
     /**
@@ -632,14 +624,14 @@ abstract class Price {
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getParabolic() {
-        return $this->parabolic;
+    public function getPrice() {
+        return $this->price;
     }
 
     /**
-     * @param int $price
+     * @param float $price
      */
     public function setPrice($price) {
         $this->price = $price;
@@ -648,22 +640,8 @@ abstract class Price {
     /**
      * @return int
      */
-    public function getPrice() {
-        return $this->price;
-    }
-
-    /**
-     * @param int $sAverage
-     */
-    public function setSAverage($sAverage) {
-        $this->sAverage = $sAverage;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSAverage() {
-        return $this->sAverage;
+    public function getSMacd() {
+        return $this->sMacd;
     }
 
     /**
@@ -676,8 +654,8 @@ abstract class Price {
     /**
      * @return int
      */
-    public function getSMacd() {
-        return $this->sMacd;
+    public function getSMavp() {
+        return $this->sMavp;
     }
 
     /**
@@ -690,22 +668,36 @@ abstract class Price {
     /**
      * @return int
      */
-    public function getSMavp() {
-        return $this->sMavp;
+    public function getShorttermAverage() {
+        return $this->shorttermAverage;
     }
 
     /**
-     * @param float $standartdev
+     * @param int $shorttermAverage
      */
-    public function setStandartdev($standartdev) {
-        $this->standartdev = $standartdev;
+    public function setShorttermAverage($shorttermAverage) {
+        $this->shorttermAverage = $shorttermAverage;
     }
 
     /**
      * @return float
      */
-    public function getStandartdev() {
-        return $this->standartdev;
+    public function getStandartDev() {
+        return $this->standartDev;
+    }
+
+    /**
+     * @param float $standartDev
+     */
+    public function setStandartDev($standartDev) {
+        $this->standartDev = $standartDev;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSymbol() {
+        return $this->symbol;
     }
 
     /**
@@ -718,36 +710,8 @@ abstract class Price {
     /**
      * @return string
      */
-    public function getSymbol() {
-        return $this->symbol;
-    }
-
-    /**
-     * @param string $time
-     */
-    public function setTime($time) {
-        $this->time = $time;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTime() {
-        return $this->time;
-    }
-
-    /**
-     * @param string $timelocal
-     */
-    public function setTimelocal($timelocal) {
-        $this->timelocal = $timelocal;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTimelocal() {
-        return $this->timelocal;
+    public function getTitle() {
+        return $this->title;
     }
 
     /**
@@ -758,10 +722,10 @@ abstract class Price {
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getTitle() {
-        return $this->title;
+    public function getTrend() {
+        return $this->trend;
     }
 
     /**
@@ -772,17 +736,17 @@ abstract class Price {
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getTrend() {
-        return $this->trend;
+    public function getTrendStrength() {
+        return $this->trendStrength;
     }
 
     /**
-     * @param int $trendspotter
+     * @param string $trendStrength
      */
-    public function setTrendspotter($trendspotter) {
-        $this->trendspotter = $trendspotter;
+    public function setTrendStrength($trendStrength) {
+        $this->trendStrength = $trendStrength;
     }
 
     /**
@@ -793,31 +757,31 @@ abstract class Price {
     }
 
     /**
-     * @param string $trendstrength
+     * @param int $trendspotter
      */
-    public function setTrendstrength($trendstrength) {
-        $this->trendstrength = $trendstrength;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTrendstrength() {
-        return $this->trendstrength;
-    }
-
-    /**
-     * @param float $twentydaverage
-     */
-    public function setTwentydaverage($twentydaverage) {
-        $this->twentydaverage = $twentydaverage;
+    public function setTrendspotter($trendspotter) {
+        $this->trendspotter = $trendspotter;
     }
 
     /**
      * @return float
      */
-    public function getTwentydaverage() {
-        return $this->twentydaverage;
+    public function getTwentyDayAverage() {
+        return $this->twentyDayAverage;
+    }
+
+    /**
+     * @param float $twentyDayAverage
+     */
+    public function setTwentyDayAverage($twentyDayAverage) {
+        $this->twentyDayAverage = $twentyDayAverage;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType() {
+        return $this->type;
     }
 
     /**
@@ -830,22 +794,8 @@ abstract class Price {
     /**
      * @return int
      */
-    public function getType() {
-        return $this->type;
-    }
-
-    /**
-     * @param int $unixtime
-     */
-    public function setUnixtime($unixtime) {
-        $this->unixtime = $unixtime;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUnixtime() {
-        return $this->unixtime;
+    public function getVolume() {
+        return $this->volume;
     }
 
     /**
@@ -856,24 +806,24 @@ abstract class Price {
     }
 
     /**
-     * @return int
-     */
-    public function getVolume() {
-        return $this->volume;
-    }
-
-    /**
-     * @param float $weightedalpha
-     */
-    public function setWeightedalpha($weightedalpha) {
-        $this->weightedalpha = $weightedalpha;
-    }
-
-    /**
      * @return float
      */
-    public function getWeightedalpha() {
-        return $this->weightedalpha;
+    public function getWeightedAlpha() {
+        return $this->weightedAlpha;
+    }
+
+    /**
+     * @param float $weightedAlpha
+     */
+    public function setWeightedAlpha($weightedAlpha) {
+        $this->weightedAlpha = $weightedAlpha;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistCallback() {
+        $this->setDate(new \Datetime());
     }
 
     /**
