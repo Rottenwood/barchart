@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * TradeAccount
- *
  * @ORM\Table(name="accounts")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
@@ -15,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 class TradeAccount {
     /**
      * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -24,49 +22,48 @@ class TradeAccount {
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
      * @var Analitic
-     *
      * @ORM\ManyToOne(targetEntity="Analitic")
      */
     private $analitic;
 
     /**
      * @var integer
-     *
      * @ORM\Column(name="code", type="smallint")
      */
     private $code;
 
     /**
      * @var \DateTime
-     *
      * @ORM\Column(name="creationDate", type="datetime")
      */
     private $creationDate;
 
     /**
      * @var float
-     *
      * @ORM\Column(name="balance", type="float")
      */
     private $balance;
 
     /**
      * @var float
-     *
      * @ORM\Column(name="equity", type="float")
      */
     private $equity;
 
     /**
+     * @var Strategy
+     * @ORM\ManyToOne(targetEntity="Strategy")
+     */
+    private $strategy;
+
+    /**
      * @var Trade[]
-     *
      * @ORM\OneToMany(targetEntity="Trade", mappedBy="account")
      */
     private $trades;
@@ -84,7 +81,6 @@ class TradeAccount {
 
     /**
      * Get id
-     *
      * @return integer
      */
     public function getId() {
@@ -93,7 +89,6 @@ class TradeAccount {
 
     /**
      * Set name
-     *
      * @param string $name
      * @return TradeAccount
      */
@@ -105,7 +100,6 @@ class TradeAccount {
 
     /**
      * Get name
-     *
      * @return string
      */
     public function getName() {
@@ -128,7 +122,6 @@ class TradeAccount {
 
     /**
      * Set code
-     *
      * @param integer $code
      * @return TradeAccount
      */
@@ -140,7 +133,6 @@ class TradeAccount {
 
     /**
      * Get code
-     *
      * @return integer
      */
     public function getCode() {
@@ -149,7 +141,6 @@ class TradeAccount {
 
     /**
      * Set creationDate
-     *
      * @param \DateTime $creationDate
      * @return TradeAccount
      */
@@ -161,7 +152,6 @@ class TradeAccount {
 
     /**
      * Get creationDate
-     *
      * @return \DateTime
      */
     public function getCreationDate() {
@@ -170,7 +160,6 @@ class TradeAccount {
 
     /**
      * Set balance
-     *
      * @param float $balance
      * @return TradeAccount
      */
@@ -182,7 +171,6 @@ class TradeAccount {
 
     /**
      * Get balance
-     *
      * @return float
      */
     public function getBalance() {
@@ -191,7 +179,6 @@ class TradeAccount {
 
     /**
      * Set equity
-     *
      * @param float $equity
      * @return TradeAccount
      */
@@ -203,7 +190,6 @@ class TradeAccount {
 
     /**
      * Get equity
-     *
      * @return float
      */
     public function getEquity() {
@@ -211,9 +197,22 @@ class TradeAccount {
     }
 
     /**
+     * @return Strategy
+     */
+    public function getStrategy() {
+        return $this->strategy;
+    }
+
+    /**
+     * @param Strategy $strategy
+     */
+    public function setStrategy($strategy) {
+        $this->strategy = $strategy;
+    }
+
+    /**
      * Set trades
-     *
-     * @param string $trades
+     * @param Trade[] $trades
      * @return TradeAccount
      */
     public function setTrades($trades) {
@@ -224,8 +223,7 @@ class TradeAccount {
 
     /**
      * Get trades
-     *
-     * @return string
+     * @return Trade[]
      */
     public function getTrades() {
         return $this->trades;
