@@ -9,7 +9,6 @@ namespace Rottenwood\BarchartBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Rottenwood\BarchartBundle\Entity\Price;
 use Sunra\PhpSimple\HtmlDomParser;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Парсер данных с сайта barchart.com
@@ -58,6 +57,7 @@ class BarchartParserService {
      * Парсинг таблицы цен для выбранного инструмента
      * @param     $symbol
      * @param int $type
+     * @throws \Exception
      * @return array
      */
     public function getPrice($symbol, $type) {
@@ -72,7 +72,7 @@ class BarchartParserService {
             $url = $this->config["url"]["forex"][$symbol];
             $symbolName = '';
         } else {
-            throw new Exception('Не указан тип контракта');
+            throw new \Exception('Не указан тип контракта');
         }
 
         $urlTechnical = str_replace('quotes', 'opinions', $url);
@@ -88,7 +88,6 @@ class BarchartParserService {
             "Symbol" => $symbol,
             "Title" => $html->find('h1#symname', 0)->innertext,
             "Price" => $html->find('div#divQuotePageHeader span#dtaLast', 0)->plaintext,
-//            "Time" => $html->find('div#divQuotePageHeader span#dtaDate', 0)->plaintext,
             "High" => $table->find('tr', 1)->find('td', 1)->plaintext,
             "Low" => $table->find('tr', 1)->find('td', 3)->plaintext,
             "Open" => $table->find('tr', 3)->find('strong', 0)->plaintext,
@@ -413,20 +412,15 @@ class BarchartParserService {
     }
 
     public function buySellToInt($value) {
-        switch ($value) {
-            default:
-                // Добавить сюда логирование иного сигнала
-                $indicatorDirection = 0;
-                break;
-            case 'Buy':
-                $indicatorDirection = 1;
-                break;
-            case 'Sell':
-                $indicatorDirection = -1;
-                break;
-            case 'Hold':
-                $indicatorDirection = 0;
-                break;
+        if ($value == 'Buy') {
+            $indicatorDirection = 1;
+        } elseif ($value == 'Sell') {
+            $indicatorDirection = -1;
+        } elseif ($value == 'Hold') {
+            $indicatorDirection = 0;
+        } else {
+            // Добавить сюда логирование иного сигнала
+            $indicatorDirection = 0;
         }
 
         return $indicatorDirection;
