@@ -10,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 abstract class Price {
 
+    const CONTRACT_TYPE_FUTURES = 1;
+    const CONTRACT_TYPE_FOREX = 2;
+
     const TREND_STRENGTH_NONE = 0;
     const TREND_STRENGTH_MINIMUM = 1;
     const TREND_STRENGTH_WEAK = 2;
