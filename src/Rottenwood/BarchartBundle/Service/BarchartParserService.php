@@ -315,46 +315,7 @@ class BarchartParserService {
         return true;
     }
 
-    /**
-     * Парсинг и сохранение в БД цен массива символов
-     * @param array $symbols
-     * @param int   $type
-     * @return bool
-     */
-    protected function saveAllPrices($symbols, $type) {
-        foreach ($symbols as $symbolName => $symbol) {
-            $this->savePrice($symbolName, $symbol, $type);
-        }
-
-        return true;
-    }
-
-    public function saveAllForex() {
-        $type = 2; // тип контракта - валютная пара
-
-        $urlsAllForex = $this->config["url"]["forex"];
-
-        foreach ($urlsAllForex as $currency => $currencyUrl) {
-            $this->savePrice($currency, $currency, $type);
-        }
-
-        return true;
-    }
-
-    /**
-     * Парсинг и сохранение в БД основных фьючерсов
-     * @return bool
-     */
-    public function saveAllFutures() {
-        $type = 1; // тип контракта - фьючерс
-        $futures = $this->parseActualFutures();
-
-        $this->saveAllPrices($futures, $type);
-
-        return true;
-    }
-
-    private function parseActualFutures() {
+    public function parseActualFutures() {
         $urlAllFutures = $this->config["url"]["futuresall"];
 
         $html = HtmlDomParser::file_get_html($urlAllFutures);
