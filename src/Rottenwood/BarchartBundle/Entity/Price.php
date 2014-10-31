@@ -155,8 +155,8 @@ abstract class Price {
     private $trend;
 
     /**
-     * @var string
-     * @ORM\Column(name="trend_strength", type="string", length=255)
+     * @var int
+     * @ORM\Column(name="trend_strength", type="smallint")
      */
     private $trendStrength;
 
@@ -746,7 +746,7 @@ abstract class Price {
     }
 
     /**
-     * @param string $trendStrength
+     * @param int $trendStrength
      */
     public function setTrendStrength($trendStrength) {
         $this->trendStrength = $trendStrength;

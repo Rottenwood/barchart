@@ -288,7 +288,7 @@ class BarchartParserService {
         $symbolEntity->setFourteenDayRelStrength($this->goodify($symbolData["14DRelStrength"]));
         $symbolEntity->setFourteenDayStochastic($this->goodify($symbolData["14DStochastic"]));
         $symbolEntity->setTrend($this->buySellToInt($symbolData["Trend"]));
-        $symbolEntity->setTrendstrength($symbolData["TrendStrength"] == '&nbsp;' ? 0 : $symbolData["TrendStrength"]);
+        $symbolEntity->setTrendstrength($this->trendStrengthToInt($symbolData["TrendStrength"]));
 
         // индикаторы
         $symbolEntity->setAd($this->buySellToInt($symbolData["s.7-AD"]));
