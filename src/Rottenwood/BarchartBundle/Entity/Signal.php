@@ -29,6 +29,14 @@ class Signal {
     const INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE = 11;
     const INDICATOR_50_100_DAY_MACD = 12;
 
+    const FILTER_TREND_DIRECTION = 1;
+    const FILTER_TREND_STRENGTH = 2;
+    const FILTER_AVERAGE_SHORTTERM = 3;
+    const FILTER_AVERAGE_MIDDLETERM = 4;
+    const FILTER_AVERAGE_LONGTERM = 5;
+    const FILTER_OVERALL = 6;
+    const FILTER_VOLUME = 7;
+
     /**
      * @var integer
      * @ORM\Column(name="id", type="integer")

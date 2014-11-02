@@ -15,6 +15,7 @@ use Rottenwood\BarchartBundle\Entity\Price;
  * @package Rottenwood\BarchartBundle\Service
  */
 class AnalizerService {
+
     const AVERAGE_SHORTTERM = 1;
     const AVERAGE_MIDDLETERM = 2;
     const AVERAGE_LONGTERM = 3;
@@ -236,10 +237,10 @@ class AnalizerService {
      */
     public function getAverageNames() {
         return array(
-            self::AVERAGE_SHORTTERM => 'Средний показатель краткосрочных индикаторов',
+            self::AVERAGE_SHORTTERM  => 'Средний показатель краткосрочных индикаторов',
             self::AVERAGE_MIDDLETERM => 'Средний показатель среднесрочных индикаторов',
-            self::AVERAGE_LONGTERM => 'Средний показатель долгосрочных индикаторов',
-            self::AVERAGE_OVERALL => 'Средний показатель всех индикаторов',
+            self::AVERAGE_LONGTERM   => 'Средний показатель долгосрочных индикаторов',
+            self::AVERAGE_OVERALL    => 'Средний показатель всех индикаторов',
         );
     }
 
@@ -250,10 +251,10 @@ class AnalizerService {
      */
     private function getAverageFunctionName($average) {
         $averageFunctionNames = array(
-            self::AVERAGE_SHORTTERM => 'getSAverage',
+            self::AVERAGE_SHORTTERM  => 'getSAverage',
             self::AVERAGE_MIDDLETERM => 'getMAverage',
-            self::AVERAGE_LONGTERM => 'getLAverage',
-            self::AVERAGE_OVERALL => 'getOverall',
+            self::AVERAGE_LONGTERM   => 'getLAverage',
+            self::AVERAGE_OVERALL    => 'getOverall',
         );
 
         return $averageFunctionNames[$average];
