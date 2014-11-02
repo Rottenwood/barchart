@@ -6,11 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Торговые сигналы
- *
  * @ORM\Table(name="signals")
  * @ORM\Entity
  */
 class Signal {
+
+    const DIRECTION_BUY = 1;
+    const DIRECTION_SELL = -1;
 
     const INDICATOR_7_DAY_AVERAGE_DIRECTION = 1;
     const INDICATOR_10_8_DAY_MOVING_AVERAGE_HILO_CHANNEL = 2;
@@ -29,7 +31,6 @@ class Signal {
 
     /**
      * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -38,28 +39,24 @@ class Signal {
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="directionBuy", type="boolean")
+     * @var int
+     * @ORM\Column(name="direction", type="integer")
      */
-    private $directionBuy;
+    private $direction;
 
     /**
      * @var array
-     *
      * @ORM\Column(name="filters", type="simple_array")
      */
     private $filters;
 
     /**
      * @var array
-     *
      * @ORM\Column(name="indicators", type="simple_array")
      */
     private $indicators;
@@ -67,7 +64,6 @@ class Signal {
 
     /**
      * Get id
-     *
      * @return integer
      */
     public function getId() {
@@ -76,7 +72,6 @@ class Signal {
 
     /**
      * Set name
-     *
      * @param string $name
      * @return Signal
      */
@@ -88,7 +83,6 @@ class Signal {
 
     /**
      * Get name
-     *
      * @return string
      */
     public function getName() {
@@ -96,29 +90,21 @@ class Signal {
     }
 
     /**
-     * Set directionBuy
-     *
-     * @param boolean $directionBuy
-     * @return Signal
+     * @return int
      */
-    public function setDirectionBuy($directionBuy) {
-        $this->directionBuy = $directionBuy;
-
-        return $this;
+    public function getDirection() {
+        return $this->direction;
     }
 
     /**
-     * Get directionBuy
-     *
-     * @return boolean
+     * @param int $direction
      */
-    public function getDirectionBuy() {
-        return $this->directionBuy;
+    public function setDirection($direction) {
+        $this->direction = $direction;
     }
 
     /**
      * Set filters
-     *
      * @param array $filters
      * @return Signal
      */
@@ -130,7 +116,6 @@ class Signal {
 
     /**
      * Get filters
-     *
      * @return array
      */
     public function getFilters() {
@@ -157,20 +142,20 @@ class Signal {
      */
     public static function getIndicatorsMethodNames() {
         return array(
-            self::INDICATOR_7_DAY_AVERAGE_DIRECTION => 'Ad',
+            self::INDICATOR_7_DAY_AVERAGE_DIRECTION              => 'Ad',
             self::INDICATOR_10_8_DAY_MOVING_AVERAGE_HILO_CHANNEL => 'Mahilo',
-            self::INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE => 'SMavp',
-            self::INDICATOR_20_50_DAY_MACD => 'SMacd',
-            self::INDICATOR_20_DAY_BOLLINGER_BANDS => 'Bollinger',
+            self::INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE       => 'SMavp',
+            self::INDICATOR_20_50_DAY_MACD                       => 'SMacd',
+            self::INDICATOR_20_DAY_BOLLINGER_BANDS               => 'Bollinger',
 
-            self::INDICATOR_40_DAY_COMMIDITY_CHANNEL_INDEX => 'MCci',
-            self::INDICATOR_50_DAY_MOVING_AVERAGE_VS_PRICE => 'MMavp',
-            self::INDICATOR_20_100_DAY_MACD => 'MMacd',
-            self::INDICATOR_50_DAY_PARABOLIC_TIME_PRICE => 'Parabolic',
+            self::INDICATOR_40_DAY_COMMIDITY_CHANNEL_INDEX       => 'MCci',
+            self::INDICATOR_50_DAY_MOVING_AVERAGE_VS_PRICE       => 'MMavp',
+            self::INDICATOR_20_100_DAY_MACD                      => 'MMacd',
+            self::INDICATOR_50_DAY_PARABOLIC_TIME_PRICE          => 'Parabolic',
 
-            self::INDICATOR_60_DAY_COMMODITY_CHANNEL_INDEX => 'LCci',
-            self::INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE => 'LMavp',
-            self::INDICATOR_50_100_DAY_MACD => 'LMacd',
+            self::INDICATOR_60_DAY_COMMODITY_CHANNEL_INDEX       => 'LCci',
+            self::INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE      => 'LMavp',
+            self::INDICATOR_50_100_DAY_MACD                      => 'LMacd',
         );
     }
 }

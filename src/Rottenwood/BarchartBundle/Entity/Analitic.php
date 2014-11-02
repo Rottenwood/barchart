@@ -7,14 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Аналитики (юзеры)
- *
  * @ORM\Table(name="analitics")
  * @ORM\Entity
  */
 class Analitic {
+
     /**
      * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -23,14 +22,12 @@ class Analitic {
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
@@ -46,7 +43,6 @@ class Analitic {
 
     /**
      * Get id
-     *
      * @return integer
      */
     public function getId() {
@@ -55,7 +51,6 @@ class Analitic {
 
     /**
      * Set name
-     *
      * @param string $name
      * @return Analitic
      */
@@ -67,7 +62,6 @@ class Analitic {
 
     /**
      * Get name
-     *
      * @return string
      */
     public function getName() {
@@ -76,7 +70,6 @@ class Analitic {
 
     /**
      * Set email
-     *
      * @param string $email
      * @return Analitic
      */
@@ -88,7 +81,6 @@ class Analitic {
 
     /**
      * Get email
-     *
      * @return string
      */
     public function getEmail() {
@@ -97,7 +89,6 @@ class Analitic {
 
     /**
      * Set strategies
-     *
      * @param Strategy[] $strategies
      * @return Analitic
      */
@@ -109,7 +100,6 @@ class Analitic {
 
     /**
      * Get strategies
-     *
      * @return Strategy[]
      */
     public function getStrategies() {

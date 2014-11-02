@@ -7,14 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Стратегии
- *
  * @ORM\Table(name="strategies")
  * @ORM\Entity
  */
 class Strategy {
+
     /**
      * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -23,7 +22,6 @@ class Strategy {
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -50,7 +48,6 @@ class Strategy {
 
     /**
      * Get id
-     *
      * @return integer
      */
     public function getId() {
@@ -59,7 +56,6 @@ class Strategy {
 
     /**
      * Set name
-     *
      * @param string $name
      * @return Strategy
      */
@@ -71,7 +67,6 @@ class Strategy {
 
     /**
      * Get name
-     *
      * @return string
      */
     public function getName() {
@@ -80,7 +75,6 @@ class Strategy {
 
     /**
      * Set authors
-     *
      * @param string $authors
      * @return Strategy
      */
@@ -92,7 +86,6 @@ class Strategy {
 
     /**
      * Get authors
-     *
      * @return string
      */
     public function getAuthors() {
@@ -101,7 +94,6 @@ class Strategy {
 
     /**
      * Set signals
-     *
      * @param Signal[] $signals
      * @return Strategy
      */
@@ -113,7 +105,6 @@ class Strategy {
 
     /**
      * Get signals
-     *
      * @return Signal[]
      */
     public function getSignals() {
