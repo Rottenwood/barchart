@@ -29,6 +29,11 @@ class Signal {
     const INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE = 11;
     const INDICATOR_50_100_DAY_MACD = 12;
 
+    const INDICATOR_OVERALL = 20;
+    const INDICATOR_AVERAGE_SHORTTERM = 21;
+    const INDICATOR_AVERAGE_MIDDLETERM = 22;
+    const INDICATOR_AVERAGE_LONGTERM = 23;
+
     const FILTER_TREND_DIRECTION = 1;
     const FILTER_TREND_STRENGTH = 2;
     const FILTER_AVERAGE_SHORTTERM = 3;
@@ -106,9 +111,12 @@ class Signal {
 
     /**
      * @param int $direction
+     * @return Signal
      */
     public function setDirection($direction) {
         $this->direction = $direction;
+
+        return $this;
     }
 
     /**
@@ -164,6 +172,11 @@ class Signal {
             self::INDICATOR_60_DAY_COMMODITY_CHANNEL_INDEX       => 'LCci',
             self::INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE      => 'LMavp',
             self::INDICATOR_50_100_DAY_MACD                      => 'LMacd',
+
+            self::INDICATOR_OVERALL                              => 'Overall',
+            self::INDICATOR_AVERAGE_SHORTTERM                    => 'ShorttermAverage',
+            self::INDICATOR_AVERAGE_MIDDLETERM                   => 'MiddletermAverage',
+            self::INDICATOR_AVERAGE_LONGTERM                     => 'LongtermAverage',
         );
     }
 }
