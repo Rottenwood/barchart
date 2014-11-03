@@ -14,6 +14,10 @@ class Signal {
     const DIRECTION_BUY = 1;
     const DIRECTION_SELL = -1;
 
+    const SIGNAL_SELL = -1;
+    const SIGNAL_HOLD = 0;
+    const SIGNAL_BUY = 1;
+
     const INDICATOR_7_DAY_AVERAGE_DIRECTION = 1;
     const INDICATOR_10_8_DAY_MOVING_AVERAGE_HILO_CHANNEL = 2;
     const INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE = 3;
@@ -160,18 +164,18 @@ class Signal {
         return array(
             self::INDICATOR_7_DAY_AVERAGE_DIRECTION              => 'Ad',
             self::INDICATOR_10_8_DAY_MOVING_AVERAGE_HILO_CHANNEL => 'Mahilo',
-            self::INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE       => 'SMavp',
-            self::INDICATOR_20_50_DAY_MACD                       => 'SMacd',
+            self::INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE       => 'ShorttermMavp',
+            self::INDICATOR_20_50_DAY_MACD                       => 'ShorttermMacd',
             self::INDICATOR_20_DAY_BOLLINGER_BANDS               => 'Bollinger',
 
-            self::INDICATOR_40_DAY_COMMIDITY_CHANNEL_INDEX       => 'MCci',
-            self::INDICATOR_50_DAY_MOVING_AVERAGE_VS_PRICE       => 'MMavp',
-            self::INDICATOR_20_100_DAY_MACD                      => 'MMacd',
+            self::INDICATOR_40_DAY_COMMIDITY_CHANNEL_INDEX       => 'MediumtermCci',
+            self::INDICATOR_50_DAY_MOVING_AVERAGE_VS_PRICE       => 'MediumtermMavp',
+            self::INDICATOR_20_100_DAY_MACD                      => 'MediumtermMacd',
             self::INDICATOR_50_DAY_PARABOLIC_TIME_PRICE          => 'Parabolic',
 
-            self::INDICATOR_60_DAY_COMMODITY_CHANNEL_INDEX       => 'LCci',
-            self::INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE      => 'LMavp',
-            self::INDICATOR_50_100_DAY_MACD                      => 'LMacd',
+            self::INDICATOR_60_DAY_COMMODITY_CHANNEL_INDEX       => 'LongtermCci',
+            self::INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE      => 'LongtermMavp',
+            self::INDICATOR_50_100_DAY_MACD                      => 'LongtermMacd',
 
             self::INDICATOR_OVERALL                              => 'Overall',
             self::INDICATOR_AVERAGE_SHORTTERM                    => 'ShorttermAverage',

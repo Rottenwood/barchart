@@ -8,6 +8,9 @@ namespace Rottenwood\BarchartBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Rottenwood\BarchartBundle\Entity\Price;
+use Rottenwood\BarchartBundle\Entity\Strategy;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 /**
  * Сервис анализа данных технических индикаторов
@@ -221,13 +224,35 @@ class AnalizerService {
         return $resultPrices;
     }
 
-    /**
-     * Фильтрация по показанию индикатора
-     * @param Price[] $prices
-     * @param string  $indicator
-     * @param float   $value
-     */
-    public function indicatorFilter($prices, $indicator, $value) {
+    public function testStrategy(Strategy $strategy) {
+        // Получение цен для анализа
+        $prices = $this->getPrices($strategy->getSymbolName()[$strategy->getSymbol()]);
+
+        /** @var Price $price */
+        foreach ($prices as $price) {
+            // Сигналы
+            foreach ($strategy->getSignals() as $signal) {
+                $indicatorsPassed = 0;
+                foreach ($signal->getIndicators() as $indicatorName => $indicatorValue) {
+                    $indicatorMethod = 'get' . $signal->getIndicatorsMethodNames()[$indicatorName];
+
+                    if (($indicatorValue >= $price->$indicatorMethod() && $signal->getDirection() ==
+                            $signal::DIRECTION_BUY && $price->$indicatorMethod() != $signal::SIGNAL_HOLD)
+                        || ($indicatorValue <= $price->$indicatorMethod() && $signal->getDirection() ==
+                            $signal::DIRECTION_SELL && $price->$indicatorMethod() != $signal::SIGNAL_HOLD)
+                        || ($indicatorValue == $price->$indicatorMethod() && $signal->getDirection() ==
+                            $signal::SIGNAL_HOLD)) {
+                        $indicatorsPassed++;
+                    }
+                }
+
+                if ($indicatorsPassed == count($signal->getIndicators())) {
+                    // TODO: Расчет ведения сделки
+                }
+
+            }
+        }
+
 
     }
 
@@ -251,9 +276,9 @@ class AnalizerService {
      */
     private function getAverageFunctionName($average) {
         $averageFunctionNames = array(
-            self::AVERAGE_SHORTTERM  => 'getSAverage',
-            self::AVERAGE_MIDDLETERM => 'getMAverage',
-            self::AVERAGE_LONGTERM   => 'getLAverage',
+            self::AVERAGE_SHORTTERM  => 'getShorttermAverage',
+            self::AVERAGE_MIDDLETERM => 'getMiddletermAverage',
+            self::AVERAGE_LONGTERM   => 'getLongtermAverage',
             self::AVERAGE_OVERALL    => 'getOverall',
         );
 

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="strategies")
  * @ORM\Entity
  */
-class Strategy {
+class Strategy extends Symbol {
 
     /**
      * @var integer
@@ -39,6 +39,12 @@ class Strategy {
      *      )
      **/
     private $signals;
+
+    /**
+     * @var int
+     * @ORM\Column(name="symbol", type="smallint")
+     */
+    private $symbol;
 
 
     public function __construct() {
@@ -109,5 +115,19 @@ class Strategy {
      */
     public function getSignals() {
         return $this->signals;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSymbol() {
+        return $this->symbol;
+    }
+
+    /**
+     * @param int $symbol
+     */
+    public function setSymbol($symbol) {
+        $this->symbol = $symbol;
     }
 }
