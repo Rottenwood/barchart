@@ -42,6 +42,8 @@ class PriceRepository extends EntityRepository {
     public function findHowManyPrices() {
         $entity = $this->_entityName;
 
+        // TODO: Добавить setParameter
+        // TODO: Рефакторинг запроса с помощью query builder
         $query = $this->getEntityManager()->createQuery("SELECT MAX(e.id) FROM $entity e");
         $result = $query->getSingleResult();
 
@@ -57,6 +59,8 @@ class PriceRepository extends EntityRepository {
     public function findLastPriceOfSymbol() {
         $entity = $this->_entityName;
 
+        // TODO: Добавить setParameter
+        // TODO: Рефакторинг запроса с помощью query builder
         $query = $this->getEntityManager()->createQuery("SELECT e.price FROM $entity e ORDER BY e.id DESC");
         $query->setMaxResults(1);
         $result = $query->getResult();

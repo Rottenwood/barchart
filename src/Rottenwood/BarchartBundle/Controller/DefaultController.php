@@ -26,17 +26,18 @@ class DefaultController extends Controller {
 
         $signal = new Signal();
         $signal->setName('Test signal');
-        $signal->setDirection($signal::DIRECTION_SELL);
+        $signal->setDirection(Signal::DIRECTION_SELL);
         $signal->setIndicators(array(
-            $signal::INDICATOR_OVERALL         => -100,
-            $signal::INDICATOR_50_100_DAY_MACD => -1,
+            Signal::INDICATOR_OVERALL         => -100,
+            Signal::INDICATOR_50_100_DAY_MACD => Signal::SIGNAL_SELL,
+//            $signal::INDICATOR_AVERAGE_SHORTTERM => -100,
         ));
 
         $strategy = new Strategy();
         $strategy->setName('Test strategy');
         $strategy->setSignals(array($signal));
         $strategy->setAuthors(array($analitic));
-        $strategy->setSymbol($strategy::SYMBOL_FOREX_GBPUSD);
+        $strategy->setSymbol(Strategy::SYMBOL_FUTURES_CORN);
 
         $account = new TradeAccount();
         $account->setName('Test Account');
