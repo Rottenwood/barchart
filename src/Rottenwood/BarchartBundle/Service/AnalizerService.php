@@ -273,9 +273,9 @@ class AnalizerService {
 
                     /** @var Price $comparePrice */
                     foreach (array_slice($prices, $priceKey + 1) as $comparePriceKey => $comparePrice) {
-                        if ($comparePriceKey >= 95) {
-                        	break;
-                        }
+//                        if ($comparePriceKey >= 95) {
+//                        	break;
+//                        }
 
                         $profit = $this->analyseProfit($price, $comparePrice, $signal->getDirection());
                         $tradeProfit =+ $profit['profit'];
@@ -286,6 +286,21 @@ class AnalizerService {
 
                         if ($profit['profit'] < $low) {
                             $low = $profit['profit'];
+                        }
+
+                        // Критерии закрытия сделки
+                        $percentProfit = $profit['profit'] / $price->getPrice() * 100;
+
+                        if ($signal->getStopLossPercent() && -$percentProfit > $signal->getStopLossPercent()) {
+                            var_dump('STOP');
+                            echo '<br><br>';
+                            break;
+                        }
+
+                        if ($signal->getTakeProfitPercent() && $percentProfit > $signal->getTakeProfitPercent()) {
+                            var_dump('TAKE');
+                            echo '<br><br>';
+                            break;
                         }
                     }
 
@@ -352,15 +367,15 @@ class AnalizerService {
         // Сохранение значения для дальнейшего использования
         $this->lastProfit = $profit;
 
-        if ($profit > $this->high) {
-            $this->high = $profit;
-            $this->highId = $priceCompareObject->getId();
-        }
-
-        if ($profit < $this->low) {
-            $this->low = $profit;
-            $this->lowId = $priceCompareObject->getId();
-        }
+//        if ($profit > $this->high) {
+//            $this->high = $profit;
+//            $this->highId = $priceCompareObject->getId();
+//        }
+//
+//        if ($profit < $this->low) {
+//            $this->low = $profit;
+//            $this->lowId = $priceCompareObject->getId();
+//        }
 
         $timePassed = $priceCompareObject->getDate()->getTimestamp() - $priceObject->getDate()->getTimestamp();
 
