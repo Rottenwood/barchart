@@ -301,6 +301,8 @@ class AnalizerService {
 
                     var_dump('Profit: ' . $tradeProfit);
                     echo '<br><br>';
+
+                    var_dump($trade);
                 }
 
             }

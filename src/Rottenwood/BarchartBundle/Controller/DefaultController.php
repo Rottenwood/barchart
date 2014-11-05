@@ -28,12 +28,12 @@ class DefaultController extends Controller {
         $signal->setName('Test signal');
         $signal->setDirection(Signal::DIRECTION_SELL);
         $signal->setIndicators(array(
-            Signal::INDICATOR_OVERALL         => 100,
+            Signal::INDICATOR_OVERALL         => -100,
 //            Signal::INDICATOR_50_100_DAY_MACD => Signal::SIGNAL_SELL,
 //            $signal::INDICATOR_AVERAGE_SHORTTERM => -100,
         ));
-        $signal->setStopLossPercent(10);
-        $signal->setTakeProfitPercent(10);
+        $signal->setStopLossPercent(5);
+        $signal->setTakeProfitPercent(5);
 
         $strategy = new Strategy();
         $strategy->setName('Test strategy');
