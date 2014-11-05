@@ -93,6 +93,20 @@ class Signal {
     private $takeProfit;
 
     /**
+     * Закрытие сделки с убытком в процентах
+     * @var int
+     * @ORM\Column(name="stop_loss_percent", type="smallint", nullable=true)
+     */
+    private $stopLossPercent;
+
+    /**
+     * Закрытие сделки по прибыли в процентах
+     * @var int
+     * @ORM\Column(name="take_profit_percent", type="smallint", nullable=true)
+     */
+    private $takeProfitPercent;
+
+    /**
      * Закрытие сделки по фактору времени
      * @var \datetime
      * @ORM\Column(name="time_stop", type="datetime", nullable=true)
@@ -203,6 +217,34 @@ class Signal {
      */
     public function setTakeProfit($takeProfit) {
         $this->takeProfit = $takeProfit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStopLossPercent() {
+        return $this->stopLossPercent;
+    }
+
+    /**
+     * @param int $stopLossPercent
+     */
+    public function setStopLossPercent($stopLossPercent) {
+        $this->stopLossPercent = $stopLossPercent;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTakeProfitPercent() {
+        return $this->takeProfitPercent;
+    }
+
+    /**
+     * @param int $takeProfitPercent
+     */
+    public function setTakeProfitPercent($takeProfitPercent) {
+        $this->takeProfitPercent = $takeProfitPercent;
     }
 
     /**

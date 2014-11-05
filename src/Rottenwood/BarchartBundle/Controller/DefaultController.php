@@ -32,6 +32,8 @@ class DefaultController extends Controller {
             Signal::INDICATOR_50_100_DAY_MACD => Signal::SIGNAL_SELL,
 //            $signal::INDICATOR_AVERAGE_SHORTTERM => -100,
         ));
+        $signal->setStopLossPercent(10);
+        $signal->setTakeProfitPercent(20);
 
         $strategy = new Strategy();
         $strategy->setName('Test strategy');
