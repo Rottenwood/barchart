@@ -78,6 +78,27 @@ class Signal {
      */
     private $indicators;
 
+    /**
+     * Закрытие сделки с убытком
+     * @var int
+     * @ORM\Column(name="stop_loss", type="smallint", nullable=true)
+     */
+    private $stopLoss;
+
+    /**
+     * Закрытие сделки по прибыли
+     * @var int
+     * @ORM\Column(name="take_profit", type="smallint", nullable=true)
+     */
+    private $takeProfit;
+
+    /**
+     * Закрытие сделки по фактору времени
+     * @var \datetime
+     * @ORM\Column(name="time_stop", type="datetime", nullable=true)
+     */
+    private $timeStop;
+
 
     /**
      * Get id
@@ -157,30 +178,72 @@ class Signal {
     }
 
     /**
+     * @return int
+     */
+    public function getStopLoss() {
+        return $this->stopLoss;
+    }
+
+    /**
+     * @param int $stopLoss
+     */
+    public function setStopLoss($stopLoss) {
+        $this->stopLoss = $stopLoss;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTakeProfit() {
+        return $this->takeProfit;
+    }
+
+    /**
+     * @param int $takeProfit
+     */
+    public function setTakeProfit($takeProfit) {
+        $this->takeProfit = $takeProfit;
+    }
+
+    /**
+     * @return \datetime
+     */
+    public function getTimeStop() {
+        return $this->timeStop;
+    }
+
+    /**
+     * @param \datetime $timeStop
+     */
+    public function setTimeStop($timeStop) {
+        $this->timeStop = $timeStop;
+    }
+
+    /**
      * Массив соответствия индикаторам методов из сущности Price
      * @return array
      */
     public static function getIndicatorsMethodNames() {
         return array(
-            self::INDICATOR_7_DAY_AVERAGE_DIRECTION              => 'Ad',
+            self::INDICATOR_7_DAY_AVERAGE_DIRECTION => 'Ad',
             self::INDICATOR_10_8_DAY_MOVING_AVERAGE_HILO_CHANNEL => 'Mahilo',
-            self::INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE       => 'ShorttermMavp',
-            self::INDICATOR_20_50_DAY_MACD                       => 'ShorttermMacd',
-            self::INDICATOR_20_DAY_BOLLINGER_BANDS               => 'Bollinger',
+            self::INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE => 'ShorttermMavp',
+            self::INDICATOR_20_50_DAY_MACD => 'ShorttermMacd',
+            self::INDICATOR_20_DAY_BOLLINGER_BANDS => 'Bollinger',
 
-            self::INDICATOR_40_DAY_COMMIDITY_CHANNEL_INDEX       => 'MediumtermCci',
-            self::INDICATOR_50_DAY_MOVING_AVERAGE_VS_PRICE       => 'MediumtermMavp',
-            self::INDICATOR_20_100_DAY_MACD                      => 'MediumtermMacd',
-            self::INDICATOR_50_DAY_PARABOLIC_TIME_PRICE          => 'Parabolic',
+            self::INDICATOR_40_DAY_COMMIDITY_CHANNEL_INDEX => 'MediumtermCci',
+            self::INDICATOR_50_DAY_MOVING_AVERAGE_VS_PRICE => 'MediumtermMavp',
+            self::INDICATOR_20_100_DAY_MACD => 'MediumtermMacd',
+            self::INDICATOR_50_DAY_PARABOLIC_TIME_PRICE => 'Parabolic',
 
-            self::INDICATOR_60_DAY_COMMODITY_CHANNEL_INDEX       => 'LongtermCci',
-            self::INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE      => 'LongtermMavp',
-            self::INDICATOR_50_100_DAY_MACD                      => 'LongtermMacd',
+            self::INDICATOR_60_DAY_COMMODITY_CHANNEL_INDEX => 'LongtermCci',
+            self::INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE => 'LongtermMavp',
+            self::INDICATOR_50_100_DAY_MACD => 'LongtermMacd',
 
-            self::INDICATOR_OVERALL                              => 'Overall',
-            self::INDICATOR_AVERAGE_SHORTTERM                    => 'ShorttermAverage',
-            self::INDICATOR_AVERAGE_MIDDLETERM                   => 'MiddletermAverage',
-            self::INDICATOR_AVERAGE_LONGTERM                     => 'LongtermAverage',
+            self::INDICATOR_OVERALL => 'Overall',
+            self::INDICATOR_AVERAGE_SHORTTERM => 'ShorttermAverage',
+            self::INDICATOR_AVERAGE_MIDDLETERM => 'MiddletermAverage',
+            self::INDICATOR_AVERAGE_LONGTERM => 'LongtermAverage',
         );
     }
 }
