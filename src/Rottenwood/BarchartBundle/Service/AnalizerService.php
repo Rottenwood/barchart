@@ -238,10 +238,17 @@ class AnalizerService {
         return $resultPrices;
     }
 
-    // TODO: Рефакторинг!
+    /**
+     * Бэктестинг стратегии
+     * @param Strategy $strategy
+     * @return array
+     */
     public function testStrategy(Strategy $strategy) {
         // Получение цен для анализа
         $prices = $this->getAllPrices($strategy->getSymbolName()[$strategy->getSymbol()]);
+
+        // Массив сделок
+        $trades = array();
 
         /** @var Price $price */
         foreach ($prices as $priceKey => $price) {
@@ -263,13 +270,9 @@ class AnalizerService {
                     $trade->setDirection($signal->getDirection());
                     $trade->setOpen($price->getPrice());
 
-                    // Сравнение цены открытия с последующими ценами
-                    $tradeProfit = 0;
-
                     /** @var Price $comparePrice */
                     foreach (array_slice($prices, $priceKey + 1) as $comparePriceKey => $comparePrice) {
                         $profit = $this->analyseProfit($price, $comparePrice, $signal->getDirection());
-                        $tradeProfit = +$profit['profit'];
 
                         if ($profit['profit'] > $trade->getHigh()) {
                             $trade->setHigh($profit['profit']);
@@ -282,31 +285,27 @@ class AnalizerService {
                         // Критерии закрытия сделки
                         $percentProfit = $profit['profit'] / $price->getPrice() * 100;
 
+
                         // Стоп в процентах
                         if ($signal->getStopLossPercent() && -$percentProfit > $signal->getStopLossPercent()) {
-                            echo '<br><br>';
-                            var_dump('STOP');
                             $trade->setClose($comparePrice->getPrice());
                             break;
                         }
 
                         // Тейк в процентах
                         if ($signal->getTakeProfitPercent() && $percentProfit > $signal->getTakeProfitPercent()) {
-                            echo '<br><br>';
-                            var_dump('TAKE');
                             $trade->setClose($comparePrice->getPrice());
                             break;
                         }
+
                     }
 
-                    var_dump('Profit: ' . $tradeProfit);
-                    echo '<br><br>';
-
-                    var_dump($trade);
+                    $trades[] = $trade;
                 }
-
             }
         }
+
+        return $trades;
     }
 
     /**

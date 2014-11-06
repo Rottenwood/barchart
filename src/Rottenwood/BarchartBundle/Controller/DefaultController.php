@@ -16,7 +16,6 @@ class DefaultController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction() {
-        $data = array();
         //        $parser = $this->get("barchart.parser");
         $analizer = $this->get("barchart.analizer");
 
@@ -26,20 +25,20 @@ class DefaultController extends Controller {
 
         $signal = new Signal();
         $signal->setName('Test signal');
-        $signal->setDirection(Signal::DIRECTION_SELL);
+        $signal->setDirection(Signal::DIRECTION_BUY);
         $signal->setIndicators(array(
-            Signal::INDICATOR_OVERALL         => -100,
-//            Signal::INDICATOR_50_100_DAY_MACD => Signal::SIGNAL_SELL,
-//            $signal::INDICATOR_AVERAGE_SHORTTERM => -100,
+            Signal::INDICATOR_OVERALL         => 100,
+//            Signal::INDICATOR_50_100_DAY_MACD => Signal::SIGNAL_BUY,
         ));
-        $signal->setStopLossPercent(5);
-        $signal->setTakeProfitPercent(5);
+        $signal->setStopLossPercent(0.05);
+        $signal->setTakeProfitPercent(0.05);
 
         $strategy = new Strategy();
         $strategy->setName('Test strategy');
         $strategy->setSignals(array($signal));
         $strategy->setAuthors(array($analitic));
-        $strategy->setSymbol(Strategy::SYMBOL_FUTURES_CORN);
+//        $strategy->setSymbol(Strategy::SYMBOL_FUTURES_NATURALGAS);
+        $strategy->setSymbol(Strategy::SYMBOL_FOREX_USDJPY);
 
         $account = new TradeAccount();
         $account->setName('Test Account');
@@ -47,8 +46,8 @@ class DefaultController extends Controller {
         $account->setBalance(1000);
         $account->setStrategy($strategy);
 
-        $analizer->testStrategy($strategy);
-
-        return $data;
+        return array(
+            'trades' => $analizer->testStrategy($strategy),
+        );
     }
 }

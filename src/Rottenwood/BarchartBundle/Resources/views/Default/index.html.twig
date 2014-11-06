@@ -2,6 +2,20 @@
 
 {% block content %}
 
-
+    <ul>
+        {% for trade in trades %}
+            <li>
+                {% if trade.direction == constant('DIRECTION_BUY', trade) %}
+                    {% set direction = 'продажа' %}
+                    {% set profit = trade.close - trade.open %}
+                {% else %}
+                    {% set direction = 'покупка' %}
+                    {% set profit = trade.open - trade.close %}
+                {% endif %}
+                <strong>{{ direction }}</strong>
+                Open: {{ trade.open }}, Close: {{ trade.close }}, Saldo {{ profit }}
+            </li>
+        {% endfor %}
+    </ul>
 
 {% endblock content %}

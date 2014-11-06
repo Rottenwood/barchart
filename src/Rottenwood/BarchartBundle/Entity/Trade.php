@@ -57,13 +57,13 @@ class Trade extends Symbol {
      * @var float
      * @ORM\Column(name="high", type="float")
      */
-    private $high;
+    private $high = 0;
 
     /**
      * @var float
      * @ORM\Column(name="drawdown", type="float")
      */
-    private $drawdown;
+    private $drawdown = 0;
 
     /**
      * @var float
