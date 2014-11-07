@@ -11,8 +11,6 @@ use Rottenwood\BarchartBundle\Entity\Price;
 use Rottenwood\BarchartBundle\Entity\Signal;
 use Rottenwood\BarchartBundle\Entity\Strategy;
 use Rottenwood\BarchartBundle\Entity\Trade;
-use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 /**
  * Сервис анализа данных технических индикаторов
@@ -28,68 +26,12 @@ class AnalizerService {
 
     private $em;
     private $config;
-    private $high = 0;
-    private $highId = 0;
-    private $low = 0;
-    private $lowId = 0;
     private $lastProfit;
-    private $tradeProfit = 0;
 
     public function __construct(ConfigService $configService, EntityManager $em) {
         $this->em = $em;
         $this->config = $configService->getConfig();
     }
-
-    //    /**
-    //     * Анализ (тестовый), находится в разработке
-    //     * Количество часов (полей) для запроса из БД
-    //     * В торговой неделе 5 дней, в торговом дне 19 часов
-    //     * @return $this
-    //     */
-    //    public function analyseOverallCorn() {
-    //        $profit = array();
-    //        $grossProfit = 0;
-    //        $drawdown = 0;
-    //        $drawdowns = 0;
-    //
-    //        $limit = $this->getLimit();
-    //        $limitTwice = $limit * 2;
-    //
-    //        // Получаем нужное количество объектов-цен
-    //        $corns = $this->em->getRepository('RottenwoodBarchartBundle:Corn')->findPricesFromId(1, $limitTwice);
-    //
-    //        // Обработка полученных цен
-    //        $cornsArray = $corns->toArray();
-    //        $cornsCount = $corns->count();
-    //
-    //        $i = 0;
-    //        foreach ($cornsArray as $key => $value) {
-    //            $priceToAnalize = $cornsArray[$i];
-    //
-    //            for ($x = $i; $x < ($limit + $i); $x++) {
-    //                $price = $cornsArray[$x];
-    //                $profit = $this->analyseProfit($priceToAnalize, $price);
-    //                if ($profit['lowProfit'] < -3) {
-    //                    $drawdowns++;
-    //                    break 2;
-    //                }
-    //            };
-    //            var_dump($profit);
-    //            //            $grossProfit = $grossProfit + $profit['highProfit'];
-    //            $grossProfit = $grossProfit + $profit['profit'];
-    //            $drawdown = $drawdown + $profit['lowProfit'];
-    //
-    //
-    //            if (++$i == $limit) {
-    //                break;
-    //            }
-    //        }
-    //
-    //        var_dump($grossProfit);
-    //        var_dump($drawdowns);
-    //
-    //        return $this;
-    //    }
 
     /**
      * Получение массива цен запрашиваемого инструмента
@@ -269,21 +211,22 @@ class AnalizerService {
                     $trade = new Trade();
                     $trade->setDirection($signal->getDirection());
                     $trade->setOpen($price->getPrice());
+                    $trade->setOpenDate($price->getDate());
 
                     /** @var Price $comparePrice */
                     foreach (array_slice($prices, $priceKey + 1) as $comparePriceKey => $comparePrice) {
-                        $profit = $this->analyseProfit($price, $comparePrice, $signal->getDirection());
+                        $analizedTrade = $this->analyseProfit($price, $comparePrice, $signal->getDirection());
 
-                        if ($profit['profit'] > $trade->getHigh()) {
-                            $trade->setHigh($profit['profit']);
+                        if ($analizedTrade->getHigh() > $trade->getHigh()) {
+                            $trade->setHigh($analizedTrade->getHigh());
                         }
 
-                        if ($profit['profit'] < $trade->getDrawdown()) {
-                            $trade->setDrawdown($profit['profit']);
+                        if ($analizedTrade->getHigh() < $trade->getDrawdown()) {
+                            $trade->setDrawdown($analizedTrade->getHigh());
                         }
 
                         // Критерии закрытия сделки
-                        $percentProfit = $profit['profit'] / $price->getPrice() * 100;
+                        $percentProfit = $analizedTrade->getHigh() / $price->getPrice() * 100;
 
 
                         // Стоп в процентах
@@ -342,50 +285,37 @@ class AnalizerService {
      * @param Price $priceObject
      * @param Price $priceCompareObject
      * @param int   $direction
-     * @return array
+     * @return Trade
      */
     private function analyseProfit(Price $priceObject, Price $priceCompareObject, $direction) {
-        $return = array();
 
         $openPrice = $priceObject->getPrice();
         $closePrice = $priceCompareObject->getPrice();
 
         if ($direction == Signal::DIRECTION_BUY) {
             $profit = $closePrice - $openPrice;
-        } elseif ($direction == Signal::DIRECTION_SELL) {
-            $profit = $openPrice - $closePrice;
         } else {
-            // Если сигнал к удержанию позиции
-            return $return['hold'];
+            $profit = $openPrice - $closePrice;
         }
 
         // Сохранение значения для дальнейшего использования
         $this->lastProfit = $profit;
 
-        //        if ($profit > $this->high) {
-        //            $this->high = $profit;
-        //            $this->highId = $priceCompareObject->getId();
-        //        }
-        //
-        //        if ($profit < $this->low) {
-        //            $this->low = $profit;
-        //            $this->lowId = $priceCompareObject->getId();
-        //        }
+//        $timePassed = $priceCompareObject->getDate()->getTimestamp() - $priceObject->getDate()->getTimestamp();
 
-        $timePassed = $priceCompareObject->getDate()->getTimestamp() - $priceObject->getDate()->getTimestamp();
+        $trade = new Trade();
+        $trade->setHigh($profit);
+        $trade->setOpen($openPrice);
+        $trade->setClose($closePrice);
 
-        $return['profit'] = $profit;
-        $return['open'] = $openPrice;
-        $return['close'] = $closePrice;
-        $return['highProfit'] = $this->high;
-        //                $return['highProfitObject'] = $this->highId;
-        $return['lowProfit'] = $this->low;
-        //        $return['lowProfitObject'] = $this->lowId;
-        $return['timePassed'] = $timePassed;
-        $return['openObject'] = $priceObject->getId();
-        $return['closeObject'] = $priceCompareObject->getId();
+//        $return['profit'] = $profit;
+//        $return['open'] = $openPrice;
+//        $return['close'] = $closePrice;
+//        $return['timePassed'] = $timePassed;
+//        $return['openObject'] = $priceObject->getId();
+//        $return['closeObject'] = $priceCompareObject->getId();
 
-        return $return;
+        return $trade;
     }
 
     /**

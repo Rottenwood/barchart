@@ -25,20 +25,20 @@ class DefaultController extends Controller {
 
         $signal = new Signal();
         $signal->setName('Test signal');
-        $signal->setDirection(Signal::DIRECTION_BUY);
+        $signal->setDirection(Signal::DIRECTION_SELL);
         $signal->setIndicators(array(
-            Signal::INDICATOR_OVERALL         => 100,
+            Signal::INDICATOR_AVERAGE_SHORTTERM         => -100,
 //            Signal::INDICATOR_50_100_DAY_MACD => Signal::SIGNAL_BUY,
         ));
-        $signal->setStopLossPercent(0.05);
-        $signal->setTakeProfitPercent(0.05);
+        $signal->setStopLossPercent(2);
+        $signal->setTakeProfitPercent(7);
 
         $strategy = new Strategy();
         $strategy->setName('Test strategy');
         $strategy->setSignals(array($signal));
         $strategy->setAuthors(array($analitic));
-//        $strategy->setSymbol(Strategy::SYMBOL_FUTURES_NATURALGAS);
-        $strategy->setSymbol(Strategy::SYMBOL_FOREX_USDJPY);
+        $strategy->setSymbol(Strategy::SYMBOL_FUTURES_CORN);
+//        $strategy->setSymbol(Strategy::SYMBOL_FOREX_USDJPY);
 
         $account = new TradeAccount();
         $account->setName('Test Account');

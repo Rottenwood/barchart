@@ -79,6 +79,12 @@ class Trade extends Symbol {
 
     /**
      * @var \DateTime
+     * @ORM\Column(name="open_date_local", type="datetime")
+     */
+    private $openDateLocal;
+
+    /**
+     * @var \DateTime
      * @ORM\Column(name="close_date", type="datetime")
      */
     private $closeDate;
@@ -87,7 +93,7 @@ class Trade extends Symbol {
      * @ORM\PrePersist
      */
     public function prePersistCallback() {
-        $this->setOpenDate(new \Datetime());
+        $this->setOpenDateLocal(new \Datetime());
     }
 
     /**
@@ -259,6 +265,20 @@ class Trade extends Symbol {
      */
     public function setCloseDate($closeDate) {
         $this->closeDate = $closeDate;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getOpenDateLocal() {
+        return $this->openDateLocal;
+    }
+
+    /**
+     * @param \DateTime $openDateLocal
+     */
+    public function setOpenDateLocal($openDateLocal) {
+        $this->openDateLocal = $openDateLocal;
     }
 
     /**

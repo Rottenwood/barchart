@@ -284,7 +284,7 @@ class Signal {
 
             self::INDICATOR_OVERALL => 'Overall',
             self::INDICATOR_AVERAGE_SHORTTERM => 'ShorttermAverage',
-            self::INDICATOR_AVERAGE_MIDDLETERM => 'MiddletermAverage',
+            self::INDICATOR_AVERAGE_MIDDLETERM => 'MediumtermAverage',
             self::INDICATOR_AVERAGE_LONGTERM => 'LongtermAverage',
         );
     }

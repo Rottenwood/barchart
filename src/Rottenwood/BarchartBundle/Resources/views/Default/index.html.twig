@@ -5,6 +5,7 @@
     <ul>
         {% for trade in trades %}
             <li>
+                {{ loop.index }}.
                 {% if trade.direction == constant('DIRECTION_BUY', trade) %}
                     {% set direction = 'продажа' %}
                     {% set profit = trade.close - trade.open %}
@@ -13,7 +14,7 @@
                     {% set profit = trade.open - trade.close %}
                 {% endif %}
                 <strong>{{ direction }}</strong>
-                Open: {{ trade.open }}, Close: {{ trade.close }}, Saldo {{ profit }}
+                Time: {{ trade.openDate.format('Y-m-d') }}, Open: {{ trade.open }}, Close: {{ trade.close }}, Saldo {{ profit }}
             </li>
         {% endfor %}
     </ul>
