@@ -17,6 +17,8 @@ class Signal {
     const SIGNAL_SELL = -1;
     const SIGNAL_HOLD = 0;
     const SIGNAL_BUY = 1;
+    const SIGNAL_MAXIMUM_BUY = 100;
+    const SIGNAL_MAXIMUM_SELL = -100;
 
     const INDICATOR_7_DAY_AVERAGE_DIRECTION = 1;
     const INDICATOR_10_8_DAY_MOVING_AVERAGE_HILO_CHANNEL = 2;
