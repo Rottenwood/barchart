@@ -301,19 +301,10 @@ class AnalizerService {
         // Сохранение значения для дальнейшего использования
         $this->lastProfit = $profit;
 
-//        $timePassed = $priceCompareObject->getDate()->getTimestamp() - $priceObject->getDate()->getTimestamp();
-
         $trade = new Trade();
         $trade->setHigh($profit);
         $trade->setOpen($openPrice);
         $trade->setClose($closePrice);
-
-//        $return['profit'] = $profit;
-//        $return['open'] = $openPrice;
-//        $return['close'] = $closePrice;
-//        $return['timePassed'] = $timePassed;
-//        $return['openObject'] = $priceObject->getId();
-//        $return['closeObject'] = $priceCompareObject->getId();
 
         return $trade;
     }
