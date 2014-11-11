@@ -7,25 +7,26 @@
 namespace Rottenwood\BarchartBundle\Form;
 
 use Rottenwood\BarchartBundle\Entity\Strategy;
+use Rottenwood\BarchartBundle\Entity\Symbol;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class StrategyType extends AbstractType {
 
-    function __construct() {
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->setMethod('POST');
-
         $builder->add('name', 'text', array(
             'required' => true,
             'attr' => array(
                 'placeholder' => 'Название стратегии',
             )
         ));
-
+        $builder->add('symbol', 'choice', array(
+            'label' => 'Торговый инструмент',
+            'required' => true,
+            'choices' => Symbol::getSymbolName(),
+        ));
         $builder->add('send', 'submit', array('label' => 'Проверить стратегию'));
     }
 

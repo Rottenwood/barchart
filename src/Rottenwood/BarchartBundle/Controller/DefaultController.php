@@ -6,8 +6,10 @@ use Rottenwood\BarchartBundle\Entity\Analitic;
 use Rottenwood\BarchartBundle\Entity\Signal;
 use Rottenwood\BarchartBundle\Entity\Strategy;
 use Rottenwood\BarchartBundle\Entity\TradeAccount;
+use Rottenwood\BarchartBundle\Form\StrategyType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller {
 
@@ -15,9 +17,7 @@ class DefaultController extends Controller {
      * @Template()
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction() {
-        //                $analizer = $this->get("barchart.analizer");
-
+    public function indexAction(Request $request) {
         $analitic = new Analitic();
         $analitic->setName('Tester Analitique');
         $analitic->setEmail('smonkl@bk.ru');
@@ -42,20 +42,9 @@ class DefaultController extends Controller {
         $account->setAnalitic($analitic);
         $account->setBalance(1000);
         $account->setStrategy($strategy);
-        //
-        //        return array(
-        //            'trades' => $analizer->testStrategy($strategy),
-        //        );
 
-        $form = $this->createFormBuilder($strategy);
-        $form->add('name', 'text', array(
-            'required' => true,
-            'attr' => array(
-                'placeholder' => 'Название стратегии',
-            )
-        ));
-        $form->add('send', 'submit', array('label' => 'Проверить стратегию'));
-        $form = $form->getForm();
+        $form = $this->createForm(new StrategyType(), $strategy);
+        $form->handleRequest($request);
 
         return array(
             'form' => $form->createView(),
