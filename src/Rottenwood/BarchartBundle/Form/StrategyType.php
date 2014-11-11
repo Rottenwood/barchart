@@ -17,6 +17,7 @@ class StrategyType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->setMethod('POST');
         $builder->add('name', 'text', array(
+            'label' => 'Название стратегии',
             'required' => true,
             'attr' => array(
                 'placeholder' => 'Название стратегии',
@@ -27,6 +28,7 @@ class StrategyType extends AbstractType {
             'required' => true,
             'choices' => Symbol::getSymbolName(),
         ));
+        $builder->add('signals', 'collection', array('type' => new SignalType()));
         $builder->add('send', 'submit', array('label' => 'Проверить стратегию'));
     }
 

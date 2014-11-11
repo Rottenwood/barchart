@@ -290,4 +290,15 @@ class Signal {
             self::INDICATOR_AVERAGE_LONGTERM => 'LongtermAverage',
         );
     }
+
+    /**
+     * Массив соответствия направлений для открытия сделки
+     * @return array
+     */
+    public static function getDirectionsNames() {
+        return array(
+            self::DIRECTION_BUY => 'Покупка',
+            self::DIRECTION_SELL => 'Продажа',
+        );
+    }
 }
