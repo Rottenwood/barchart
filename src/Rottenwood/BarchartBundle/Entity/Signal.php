@@ -292,6 +292,34 @@ class Signal {
     }
 
     /**
+     * Массив соответствия индикаторов их названиям
+     * @return array
+     */
+    public static function getIndicatorsNames() {
+        return array(
+            self::INDICATOR_7_DAY_AVERAGE_DIRECTION => '7 Day Average Directional Indicator',
+            self::INDICATOR_10_8_DAY_MOVING_AVERAGE_HILO_CHANNEL => '10 - 8 Day Moving Average Hilo Channel',
+            self::INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE => '20 Day Moving Average vs Price',
+            self::INDICATOR_20_50_DAY_MACD => '20 - 50 Day MACD Oscillator',
+            self::INDICATOR_20_DAY_BOLLINGER_BANDS => '20 Day Bollinger Bands',
+
+            self::INDICATOR_40_DAY_COMMIDITY_CHANNEL_INDEX => '40 Day Commodity Channel Index',
+            self::INDICATOR_50_DAY_MOVING_AVERAGE_VS_PRICE => '50 Day Moving Average vs Price',
+            self::INDICATOR_20_100_DAY_MACD => '20 - 100 Day MACD Oscillator',
+            self::INDICATOR_50_DAY_PARABOLIC_TIME_PRICE => '50 Day Parabolic Time/Price',
+
+            self::INDICATOR_60_DAY_COMMODITY_CHANNEL_INDEX => '60 Day Commodity Channel Index',
+            self::INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE => '100 Day Moving Average vs Price',
+            self::INDICATOR_50_100_DAY_MACD => '50 - 100 Day MACD Oscillator',
+
+            self::INDICATOR_OVERALL => 'Общий показатель всех индикаторов',
+            self::INDICATOR_AVERAGE_SHORTTERM => 'Общий показатель краткосрочных индикаторов',
+            self::INDICATOR_AVERAGE_MIDDLETERM => 'Общий показатель среднесрочных индикаторов',
+            self::INDICATOR_AVERAGE_LONGTERM => 'Общий показатель долгосрочных индикаторов',
+        );
+    }
+
+    /**
      * Массив соответствия направлений для открытия сделки
      * @return array
      */

@@ -3,6 +3,7 @@
 namespace Rottenwood\BarchartBundle\Controller;
 
 use Rottenwood\BarchartBundle\Entity\Analitic;
+use Rottenwood\BarchartBundle\Entity\Indicator;
 use Rottenwood\BarchartBundle\Entity\Signal;
 use Rottenwood\BarchartBundle\Entity\Strategy;
 use Rottenwood\BarchartBundle\Entity\TradeAccount;
@@ -25,8 +26,9 @@ class DefaultController extends Controller {
         $signal = new Signal();
         $signal->setName('Test signal');
         $signal->setDirection(Signal::DIRECTION_SELL);
-        $signal->setIndicators(array(
-                                   Signal::INDICATOR_AVERAGE_SHORTTERM => Signal::SIGNAL_MAXIMUM_SELL,
+        $signal->setIndicators(array(new Indicator(),
+//                                   Signal::INDICATOR_AVERAGE_SHORTTERM => Signal::SIGNAL_MAXIMUM_SELL,
+//                                   Signal::INDICATOR_AVERAGE_SHORTTERM,
                                ));
         $signal->setStopLossPercent(2);
         $signal->setTakeProfitPercent(7);

@@ -26,13 +26,20 @@ class SignalType extends AbstractType {
             'required' => true,
             'choices' => Signal::getDirectionsNames(),
         ));
+        $builder->add('indicators', 'collection', array('type' => new IndicatorType()));
         $builder->add('stopLossPercent', 'integer', array(
             'label' => 'Стоп лосс при достижении просадки в % от цены',
-            'attr' => array('max' => 100, 'min' => 0),
+            'attr' => array(
+                'max' => 100,
+                'min' => 0
+            ),
         ));
         $builder->add('takeProfitPercent', 'integer', array(
             'label' => 'Тейк профит при достижении прибыли в % от цены',
-            'attr' => array('max' => 100, 'min' => 0),
+            'attr' => array(
+                'max' => 100,
+                'min' => 0
+            ),
         ));
         $builder->add('stopLoss', 'integer', array(
             'label' => 'Стоп лосс',
