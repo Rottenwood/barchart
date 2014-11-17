@@ -2,23 +2,36 @@
 
 {% block content %}
 
-    {#<ul>#}
-        {#{% for trade in trades %}#}
-            {#<li>#}
-                {#{{ loop.index }}.#}
-                {#{% if trade.direction == constant('DIRECTION_BUY', trade) %}#}
-                    {#{% set direction = 'продажа' %}#}
-                    {#{% set profit = trade.close - trade.open %}#}
-                {#{% else %}#}
-                    {#{% set direction = 'покупка' %}#}
-                    {#{% set profit = trade.open - trade.close %}#}
-                {#{% endif %}#}
-                {#<strong>{{ direction }}</strong>#}
-                {#Time: {{ trade.openDate.format('Y-m-d') }}, Open: {{ trade.open }}, Close: {{ trade.close }}, Saldo {{ profit }}#}
-            {#</li>#}
-        {#{% endfor %}#}
-    {#</ul>#}
+    {{ form_start(form) }}
 
-    {{ form_widget(form) }}
+    <div>
+        <div>
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+        </div>
+        <div>
+            {{ form_label(form.symbol) }}
+            {{ form_widget(form.symbol) }}
+        </div>
+        <div>
+            <div>Сигналы</div>
+            {% for formSignal in form.signals %}
+                <div>
+                    {{ form_widget(formSignal) }}
+                    <div>
+                        <div>Индикаторы</div>
+                        {% for signalIndicator in formSignal.indicators %}
+                            <div>
+                                {{ form_widget(signalIndicator) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    {{ form_end(form) }}
 
 {% endblock content %}

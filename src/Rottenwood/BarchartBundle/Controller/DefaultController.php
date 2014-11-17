@@ -48,6 +48,12 @@ class DefaultController extends Controller {
         $form = $this->createForm(new StrategyType(), $strategy);
         $form->handleRequest($request);
 
+        if ($form->isValid()) {
+            $formData = $form->getData();
+
+            var_dump($formData);die;
+        }
+
         return array(
             'form' => $form->createView(),
         );

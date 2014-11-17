@@ -42,9 +42,11 @@ class SignalType extends AbstractType {
             ),
         ));
         $builder->add('stopLoss', 'integer', array(
+            'required' => false,
             'label' => 'Стоп лосс',
         ));
         $builder->add('takeProfit', 'integer', array(
+            'required' => false,
             'label' => 'Тейк профит',
         ));
 
