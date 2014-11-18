@@ -28,6 +28,7 @@ class StrategyType extends AbstractType {
             'required' => true,
             'choices' => Symbol::getSymbolName(),
         ));
+        $builder->add('signalAdd', 'button');
         $builder->add('signals', 'collection', array('type' => new SignalType()));
         $builder->add('send', 'submit', array('label' => 'Проверить стратегию'));
     }
