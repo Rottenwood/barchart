@@ -4,7 +4,7 @@
 
     {{ form_start(form) }}
 
-    <div>
+    <div id="strategy">
         <div>
             {{ form_label(form.name) }}
             {{ form_widget(form.name) }}
@@ -13,7 +13,7 @@
             {{ form_label(form.symbol) }}
             {{ form_widget(form.symbol) }}
         </div>
-        <div>
+        <div id="strategy-signals">
             <div>Сигналы</div>
             {% for formSignal in form.signals %}
                 <div>

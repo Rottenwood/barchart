@@ -8,7 +8,9 @@ $(document).ready(function () {
 
     // Форма создания стратегии
     if ($('div#strategy').length) {
-
+        $('button#strategy_addSignal').on("click", function () {
+            addSignal();
+        });
     }
 
 
@@ -34,4 +36,8 @@ $(document).ready(function () {
 ////                                       ////
 ///////////////////////////////////////////////
 
+function addSignal() {
+    var $strategySignals = $('div#strategy-signals');
 
+    $strategySignals.append('');
+}
