@@ -37,7 +37,8 @@ $(document).ready(function () {
 ///////////////////////////////////////////////
 
 function addSignal() {
-    var $strategySignals = $('div#strategy-signals');
+    var $strategySignals = $('div#strategy-signals'),
+        html = '<div></div>';
 
-    $strategySignals.append('');
+    $strategySignals.append(html);
 }
