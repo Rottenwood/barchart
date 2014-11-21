@@ -29,7 +29,11 @@ class StrategyType extends AbstractType {
             'choices' => Symbol::getSymbolName(),
         ));
         $builder->add('addSignal', 'button', array('label' => 'Добавить сигнал'));
-        $builder->add('signals', 'collection', array('type' => new SignalType()));
+        $builder->add('signals', 'collection', array(
+            'type' => new SignalType(),
+            'allow_add' => true,
+            'allow_delete' => true,
+        ));
         $builder->add('send', 'submit', array('label' => 'Проверить стратегию'));
     }
 
