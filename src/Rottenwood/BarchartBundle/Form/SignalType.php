@@ -26,7 +26,13 @@ class SignalType extends AbstractType {
             'required' => true,
             'choices' => Signal::getDirectionsNames(),
         ));
-        $builder->add('indicators', 'collection', array('type' => new IndicatorType()));
+        $builder->add('indicators', 'collection', array(
+            'label' => false,
+            'type' => new IndicatorType(),
+            'allow_add' => true,
+            'allow_delete' => true,
+        ));
+        $builder->add('addIndicator', 'button', array('label' => 'Добавить индикатор'));
         $builder->add('stopLossPercent', 'integer', array(
             'label' => 'Стоп лосс при достижении просадки в % от цены',
             'attr' => array(

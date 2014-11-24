@@ -30,6 +30,7 @@ class StrategyType extends AbstractType {
         ));
         $builder->add('addSignal', 'button', array('label' => 'Добавить сигнал'));
         $builder->add('signals', 'collection', array(
+            'label' => false,
             'type' => new SignalType(),
             'allow_add' => true,
             'allow_delete' => true,
