@@ -12,10 +12,12 @@ $(document).ready(function () {
             addSignal();
         });
 
-        $('button[id$="addIndicator"]').on("click", function () {
-            addIndicator();
-        });
     }
+
+    $('button.addIndicator').on("click", function (event) {
+        console.log('test');
+        addIndicator($(event.target).parent('div').prev('div').children('div'));
+    });
 
 
 ///////////////////////////////////////////////
@@ -53,12 +55,12 @@ function addSignal() {
 }
 
 // Отрисовка формы индикатора
-function addIndicator() {
+function addIndicator($div) {
     var $signalIndicators = $('div#strategy-signals div[id$="_indicators"]'),
         prototype = $('div#strategy-signals').closest('[data-prototype-indicators]'),
         id = $(prototype).attr('id'),
-        newSignalDiv = $(prototype).data('prototype');
+        newIndicatorDiv = $(prototype).data('prototype');
 
-    $strategySignals.append(newSignalDiv);
+    $div.append('<p>test</p>');
 }
 

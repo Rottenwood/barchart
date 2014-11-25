@@ -14,55 +14,58 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class SignalType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name', 'text', array(
+        $builder->add('name', 'text', [
             'label' => 'Название сигнала',
             'required' => true,
-            'attr' => array(
+            'attr' => [
                 'placeholder' => 'Название сигнала',
-            )
-        ));
-        $builder->add('direction', 'choice', array(
+            ]
+        ]);
+        $builder->add('direction', 'choice', [
             'label' => 'Направление открытия сделки',
             'required' => true,
             'choices' => Signal::getDirectionsNames(),
-        ));
-        $builder->add('indicators', 'collection', array(
+        ]);
+        $builder->add('indicators', 'collection', [
             'label' => false,
             'type' => new IndicatorType(),
             'allow_add' => true,
             'allow_delete' => true,
-        ));
-        $builder->add('addIndicator', 'button', array('label' => 'Добавить индикатор'));
-        $builder->add('stopLossPercent', 'integer', array(
+        ]);
+        $builder->add('addIndicator', 'button', [
+            'label' => 'Добавить индикатор',
+            'attr' => ['style' => 'addIndicator'],
+        ]);
+        $builder->add('stopLossPercent', 'integer', [
             'label' => 'Стоп лосс при достижении просадки в % от цены',
-            'attr' => array(
+            'attr' => [
                 'max' => 100,
                 'min' => 0
-            ),
-        ));
-        $builder->add('takeProfitPercent', 'integer', array(
+            ],
+        ]);
+        $builder->add('takeProfitPercent', 'integer', [
             'label' => 'Тейк профит при достижении прибыли в % от цены',
-            'attr' => array(
+            'attr' => [
                 'max' => 100,
                 'min' => 0
-            ),
-        ));
-        $builder->add('stopLoss', 'integer', array(
+            ],
+        ]);
+        $builder->add('stopLoss', 'integer', [
             'required' => false,
             'label' => 'Стоп лосс',
-        ));
-        $builder->add('takeProfit', 'integer', array(
+        ]);
+        $builder->add('takeProfit', 'integer', [
             'required' => false,
             'label' => 'Тейк профит',
-        ));
+        ]);
 
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
                                    'empty_data' => new Signal(),
                                    'data_class' => 'Rottenwood\BarchartBundle\Entity\Signal',
-                               ));
+                               ]);
     }
 
     public function getName() {
