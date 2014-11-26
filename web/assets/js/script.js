@@ -1,37 +1,14 @@
 $(document).ready(function () {
 
-///////////////////////////////////////////////
-////                                       ////
-////              Переменные               ////
-////                                       ////
-///////////////////////////////////////////////
-
     // Форма создания стратегии
     if ($('div#strategy').length) {
-        $('button#strategy_addSignal').on("click", function () {
+        $('button#strategy_addSignal').off("click").on("click", function () {
             addSignal();
         });
 
+        bindOnAddIndicatorEvent();
     }
 
-    $('button.addIndicator').on("click", function (event) {
-        console.log('test');
-        addIndicator($(event.target).parent('div').prev('div').children('div'));
-    });
-
-
-///////////////////////////////////////////////
-////                                       ////
-////                События                ////
-////                                       ////
-///////////////////////////////////////////////
-
-
-///////////////////////////////////////////////
-////                                       ////
-////         Запускаемые процедуры         ////
-////                                       ////
-///////////////////////////////////////////////
 
 
 });
@@ -52,6 +29,8 @@ function addSignal() {
         newSignalDiv = $(prototype).data('prototype');
 
     $strategySignals.append(newSignalDiv);
+
+    bindOnAddIndicatorEvent();
 }
 
 // Отрисовка формы индикатора
@@ -62,5 +41,13 @@ function addIndicator($div) {
         newIndicatorDiv = $(prototype).data('prototype');
 
     $div.append('<p>test</p>');
+}
+
+// Обработка события
+function bindOnAddIndicatorEvent() {
+    $('button.addIndicator').off("click").on("click", function (event) {
+        console.log('test');
+        addIndicator($(event.target).parent('div').prev('div').children('div'));
+    });
 }
 

@@ -34,7 +34,7 @@ class SignalType extends AbstractType {
         ]);
         $builder->add('addIndicator', 'button', [
             'label' => 'Добавить индикатор',
-            'attr' => ['style' => 'addIndicator'],
+            'attr' => ['class' => 'addIndicator'],
         ]);
         $builder->add('stopLossPercent', 'integer', [
             'label' => 'Стоп лосс при достижении просадки в % от цены',
