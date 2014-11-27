@@ -13,7 +13,7 @@
             {{ form_label(form.symbol) }}
             {{ form_widget(form.symbol) }}
         </div>
-        <div id="strategy-signals" data-prototype="{{ form_widget(form.signals.vars.prototype) | e }}" data-prototype-indicators="{{ form_widget(form.signals.0.indicators.vars.prototype) | e }}">
+        <div id="strategy-signals" data-prototype="{{ form_widget(form.signals.vars.prototype) | e }}">
             {% for formSignal in form.signals %}
                 <div>
                     {{ form_widget(formSignal) }}
