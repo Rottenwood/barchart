@@ -26,17 +26,17 @@ class DefaultController extends Controller {
         $signal = new Signal();
         $signal->setName('Test signal');
         $signal->setDirection(Signal::DIRECTION_SELL);
-        $signal->setIndicators(array(new Indicator(),
+        $signal->setIndicators([new Indicator(),
 //                                   Signal::INDICATOR_AVERAGE_SHORTTERM => Signal::SIGNAL_MAXIMUM_SELL,
 //                                   Signal::INDICATOR_AVERAGE_SHORTTERM,
-                               ));
+                               ]);
         $signal->setStopLossPercent(2);
         $signal->setTakeProfitPercent(7);
 
         $strategy = new Strategy();
         $strategy->setName('Test strategy');
-        $strategy->setSignals(array($signal));
-        $strategy->setAuthors(array($analitic));
+        $strategy->setSignals([$signal]);
+        $strategy->setAuthors([$analitic]);
         $strategy->setSymbol(Strategy::SYMBOL_FUTURES_CORN);
 
         $account = new TradeAccount();
@@ -54,8 +54,8 @@ class DefaultController extends Controller {
             var_dump($formData);die;
         }
 
-        return array(
+        return [
             'form' => $form->createView(),
-        );
+        ];
     }
 }

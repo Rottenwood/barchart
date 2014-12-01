@@ -15,23 +15,24 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class IndicatorType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name', 'choice', array(
+        $builder->add('name', 'choice', [
             'label' => 'Индикатор',
             'required' => true,
             'choices' => Signal::getIndicatorsNames(),
-        ));
-        $builder->add('value', 'integer', array(
+        ]);
+        $builder->add('value', 'integer', [
             'label' => 'Значение',
             'required' => true,
-        ));
+        ]);
 
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
+                                   'label' => false,
                                    'empty_data' => new Indicator(),
                                    'data_class' => 'Rottenwood\BarchartBundle\Entity\Indicator',
-                               ));
+                               ]);
     }
 
     public function getName() {

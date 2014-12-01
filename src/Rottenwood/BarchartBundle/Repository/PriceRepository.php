@@ -44,6 +44,7 @@ class PriceRepository extends EntityRepository {
 
         // TODO: Добавить setParameter
         // TODO: Рефакторинг запроса с помощью query builder
+        // TODO: Рефакторинг запроса: достаточно count(findAll)
         $query = $this->getEntityManager()->createQuery("SELECT MAX(e.id) FROM $entity e");
         $result = $query->getSingleResult();
 

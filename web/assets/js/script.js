@@ -28,7 +28,7 @@ $(document).ready(function () {
 function addSignal() {
     var $strategySignals = $('div#strategy-signals'),
         prototype = $strategySignals.closest('[data-prototype]'),
-        newSignalDiv = $(prototype).data('prototype').replace(/__name__/g, $strategySignals.children().length);
+        newSignalDiv = $(prototype).data('prototype').replace(/<label class="required">__name__label__<\/label>/g, '').replace(/__name__/g, $strategySignals.children().length);
 
     $strategySignals.append(newSignalDiv);
 
@@ -38,12 +38,11 @@ function addSignal() {
 // Отрисовка формы индикатора
 function addIndicator($div) {
     var $signalIndicators = $('div#strategy-signals div[id$="_indicators"]'),
-        prototype = $('div#strategy-signals').closest('[data-prototype-indicators]'),
-        newIndicatorDiv = $(prototype).data('prototype-indicators').replace(/__name__/g, $signalIndicators.children().length);
+        prototype = $div.data('prototype'),
+        //prototype = $('#strategy_signals_0_addIndicator').parent('div').prev('div').children('div').data('prototype');
+        newIndicatorDiv = prototype.replace(/<label class="required">__name__label__<\/label>/g, '').replace(/__name__/g, $signalIndicators.children().length);
 
-    // TODO: $('#strategy_signals_0_addIndicator').parent('div').prev('div'); // прототип для индикаторов
-
-    console.log(newIndicatorDiv);
+    console.log(prototype);
 
     $div.append(newIndicatorDiv);
 }
