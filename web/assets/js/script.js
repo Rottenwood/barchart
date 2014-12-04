@@ -28,7 +28,7 @@ $(document).ready(function () {
 function addSignal() {
     var $strategySignals = $('div#strategy-signals'),
         prototype = $strategySignals.closest('[data-prototype]'),
-        newSignalDiv = $(prototype).data('prototype').replace(/<label class="required">__name__label__<\/label>/g, '').replace(/__name__/g, $strategySignals.children().length);
+        newSignalDiv = $(prototype).data('prototype').replace(/strategy_signals___name__/g, 'strategy_signals_' + $strategySignals.children().length).replace(/\[signals\]\[__name__\]/g, '[signals][' + $strategySignals.children().length + ']');
 
     $strategySignals.append(newSignalDiv);
 
@@ -39,7 +39,6 @@ function addSignal() {
 function addIndicator($div) {
     var $signalIndicators = $('div#strategy-signals div[id$="_indicators"]'),
         prototype = $div.data('prototype'),
-        //prototype = $('#strategy_signals_0_addIndicator').parent('div').prev('div').children('div').data('prototype');
         newIndicatorDiv = prototype.replace(/<label class="required">__name__label__<\/label>/g, '').replace(/__name__/g, $signalIndicators.children().length);
 
     console.log(prototype);
