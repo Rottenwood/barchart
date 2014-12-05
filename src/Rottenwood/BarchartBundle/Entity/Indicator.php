@@ -4,8 +4,8 @@ namespace Rottenwood\BarchartBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-class Indicator
-{
+class Indicator {
+
     /**
      * @var string
      */
@@ -19,12 +19,10 @@ class Indicator
 
     /**
      * Set name
-     *
      * @param string $name
      * @return Indicator
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -32,22 +30,18 @@ class Indicator
 
     /**
      * Get name
-     *
-     * @return string 
+     * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
     /**
      * Set value
-     *
      * @param string $value
      * @return Indicator
      */
-    public function setValue($value)
-    {
+    public function setValue($value) {
         $this->value = $value;
 
         return $this;
@@ -55,11 +49,9 @@ class Indicator
 
     /**
      * Get value
-     *
-     * @return string 
+     * @return string
      */
-    public function getValue()
-    {
+    public function getValue() {
         return $this->value;
     }
 }

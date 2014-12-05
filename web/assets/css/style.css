@@ -1,0 +1,4 @@
+/* Форма создания стратегий */
+div#strategy-signals div.signal-indicator div {
+    display: inline;
+}

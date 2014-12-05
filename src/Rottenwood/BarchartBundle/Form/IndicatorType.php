@@ -24,6 +24,10 @@ class IndicatorType extends AbstractType {
             'label' => 'Значение',
             'required' => true,
         ]);
+        $builder->add('deleteIndicator', 'button', [
+            'label' => 'Удалить индикатор',
+            'attr' => ['class' => 'deleteIndicator'],
+        ]);
 
     }
 
