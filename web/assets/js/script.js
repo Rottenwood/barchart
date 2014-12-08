@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     vars = {
         indicatorsCount: {}
     };
@@ -12,8 +11,6 @@ $(document).ready(function () {
 
         bindOnAddIndicatorEvent();
     }
-
-
 });
 
 ///////////////////////////////////////////////
@@ -31,7 +28,6 @@ function addSignal() {
         newSignalDiv = $(prototype).data('prototype').replace(/strategy_signals___name__/g, 'strategy_signals_' + $strategySignals.children().length).replace(/\[signals\]\[__name__\]/g, '[signals][' + $strategySignals.children().length + ']');
 
     $strategySignals.append(newSignalDiv);
-
     bindOnAddIndicatorEvent();
 }
 
@@ -41,15 +37,18 @@ function addIndicator($div) {
         prototype = $div.data('prototype'),
         newIndicatorDiv = prototype.replace(/<label class="required">__name__label__<\/label>/g, '').replace(/__name__/g, $signalIndicators.children().length);
 
-    console.log(prototype);
-
     $div.append(newIndicatorDiv);
+    bindOnAddIndicatorEvent();
 }
 
 // Обработка события
 function bindOnAddIndicatorEvent() {
     $('button.addIndicator').off("click").on("click", function (event) {
         addIndicator($(event.target).parent('div').prev('div').children('div'));
+    });
+
+    $('button.deleteIndicator').off("click").on("click", function (event) {
+        $(event.target).parent('div').parent('div').remove();
     });
 }
 
