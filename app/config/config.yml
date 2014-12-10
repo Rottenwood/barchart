@@ -75,3 +75,13 @@ monolog:
             type: stream
             path: %kernel.root_dir%/logs/custom.log
             level: error
+
+# OAuth parameters
+hwi_oauth:
+    firewall_name: default
+    resource_owners:
+        vkontakte:
+            type: vkontakte
+            client_id: 4673331
+            client_secret: 0aRe8VTGryxJVMHGWfbf
+

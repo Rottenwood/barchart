@@ -9,3 +9,6 @@ hwi_oauth_login:
 rottenwood_barchart:
     resource: "@RottenwoodBarchartBundle/Resources/config/routing.yml"
     prefix:   /
+
+vkontakte_login:
+    pattern: /login/check-vk
