@@ -13,3 +13,5 @@ services:
     barchart.analizer:
         class: %barchart.analizer.class%
         arguments: [@barchart.config, @doctrine.orm.entity_manager]
+    hwi_oauth.user.provider.entity:
+        class: HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider
