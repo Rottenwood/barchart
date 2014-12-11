@@ -1,32 +1,26 @@
 security:
+    encoders:
+            FOS\UserBundle\Model\UserInterface: sha512
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
     providers:
-        hwi:
-            id: hwi_oauth.user.provider
+        fos_userbundle:
+            id: fos_user.user_provider.username
 
     firewalls:
-#        dev:
-#            pattern: ^/(_(profiler|wdt)|css|images|js)/
-#            security: false
-#
-#        default:
-#            anonymous: ~
-
-      default:
-          anonymous: ~
-          oauth:
-              resource_owners:
-                  vkontakte:          "/login/check-vk"
-#                  facebook:           "/login/check-facebook"
-#                  google:             "/login/check-google"
-#                  my_custom_provider: "/login/check-custom"
-#                  my_github:          "/login/check-github"
-              login_path:        /login
-              use_forward:       false
-              failure_path:      /login
-
-              oauth_user_provider:
-#                  service: hwi_oauth.user.provider.entity
-                  oauth: ~
+        main:
+            pattern: ^/
+            form_login:
+                provider: fos_userbundle
+                csrf_provider: form.csrf_provider
+            logout:       true
+            anonymous:    true
 
     access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_ADMIN }

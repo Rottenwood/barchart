@@ -1,14 +1,7 @@
-hwi_oauth_redirect:
-    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
-    prefix:   /connect
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
-hwi_oauth_login:
-    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-    prefix:   /login
-
-rottenwood_barchart:
-    resource: "@RottenwoodBarchartBundle/Resources/config/routing.yml"
+RottenwoodBarchartBundle:
+    resource: "@RottenwoodBarchartBundle/Controller/"
+    type:     annotation
     prefix:   /
-
-vkontakte_login:
-    pattern: /login/check-vk

@@ -21,7 +21,7 @@
         "sensio/distribution-bundle": "~3.0",
         "sensio/framework-extra-bundle": "~3.0",
         "sunra/php-simple-html-dom-parser": "v1.5.0",
-        "hwi/oauth-bundle": "0.4.*@dev"
+        "friendsofsymfony/user-bundle": "~2.0@dev"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

@@ -10,11 +10,13 @@ use Rottenwood\BarchartBundle\Entity\TradeAccount;
 use Rottenwood\BarchartBundle\Form\StrategyType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller {
 
     /**
+     * @Route("/")
      * @Template()
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response

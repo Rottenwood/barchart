@@ -4,13 +4,14 @@ namespace Rottenwood\BarchartBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * Аналитики (юзеры)
  * @ORM\Table(name="analitics")
  * @ORM\Entity
  */
-class Analitic {
+class Analitic extends BaseUser {
 
     /**
      * @var integer
@@ -18,26 +19,15 @@ class Analitic {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
-
-    /**
-     * @var string
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @var string
-     * @ORM\Column(name="email", type="string", length=255)
-     */
-    private $email;
+    protected $id;
 
     /**
      * @ORM\ManyToMany(targetEntity="Strategy", inversedBy="authors")
      **/
-    private $strategies;
+    protected $strategies;
 
     public function __construct() {
+        parent::__construct();
         $this->strategies = new ArrayCollection();
     }
 
