@@ -24,6 +24,13 @@ class DefaultController extends Controller {
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getEntityManager();
 
+<<<<<<< HEAD
+=======
+//        $analitic = new Analitic();
+//        $analitic->setName('Tester Analitique');
+//        $analitic->setEmail('smonkl@bk.ru');
+
+>>>>>>> 05e6bda8337626f1a8c613a7bdf54daf1f0005d8
         $signal = new Signal();
         $signal->setName('Test signal');
         $signal->setDirection(Signal::DIRECTION_SELL);
