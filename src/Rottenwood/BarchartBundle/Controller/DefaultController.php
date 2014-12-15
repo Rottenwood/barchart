@@ -34,21 +34,8 @@ class DefaultController extends Controller {
     public function makeStrategyAction(Request $request) {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $signal = new Signal();
-        $signal->setName('Test signal');
-        $signal->setDirection(Signal::DIRECTION_SELL);
-        $signal->setIndicators([
-                                   new Indicator(),
-                                   new Indicator(),
-                               ]);
-        $signal->setStopLossPercent(2);
-        $signal->setTakeProfitPercent(7);
-
         $strategy = new Strategy();
-        $strategy->setName('Test strategy');
-        $strategy->setSignals([$signal]);
         $strategy->setAuthors([$this->getUser()]);
-        $strategy->setSymbol(Strategy::SYMBOL_FUTURES_CORN);
 
         $account = new TradeAccount();
         $account->setName('Test Account');
