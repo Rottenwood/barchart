@@ -2,34 +2,7 @@
 
 {% block content %}
 
-    {{ form_start(form) }}
-
-    <div id="strategy">
-        <div>
-            {{ form_label(form.name) }}
-            {{ form_widget(form.name) }}
-        </div>
-        <div>
-            {{ form_label(form.symbol) }}
-            {{ form_widget(form.symbol) }}
-        </div>
-        <div id="strategy-signals" data-prototype="{{ form_widget(form.signals.vars.prototype) | e }}">
-            {% for formSignal in form.signals %}
-                <div>
-                    {{ form_widget(formSignal) }}
-                    <div>
-                        {% for signalIndicator in formSignal.indicators %}
-                            <div>
-                                {{ form_widget(signalIndicator) }}
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-
-    </div>
-
-    {{ form_end(form) }}
+    <p>Главная страница</p>
+    <p><a href="{{ path('rottenwood_barchart_default_makestrategy') }}">Создание стратегий</a></p>
 
 {% endblock content %}

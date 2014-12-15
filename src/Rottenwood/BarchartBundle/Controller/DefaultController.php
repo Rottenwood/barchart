@@ -16,12 +16,22 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller {
 
     /**
-     * @Route("/barchart")
+     * @Route("/")
      * @Template()
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request) {
+        return [];
+    }
+
+    /**
+     * @Route("/barchart")
+     * @Template()
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function makeStrategyAction(Request $request) {
         $em = $this->getDoctrine()->getEntityManager();
 
         $signal = new Signal();
