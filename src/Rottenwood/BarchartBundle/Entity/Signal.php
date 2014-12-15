@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Signal {
 
+    // TODO: Перенести константы в сущности Индикатор
     const DIRECTION_BUY = 1;
     const DIRECTION_SELL = -1;
 
@@ -69,14 +70,7 @@ class Signal {
     private $direction;
 
     /**
-     * @var array
-     * @ORM\Column(name="filters", type="simple_array")
-     */
-    private $filters;
-
-    /**
-     * @var array
-     * @ORM\Column(name="indicators", type="simple_array")
+     * @ORM\ManyToMany(targetEntity="Indicator", cascade={"persist"})
      */
     private $indicators;
 
@@ -158,25 +152,6 @@ class Signal {
         $this->direction = $direction;
 
         return $this;
-    }
-
-    /**
-     * Set filters
-     * @param array $filters
-     * @return Signal
-     */
-    public function setFilters($filters) {
-        $this->filters = $filters;
-
-        return $this;
-    }
-
-    /**
-     * Get filters
-     * @return array
-     */
-    public function getFilters() {
-        return $this->filters;
     }
 
     /**

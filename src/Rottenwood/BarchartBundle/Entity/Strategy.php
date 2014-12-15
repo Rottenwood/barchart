@@ -32,7 +32,7 @@ class Strategy extends Symbol {
     private $authors;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Signal")
+     * @ORM\ManyToMany(targetEntity="Signal", cascade={"persist"})
      * @ORM\JoinTable(name="strategies_signals",
      *      joinColumns={@ORM\JoinColumn()},
      *      inverseJoinColumns={@ORM\JoinColumn()}

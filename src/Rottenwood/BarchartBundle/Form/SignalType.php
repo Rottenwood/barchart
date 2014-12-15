@@ -38,6 +38,7 @@ class SignalType extends AbstractType {
         ]);
         $builder->add('stopLossPercent', 'integer', [
             'label' => 'Стоп лосс при достижении просадки в % от цены',
+            'required' => false,
             'attr' => [
                 'max' => 100,
                 'min' => 0
@@ -45,18 +46,19 @@ class SignalType extends AbstractType {
         ]);
         $builder->add('takeProfitPercent', 'integer', [
             'label' => 'Тейк профит при достижении прибыли в % от цены',
+            'required' => false,
             'attr' => [
                 'max' => 100,
                 'min' => 0
             ],
         ]);
         $builder->add('stopLoss', 'integer', [
-            'required' => false,
             'label' => 'Стоп лосс',
+            'required' => false,
         ]);
         $builder->add('takeProfit', 'integer', [
-            'required' => false,
             'label' => 'Тейк профит',
+            'required' => false,
         ]);
 
     }
