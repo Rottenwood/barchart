@@ -3,6 +3,8 @@ div#strategy-signals div.signal-indicator div {
     display: inline;
 }
 
-span.form-error {
+div.form-error {
     color: red;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

@@ -43,7 +43,7 @@ class DefaultController extends Controller {
         $account->setBalance(1000);
         $account->setStrategy($strategy);
 
-        $form = $this->createForm(new StrategyType(), $strategy);
+        $form = $this->createForm(new StrategyType(), $strategy, ['cascade_validation' => true]);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

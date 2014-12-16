@@ -3,6 +3,7 @@
 namespace Rottenwood\BarchartBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Торговые сигналы
@@ -70,6 +71,7 @@ class Signal {
     private $direction;
 
     /**
+     * @Assert\Count(min=1, minMessage="У сигнала должен быть указан хотя бы один индикатор!")
      * @ORM\ManyToMany(targetEntity="Indicator", cascade={"persist"})
      */
     private $indicators;
