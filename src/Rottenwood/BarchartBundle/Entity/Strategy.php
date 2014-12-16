@@ -4,6 +4,7 @@ namespace Rottenwood\BarchartBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Стратегии
@@ -27,11 +28,13 @@ class Strategy extends Symbol {
     private $name;
 
     /**
+     * @Assert\Count(min=1, minMessage="Должен быть указан хотя бы один автор!")
      * @ORM\ManyToMany(targetEntity="Analitic", mappedBy="strategies")
      */
     private $authors;
 
     /**
+     * @Assert\Count(min=1, minMessage="У стратегии должен быть создан хотя бы один сигнал!")
      * @ORM\ManyToMany(targetEntity="Signal", cascade={"persist"})
      * @ORM\JoinTable(name="strategies_signals",
      *      joinColumns={@ORM\JoinColumn()},

@@ -2,3 +2,7 @@
 div#strategy-signals div.signal-indicator div {
     display: inline;
 }
+
+span.form-error {
+    color: red;
+}

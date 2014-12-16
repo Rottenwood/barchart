@@ -30,6 +30,10 @@
 
     </div>
 
+    {% if form_errors(form) %}
+        <span class="form-error">{{ form_errors(form) }}</span>
+    {% endif %}
+
     {{ form_end(form) }}
 
 {% endblock content %}
