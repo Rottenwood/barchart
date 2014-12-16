@@ -60,6 +60,10 @@ class SignalType extends AbstractType {
             'label' => 'Тейк профит',
             'required' => false,
         ]);
+        $builder->add('deleteSignal', 'button', [
+            'label' => 'Удалить сигнал',
+            'attr' => ['class' => 'deleteSignal'],
+        ]);
 
     }
 

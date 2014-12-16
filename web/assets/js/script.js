@@ -9,7 +9,7 @@ $(document).ready(function () {
             addSignal();
         });
 
-        bindOnAddIndicatorEvent();
+        bindIndicatorEvent();
     }
 });
 
@@ -28,7 +28,7 @@ function addSignal() {
         newSignalDiv = $(prototype).data('prototype').replace(/strategy_signals___name__/g, 'strategy_signals_' + $strategySignals.children().length).replace(/\[signals\]\[__name__\]/g, '[signals][' + $strategySignals.children().length + ']');
 
     $strategySignals.append(newSignalDiv);
-    bindOnAddIndicatorEvent();
+    bindIndicatorEvent();
 }
 
 // Отрисовка формы индикатора
@@ -38,11 +38,11 @@ function addIndicator($div) {
         newIndicatorDiv = prototype.replace(/<label class="required">__name__label__<\/label>/g, '').replace(/__name__/g, $signalIndicators.children().length);
 
     $div.append(newIndicatorDiv);
-    bindOnAddIndicatorEvent();
+    bindIndicatorEvent();
 }
 
-// Обработка события
-function bindOnAddIndicatorEvent() {
+// Добавление и удаление индикатора
+function bindIndicatorEvent() {
     $('button.addIndicator').off("click").on("click", function (event) {
         addIndicator($(event.target).parent('div').prev('div').children('div'));
     });
@@ -50,5 +50,15 @@ function bindOnAddIndicatorEvent() {
     $('button.deleteIndicator').off("click").on("click", function (event) {
         $(event.target).parent('div').parent('div').remove();
     });
+
+    $('button.deleteSignal').off("click").on("click", function (event) {
+        $(event.target).parent('div').parent('div').remove();
+    });
 }
 
+// Добавление и удаление сигнала
+function bindSignalEvent() {
+    $('button.deleteSignal').off("click").on("click", function (event) {
+        $(event.target).parent('div').parent('div').remove();
+    });
+}
