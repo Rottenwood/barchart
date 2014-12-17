@@ -1,0 +1,15 @@
+{% extends 'RottenwoodBarchartBundle:Default:layout.html.twig' %}
+
+{% block title %}Торговые счета{% endblock title %}
+
+{% block content %}
+
+    <p>Список Ваших торговых счетов:</p>
+
+    <ul>
+        {% for account in accounts %}
+            <li>#{{ account.id }} - {{ account.name }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock content %}
