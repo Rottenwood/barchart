@@ -7,6 +7,7 @@
 namespace Rottenwood\BarchartBundle\Controller;
 
 use Rottenwood\BarchartBundle\Entity\TradeAccount;
+use Rottenwood\BarchartBundle\Form\TradeAccountType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,10 +23,9 @@ class AccountController extends Controller {
     /**
      * @Route("/list")
      * @Template()
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAccountsAction(Request $request) {
+    public function listAccountsAction() {
         $em = $this->getDoctrine()->getManager();
         $accounts = $em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($this->getUser());
 
@@ -40,8 +40,16 @@ class AccountController extends Controller {
      */
     public function createAccountAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $accounts = $em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($this->getUser());
 
-        return ['accounts' => $accounts];
+        $form = $this->createForm(new TradeAccountType($this->getUser()));
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $strategy = $form->getData();
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
     }
 }
