@@ -238,7 +238,6 @@ class BarchartParserService {
      * @param     $symbolName
      * @param     $symbol
      * @param int $type
-     * @internal param $entityName
      * @return bool
      */
     public function savePrice($symbolName, $symbol, $type) {

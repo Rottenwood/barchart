@@ -2,9 +2,6 @@
 
 namespace Rottenwood\BarchartBundle\Controller;
 
-use Rottenwood\BarchartBundle\Entity\Analitic;
-use Rottenwood\BarchartBundle\Entity\Indicator;
-use Rottenwood\BarchartBundle\Entity\Signal;
 use Rottenwood\BarchartBundle\Entity\Strategy;
 use Rottenwood\BarchartBundle\Entity\TradeAccount;
 use Rottenwood\BarchartBundle\Form\StrategyType;
@@ -26,7 +23,7 @@ class DefaultController extends Controller {
     }
 
     /**
-     * @Route("/barchart")
+     * @Route("/strategy")
      * @Template()
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
