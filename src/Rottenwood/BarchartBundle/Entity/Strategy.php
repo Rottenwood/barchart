@@ -63,6 +63,11 @@ class Strategy extends Symbol {
         return $this->id;
     }
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     /**
      * Set name
      * @param string $name

@@ -6,6 +6,8 @@
 
 namespace Rottenwood\BarchartBundle\Form;
 
+use Doctrine\ORM\EntityManager;
+use Rottenwood\BarchartBundle\DataTransformer\StrategyNameTransformer;
 use Rottenwood\BarchartBundle\Entity\Analitic;
 use Rottenwood\BarchartBundle\Entity\TradeAccount;
 use Symfony\Component\Form\AbstractType;
@@ -15,9 +17,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class TradeAccountType extends AbstractType {
 
     private $analitic;
+    /** @var EntityManager $em */
+    private $em;
 
-    function __construct(Analitic $analitic) {
+    function __construct(Analitic $analitic, EntityManager $em) {
         $this->analitic = $analitic;
+        $this->em = $em;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -37,7 +42,7 @@ class TradeAccountType extends AbstractType {
                                   ->orderBy('s.name', 'ASC');
             }
         ]);
-        $builder->add('send', 'submit', array('label' => 'Создать торговый счет'));
+        $builder->add('send', 'submit', ['label' => 'Создать торговый счет']);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

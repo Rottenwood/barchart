@@ -41,7 +41,7 @@ class AccountController extends Controller {
     public function createAccountAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(new TradeAccountType($this->getUser()));
+        $form = $this->createForm(new TradeAccountType($this->getUser(), $em));
         $form->handleRequest($request);
 
         if ($form->isValid()) {
