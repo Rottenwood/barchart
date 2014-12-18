@@ -14,55 +14,48 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class SignalType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name', 'text', [
-            'label' => 'Название сигнала',
-            'required' => true,
-            'attr' => [
-                'placeholder' => 'Название сигнала',
-            ]
-        ]);
         $builder->add('direction', 'choice', [
-            'label' => 'Направление открытия сделки',
+            'label'    => 'Направление открытия сделки',
             'required' => true,
-            'choices' => Signal::getDirectionsNames(),
+            'choices'  => Signal::getDirectionsNames(),
         ]);
         $builder->add('indicators', 'collection', [
-            'label' => false,
-            'type' => new IndicatorType(),
-            'allow_add' => true,
+            'label'        => false,
+            'type'         => new IndicatorType(),
+            'allow_add'    => true,
             'allow_delete' => true,
         ]);
         $builder->add('addIndicator', 'button', [
             'label' => 'Добавить индикатор',
-            'attr' => ['class' => 'addIndicator'],
+            'attr'  => ['class' => 'addIndicator'],
         ]);
         $builder->add('stopLossPercent', 'integer', [
-            'label' => 'Стоп лосс при достижении просадки в % от цены',
+            'label'    => 'Стоп лосс при достижении просадки в % от цены',
             'required' => false,
-            'attr' => [
+            'attr'     => [
                 'max' => 100,
                 'min' => 0
             ],
         ]);
         $builder->add('takeProfitPercent', 'integer', [
-            'label' => 'Тейк профит при достижении прибыли в % от цены',
+            'label'    => 'Тейк профит при достижении прибыли в % от цены',
             'required' => false,
-            'attr' => [
+            'attr'     => [
                 'max' => 100,
                 'min' => 0
             ],
         ]);
         $builder->add('stopLoss', 'integer', [
-            'label' => 'Стоп лосс',
+            'label'    => 'Стоп лосс',
             'required' => false,
         ]);
         $builder->add('takeProfit', 'integer', [
-            'label' => 'Тейк профит',
+            'label'    => 'Тейк профит',
             'required' => false,
         ]);
         $builder->add('deleteSignal', 'button', [
             'label' => 'Удалить сигнал',
-            'attr' => ['class' => 'deleteSignal'],
+            'attr'  => ['class' => 'deleteSignal'],
         ]);
 
     }

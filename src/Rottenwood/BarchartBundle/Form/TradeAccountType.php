@@ -32,11 +32,12 @@ class TradeAccountType extends AbstractType {
             'class'         => 'RottenwoodBarchartBundle:Strategy',
             'query_builder' => function ($repository) {
                 return $repository->createQueryBuilder('s')
-                                  ->where('s.authors = :author')
-                                  ->setParameter('author')
-                                  ->orderBy('u.name', 'ASC');
+                                  ->where('s.author = :author')
+                                  ->setParameter('author', $this->analitic)
+                                  ->orderBy('s.name', 'ASC');
             }
         ]);
+        $builder->add('send', 'submit', array('label' => 'Создать торговый счет'));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

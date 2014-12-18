@@ -4,6 +4,12 @@
 
 {% block content %}
 
+    {{ form_start(form) }}
+
     <p>Страница создания торгового счета</p>
+
+    {{ form_widget(form) }}
+
+    {{ form_end(form) }}
 
 {% endblock content %}

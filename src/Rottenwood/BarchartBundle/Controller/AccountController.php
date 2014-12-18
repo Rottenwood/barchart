@@ -45,7 +45,7 @@ class AccountController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $strategy = $form->getData();
+            $tradeAccount = $form->getData();
         }
 
         return [

@@ -32,7 +32,7 @@ class DefaultController extends Controller {
         $em = $this->getDoctrine()->getEntityManager();
 
         $strategy = new Strategy();
-        $strategy->setAuthors([$this->getUser()]);
+        $strategy->setAuthor($this->getUser());
 
         $account = new TradeAccount();
         $account->setName('Test Account');

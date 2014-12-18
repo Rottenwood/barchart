@@ -28,10 +28,10 @@ class Strategy extends Symbol {
     private $name;
 
     /**
-     * @Assert\Count(min=1, minMessage="Должен быть указан хотя бы один автор!")
-     * @ORM\ManyToMany(targetEntity="Analitic", mappedBy="strategies")
+     * @Assert\NotNull
+     * @ORM\ManyToOne(targetEntity="Analitic")
      */
-    private $authors;
+    private $author;
 
     /**
      * @Assert\Count(min=1, minMessage="У стратегии должен быть создан хотя бы один сигнал!")
@@ -83,22 +83,22 @@ class Strategy extends Symbol {
     }
 
     /**
-     * Set authors
-     * @param string $authors
+     * Set author
+     * @param Analitic $author
      * @return Strategy
      */
-    public function setAuthors($authors) {
-        $this->authors = $authors;
+    public function setAuthor($author) {
+        $this->author = $author;
 
         return $this;
     }
 
     /**
-     * Get authors
-     * @return string
+     * Get author
+     * @return Analitic
      */
-    public function getAuthors() {
-        return $this->authors;
+    public function getAuthor() {
+        return $this->author;
     }
 
     /**
