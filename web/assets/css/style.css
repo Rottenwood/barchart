@@ -1,3 +1,13 @@
+/* Общие стили */
+
+.center {
+    text-align: center
+}
+
+.break-20 {
+    margin-bottom: 20px;
+}
+
 /* Форма создания стратегий */
 div#strategy-signals div.signal-indicator div {
     display: inline;
@@ -7,4 +17,12 @@ div.form-error {
     color: red;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+div.login {
+    margin-top: 50px;
+}
+
+div.login input {
+    display: block;
 }

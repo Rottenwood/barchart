@@ -1,4 +1,4 @@
-{% extends 'RottenwoodBarchartBundle:Default:layout.html.twig' %}
+{% extends ':Default:layout.html.twig' %}
 
 {% block content %}
 
@@ -6,5 +6,6 @@
     <p><a href="{{ path('rottenwood_barchart_default_makestrategy') }}">Создание стратегий</a></p>
     <p><a href="{{ path('rottenwood_barchart_account_createaccount') }}">Создание торгового счета</a></p>
     <p><a href="{{ path('rottenwood_barchart_account_listaccounts') }}">Список торговых счетов</a></p>
+    <p><a href="{{ path('fos_user_security_logout') }}">Выход</a></p>
 
 {% endblock content %}
