@@ -4,6 +4,7 @@ namespace Rottenwood\BarchartBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TradeAccount
@@ -23,6 +24,7 @@ class TradeAccount {
     /**
      * @var string
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotNull
      */
     private $name;
 
@@ -59,6 +61,7 @@ class TradeAccount {
     /**
      * @var Strategy
      * @ORM\ManyToOne(targetEntity="Strategy")
+     * @Assert\NotNull(message="strategy.notNull")
      */
     private $strategy;
 

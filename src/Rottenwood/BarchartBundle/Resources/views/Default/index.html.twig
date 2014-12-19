@@ -2,10 +2,18 @@
 
 {% block content %}
 
-    <p>Главная страница</p>
-    <p><a href="{{ path('rottenwood_barchart_default_makestrategy') }}">Создание стратегий</a></p>
-    <p><a href="{{ path('rottenwood_barchart_account_createaccount') }}">Создание торгового счета</a></p>
-    <p><a href="{{ path('rottenwood_barchart_account_listaccounts') }}">Список торговых счетов</a></p>
-    <p><a href="{{ path('fos_user_security_logout') }}">Выход</a></p>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-11 top-space">
+            <p>Главная страница</p>
+
+            <p><a href="{{ path('rottenwood_barchart_default_makestrategy') }}">Создание стратегий</a></p>
+
+            <p><a href="{{ path('rottenwood_barchart_account_createaccount') }}">Создание торгового счета</a></p>
+
+            <p><a href="{{ path('rottenwood_barchart_account_listaccounts') }}">Список торговых счетов</a></p>
+
+            <p><a href="{{ path('fos_user_security_logout') }}">Выход</a></p>
+        </div>
+    </div>
 
 {% endblock content %}

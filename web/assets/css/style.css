@@ -8,21 +8,34 @@
     margin-bottom: 20px;
 }
 
-/* Форма создания стратегий */
-div#strategy-signals div.signal-indicator div {
-    display: inline;
+.padding-10 {
+    padding: 10px;
 }
 
-div.form-error {
-    color: red;
-    margin-top: 10px;
-    margin-bottom: 10px;
+.top-space-small {
+    margin-top: 20px;
 }
 
-div.login {
+.top-space {
     margin-top: 50px;
 }
 
-div.login input {
-    display: block;
+/* Форма создания стратегий */
+div#strategy-signals div.signal-indicator div {
+display: inline;
 }
+
+div.form-error {
+color: red;
+margin-top: 10px;
+margin-bottom: 10px;
+}
+
+div.login {
+margin-top: 50px;
+}
+
+div.login input {
+display: block;
+}
+
