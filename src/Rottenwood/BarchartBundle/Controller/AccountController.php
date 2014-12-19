@@ -29,6 +29,10 @@ class AccountController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $accounts = $em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($this->getUser());
 
+        if (!$accounts) {
+        	$this->redirect($this->generateUrl('rottenwood_barchart_default_makestrategy'));
+        }
+
         return ['accounts' => $accounts];
     }
 
