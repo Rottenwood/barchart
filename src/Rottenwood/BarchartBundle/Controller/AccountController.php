@@ -57,6 +57,9 @@ class AccountController extends Controller {
         if ($form->isValid()) {
             $tradeAccount = $form->getData();
 
+            $tradeAccount->setEquity($tradeAccount->getBalance());
+            $tradeAccount->setAnalitic($this->getUser());
+
             $em->persist($tradeAccount);
             $em->flush();
         }

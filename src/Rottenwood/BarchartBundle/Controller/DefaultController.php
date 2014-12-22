@@ -19,7 +19,14 @@ class DefaultController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request) {
-        return [];
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        return [
+            'haveStrategies' => count($em->getRepository('RottenwoodBarchartBundle:Strategy')->findByAuthor($user)) > 0,
+            'haveAccounts'   => count($em->getRepository('RottenwoodBarchartBundle:TradeAccount')
+                                         ->findByAnalitic($user)) > 0,
+        ];
     }
 
     /**

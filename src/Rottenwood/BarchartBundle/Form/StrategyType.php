@@ -35,7 +35,7 @@ class StrategyType extends AbstractType {
             'allow_add' => true,
             'allow_delete' => true,
         ));
-        $builder->add('send', 'submit', array('label' => 'Проверить стратегию'));
+        $builder->add('send', 'submit', array('label' => 'Создать стратегию'));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

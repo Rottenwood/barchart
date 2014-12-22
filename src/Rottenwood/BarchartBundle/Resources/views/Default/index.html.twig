@@ -8,9 +8,13 @@
 
             <p><a href="{{ path('rottenwood_barchart_default_makestrategy') }}">Создание стратегий</a></p>
 
-            <p><a href="{{ path('rottenwood_barchart_account_createaccount') }}">Создание торгового счета</a></p>
+            {% if haveStrategies %}
+                {% if haveAccounts %}
+                    <p><a href="{{ path('rottenwood_barchart_account_listaccounts') }}">Список торговых счетов</a></p>
+                {% endif %}
 
-            <p><a href="{{ path('rottenwood_barchart_account_listaccounts') }}">Список торговых счетов</a></p>
+                <p><a href="{{ path('rottenwood_barchart_account_createaccount') }}">Создание торговых счетов</a></p>
+            {% endif %}
 
             <p><a href="{{ path('fos_user_security_logout') }}">Выход</a></p>
         </div>

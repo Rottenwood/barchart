@@ -11,6 +11,7 @@ use Rottenwood\BarchartBundle\DataTransformer\StrategyNameTransformer;
 use Rottenwood\BarchartBundle\Entity\Analitic;
 use Rottenwood\BarchartBundle\Entity\TradeAccount;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -29,6 +30,17 @@ class TradeAccountType extends AbstractType {
         $builder->add('name', 'text', [
             'label'    => 'Название торгового счета',
             'required' => true,
+        ]);
+        $builder->add('balance', 'choice', [
+            'label'    => 'Баланс на счету',
+            'required' => true,
+            'choice_list'  => new ChoiceList([
+                                             100,
+                                             1000
+                                         ], [
+                                             '100$',
+                                             '1000$'
+                                         ]),
         ]);
         $builder->add('strategy', 'entity', [
             'label'         => 'Стратегия',

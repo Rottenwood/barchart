@@ -13,6 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks
  */
 class TradeAccount {
+
+    const BALANCE_100 = 100;
+    const BALANCE_1000 = 1000;
+
     /**
      * @var integer
      * @ORM\Column(name="id", type="integer")
@@ -33,12 +37,6 @@ class TradeAccount {
      * @ORM\ManyToOne(targetEntity="Analitic")
      */
     private $analitic;
-
-    /**
-     * @var integer
-     * @ORM\Column(name="code", type="smallint")
-     */
-    private $code;
 
     /**
      * @var \DateTime
@@ -121,25 +119,6 @@ class TradeAccount {
      */
     public function setAnalitic($analitic) {
         $this->analitic = $analitic;
-    }
-
-    /**
-     * Set code
-     * @param integer $code
-     * @return TradeAccount
-     */
-    public function setCode($code) {
-        $this->code = $code;
-
-        return $this;
-    }
-
-    /**
-     * Get code
-     * @return integer
-     */
-    public function getCode() {
-        return $this->code;
     }
 
     /**
@@ -230,5 +209,12 @@ class TradeAccount {
      */
     public function getTrades() {
         return $this->trades;
+    }
+
+    public static function getBalanceChoises() {
+        return [
+            self::BALANCE_100 => '100$',
+            self::BALANCE_1000 => '1000$',
+        ];
     }
 }
