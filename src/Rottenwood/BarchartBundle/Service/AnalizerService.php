@@ -181,6 +181,7 @@ class AnalizerService {
     }
 
     /**
+     * //TODO: Нуждается в рефакторинге!
      * Бэктестинг стратегии
      * @param Strategy $strategy
      * @return array
