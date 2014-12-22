@@ -35,7 +35,7 @@ class Strategy extends Symbol {
 
     /**
      * @Assert\Count(min=1, minMessage="У стратегии должен быть создан хотя бы один сигнал!")
-     * @ORM\ManyToMany(targetEntity="Signal", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Signal", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinTable(name="strategies_signals",
      *      joinColumns={@ORM\JoinColumn()},
      *      inverseJoinColumns={@ORM\JoinColumn()}
