@@ -6,10 +6,10 @@
 
 namespace Rottenwood\BarchartBundle\Controller;
 
-use Rottenwood\BarchartBundle\Entity\TradeAccount;
-use Rottenwood\BarchartBundle\Form\TradeAccountType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Rottenwood\BarchartBundle\Form\TradeAccountType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,7 +30,7 @@ class AccountController extends Controller {
         $accounts = $em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($this->getUser());
 
         if (!$accounts) {
-        	$this->redirect($this->generateUrl('rottenwood_barchart_default_makestrategy'));
+        	return $this->redirect($this->generateUrl('rottenwood_barchart_account_createaccount'));
         }
 
         return ['accounts' => $accounts];
@@ -45,11 +45,20 @@ class AccountController extends Controller {
     public function createAccountAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
 
+        $strategies = $em->getRepository('RottenwoodBarchartBundle:Strategy')->findByAuthor($this->getUser());
+
+        if (!$strategies) {
+            return $this->redirect($this->generateUrl('rottenwood_barchart_default_makestrategy'));
+        }
+
         $form = $this->createForm(new TradeAccountType($this->getUser(), $em));
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $tradeAccount = $form->getData();
+
+            $em->persist($tradeAccount);
+            $em->flush();
         }
 
         return [
