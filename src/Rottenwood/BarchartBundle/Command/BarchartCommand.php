@@ -19,7 +19,7 @@ class BarchartCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $parser = $this->getContainer()->get("barchart.parser");
+        $parser = $this->getContainer()->get('barchart.parser');
 
         $output->writeln('Parsing data from barchart.com...');
 
@@ -29,7 +29,7 @@ class BarchartCommand extends ContainerAwareCommand {
         }
 
         $output->writeln('Saving forex pairs...');
-        foreach ($this->getContainer()->get('barchart.config')->getConfig()["url"]["forex"] as $currency => $currencyUrl) {
+        foreach ($this->getContainer()->get('barchart.config')->getConfig()['url']['forex'] as $currency => $currencyUrl) {
             $this->savePriceWithOutput($output, $parser, $currency, $currency, Price::CONTRACT_TYPE_FOREX);
         }
 
