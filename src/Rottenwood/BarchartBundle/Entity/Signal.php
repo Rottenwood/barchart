@@ -2,6 +2,7 @@
 
 namespace Rottenwood\BarchartBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -50,9 +51,9 @@ class Signal {
 
     /**
      * @Assert\Count(min=1, minMessage="У сигнала должен быть указан хотя бы один индикатор!")
-     * @ORM\ManyToMany(targetEntity="Indicator", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="IndicatorValue", cascade={"persist"})
      */
-    private $indicators;
+    private $indicatorValues;
 
     /**
      * Закрытие сделки с убытком
@@ -116,17 +117,17 @@ class Signal {
     }
 
     /**
-     * @return array
+     * @return Collection
      */
-    public function getIndicators() {
-        return $this->indicators;
+    public function getIndicatorValues() {
+        return $this->indicatorValues;
     }
 
     /**
-     * @param array $indicators
+     * @param Collection $indicatorValues
      */
-    public function setIndicators($indicators) {
-        $this->indicators = $indicators;
+    public function setIndicatorValues($indicatorValues) {
+        $this->indicatorValues = $indicatorValues;
     }
 
     /**
@@ -204,7 +205,7 @@ class Signal {
      * @return array
      */
     public static function getIndicatorsMethodNames() {
-        return array(
+        return [
             self::INDICATOR_7_DAY_AVERAGE_DIRECTION => 'Ad',
             self::INDICATOR_10_8_DAY_MOVING_AVERAGE_HILO_CHANNEL => 'Mahilo',
             self::INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE => 'ShorttermMavp',
@@ -224,7 +225,7 @@ class Signal {
             self::INDICATOR_AVERAGE_SHORTTERM => 'ShorttermAverage',
             self::INDICATOR_AVERAGE_MIDDLETERM => 'MediumtermAverage',
             self::INDICATOR_AVERAGE_LONGTERM => 'LongtermAverage',
-        );
+        ];
     }
 
     /**
@@ -232,9 +233,9 @@ class Signal {
      * @return array
      */
     public static function getDirectionsNames() {
-        return array(
+        return [
             self::DIRECTION_BUY => 'Покупка',
             self::DIRECTION_SELL => 'Продажа',
-        );
+        ];
     }
 }

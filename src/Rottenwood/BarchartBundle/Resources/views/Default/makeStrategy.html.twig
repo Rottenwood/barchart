@@ -21,7 +21,7 @@
                 <div>
                     {{ form_widget(formSignal) }}
                     <div>
-                        {% for signalIndicator in formSignal.indicators %}
+                        {% for signalIndicator in formSignal.indicatorValues %}
                             <div>
                                 {{ form_widget(signalIndicator) }}
                             </div>

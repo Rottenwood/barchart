@@ -1,20 +1,28 @@
 <?php
 /**
  * Author: Rottenwood
- * Date Created: 13.11.14 11:42
+ * Date Created: 23.12.14 11:18
  */
 
 namespace Rottenwood\BarchartBundle\Form;
 
-use Rottenwood\BarchartBundle\Entity\Indicator;
-use Rottenwood\BarchartBundle\Entity\Signal;
+use Doctrine\ORM\EntityRepository;
+use Rottenwood\BarchartBundle\Entity\IndicatorValue;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class IndicatorType extends AbstractType {
+class IndicatorValueType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
+        $builder->add('indicator', 'entity', [
+            'label'         => 'Индикатор',
+            'required'      => true,
+            'class'         => 'RottenwoodBarchartBundle:Indicator',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('i')->orderBy('i.name', 'ASC');
+            },
+        ]);
         $builder->add('value', 'integer', [
             'label'    => 'Значение',
             'required' => true,
@@ -29,12 +37,12 @@ class IndicatorType extends AbstractType {
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults([
                                    'label'      => false,
-                                   'empty_data' => new Indicator(),
-                                   'data_class' => 'Rottenwood\BarchartBundle\Entity\Indicator',
+                                   'empty_data' => new IndicatorValue(),
+                                   'data_class' => 'Rottenwood\BarchartBundle\Entity\IndicatorValue',
                                ]);
     }
 
     public function getName() {
-        return 'indicator';
+        return 'indicatorValue';
     }
 } 

@@ -19,9 +19,9 @@ class SignalType extends AbstractType {
             'required' => true,
             'choices'  => Signal::getDirectionsNames(),
         ]);
-        $builder->add('indicators', 'collection', [
+        $builder->add('indicatorValues', 'collection', [
             'label'        => false,
-            'type'         => new IndicatorType(),
+            'type'         => new IndicatorValueType(),
             'allow_add'    => true,
             'allow_delete' => true,
         ]);
