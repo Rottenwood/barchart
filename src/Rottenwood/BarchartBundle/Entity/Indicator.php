@@ -26,12 +26,6 @@ class Indicator {
     private $name;
 
     /**
-     * @var int
-     * @ORM\Column(name="value", type="float")
-     */
-    private $value;
-
-    /**
      * Get id
      * @return integer
      */
@@ -59,21 +53,34 @@ class Indicator {
     }
 
     /**
-     * Set value
-     * @param int $value
-     * @return Indicator
+     * Массив соответствия индикаторов их названиям
+     * @return array
      */
-    public function setValue($value) {
-        $this->value = $value;
+    public static function getIndicatorsNames() {
+        return [
+            // Краткосрочные
+            '7 Day Average Directional Indicator',
+            '10 - 8 Day Moving Average Hilo Channel',
+            '20 Day Moving Average vs Price',
+            '20 - 50 Day MACD Oscillator',
+            '20 Day Bollinger Bands',
 
-        return $this;
-    }
+            // Среднесрочные
+            '40 Day Commodity Channel Index',
+            '50 Day Moving Average vs Price',
+            '20 - 100 Day MACD Oscillator',
+            '50 Day Parabolic Time/Price',
 
-    /**
-     * Get value
-     * @return int
-     */
-    public function getValue() {
-        return $this->value;
+            // Долгосрочные
+            '60 Day Commodity Channel Index',
+            '100 Day Moving Average vs Price',
+            '50 - 100 Day MACD Oscillator',
+
+            // Коммулятивные
+            'Общий показатель всех индикаторов',
+            'Общий показатель краткосрочных индикаторов',
+            'Общий показатель среднесрочных индикаторов',
+            'Общий показатель долгосрочных индикаторов',
+        ];
     }
 }
