@@ -7,6 +7,8 @@
 namespace Rottenwood\BarchartBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Rottenwood\BarchartBundle\Entity\Indicator;
+use Rottenwood\BarchartBundle\Entity\IndicatorValue;
 use Rottenwood\BarchartBundle\Entity\Price;
 use Rottenwood\BarchartBundle\Entity\Signal;
 use Rottenwood\BarchartBundle\Entity\Strategy;
@@ -85,7 +87,7 @@ class AnalizerService {
         $series = $series ?: $this->config['analizer']['series'];
         $indicatorName = 'get' . $indicator;
 
-        $resultPrices = array();
+        $resultPrices = [];
         foreach ($prices as $key => $price) {
             $counter = 0;
             foreach (array_slice($prices, $key) as $priceForAnalize) {
@@ -108,7 +110,7 @@ class AnalizerService {
      * @return array
      */
     public function trendFilter($prices, $trend) {
-        $resultPrices = array();
+        $resultPrices = [];
         foreach ($prices as $price) {
             /** @var Price $price */
             $resultPrices[] = ($price->getTrend() != $trend) ?: $price;
@@ -133,7 +135,7 @@ class AnalizerService {
             throw new \Exception("Функция усреднения $average не найдена");
         }
 
-        $resultPrices = array();
+        $resultPrices = [];
         foreach ($prices as $price) {
             $averageResult = $price->$averageIndicatorName();
 
@@ -156,7 +158,7 @@ class AnalizerService {
     public function volumeFilter($prices, $volume = 0, $lowerThan = false) {
         // Если не указан объем, расчет среднего объема для массива цен
         if (!$volume) {
-            $volumeAverage = array();
+            $volumeAverage = [];
             foreach ($prices as $priceObject) {
                 $volumeAverage[] = $priceObject->getVolume();
             }
@@ -164,7 +166,7 @@ class AnalizerService {
             $volume = array_sum($volumeAverage) / count($volumeAverage);
         }
 
-        $resultPrices = array();
+        $resultPrices = [];
         foreach ($prices as $price) {
             if ($lowerThan) {
                 if ($price->getVolume() <= $volume) {
@@ -191,15 +193,20 @@ class AnalizerService {
         $prices = $this->getAllPrices($strategy->getSymbolName()[$strategy->getSymbol()]);
 
         // Массив сделок
-        $trades = array();
+        $trades = [];
 
         /** @var Price $price */
         foreach ($prices as $priceKey => $price) {
             // Сигналы
             foreach ($strategy->getSignals() as $signal) {
                 $indicatorsPassed = 0;
-                foreach ($signal->getIndicators() as $indicatorName => $indicatorValue) {
-                    $indicatorMethod = 'get' . $signal->getIndicatorsMethodNames()[$indicatorName];
+                foreach ($signal->getIndicatorValues() as $indicatorValue) {
+                    /** @var IndicatorValue $indicatorValue */
+                    //                    $indicatorMethod = 'get' . $signal->getIndicatorsMethodNames()[$indicator->getIndicator()->getName()];
+                    $indicator = $indicatorValue->getIndicator();
+                    $indicatorMethod = 'get' . $indicator->getStrategyMethod();
+
+                    die($indicatorMethod);
 
                     if (($price->$indicatorMethod() >= $indicatorValue && $signal->getDirection() == $signal::DIRECTION_BUY && $price->$indicatorMethod() != $signal::SIGNAL_HOLD) || ($price->$indicatorMethod() <= $indicatorValue && $signal->getDirection() == $signal::DIRECTION_SELL && $price->$indicatorMethod() != $signal::SIGNAL_HOLD) || ($indicatorValue == $price->$indicatorMethod() && $signal->getDirection() == $signal::SIGNAL_HOLD)
                     ) {
@@ -207,7 +214,7 @@ class AnalizerService {
                     }
                 }
 
-                if ($indicatorsPassed == count($signal->getIndicators())) {
+                if ($indicatorsPassed == count($signal->getIndicatorValues())) {
                     // Имитация открытия сделки, расчет ее результатов
                     $trade = new Trade();
                     $trade->setDirection($signal->getDirection());
@@ -257,12 +264,12 @@ class AnalizerService {
      * @return array
      */
     public function getAverageNames() {
-        return array(
-            self::AVERAGE_SHORTTERM => 'Средний показатель краткосрочных индикаторов',
+        return [
+            self::AVERAGE_SHORTTERM  => 'Средний показатель краткосрочных индикаторов',
             self::AVERAGE_MIDDLETERM => 'Средний показатель среднесрочных индикаторов',
-            self::AVERAGE_LONGTERM => 'Средний показатель долгосрочных индикаторов',
-            self::AVERAGE_OVERALL => 'Средний показатель всех индикаторов',
-        );
+            self::AVERAGE_LONGTERM   => 'Средний показатель долгосрочных индикаторов',
+            self::AVERAGE_OVERALL    => 'Средний показатель всех индикаторов',
+        ];
     }
 
     /**
@@ -271,12 +278,12 @@ class AnalizerService {
      * @return array
      */
     private function getAverageFunctionName($average) {
-        $averageFunctionNames = array(
-            self::AVERAGE_SHORTTERM => 'getShorttermAverage',
+        $averageFunctionNames = [
+            self::AVERAGE_SHORTTERM  => 'getShorttermAverage',
             self::AVERAGE_MIDDLETERM => 'getMiddletermAverage',
-            self::AVERAGE_LONGTERM => 'getLongtermAverage',
-            self::AVERAGE_OVERALL => 'getOverall',
-        );
+            self::AVERAGE_LONGTERM   => 'getLongtermAverage',
+            self::AVERAGE_OVERALL    => 'getOverall',
+        ];
 
         return $averageFunctionNames[$average];
     }
