@@ -30,15 +30,20 @@ class AccountController extends Controller {
         $accounts = $em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($this->getUser());
 
         if (!$accounts) {
-        	return $this->redirect($this->generateUrl('rottenwood_barchart_account_createaccount'));
+            return $this->redirect($this->generateUrl('rottenwood_barchart_account_createaccount'));
         }
 
         $analizer = $this->get('barchart.analizer');
 
         foreach ($accounts as $account) {
             $strategy = $account->getStrategy();
-                var_dump($analizer->testStrategy($strategy));die;
+            $trades = $analizer->testStrategy($strategy);
+            foreach ($trades as $trade) {
+                var_dump($trade);
+                var_dump('<hr>');
             }
+
+        }
 
         return ['accounts' => $accounts];
     }

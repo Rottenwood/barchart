@@ -206,9 +206,7 @@ class AnalizerService {
                     $indicator = $indicatorValue->getIndicator();
                     $indicatorMethod = 'get' . $indicator->getStrategyMethod();
 
-                    die($indicatorMethod);
-
-                    if (($price->$indicatorMethod() >= $indicatorValue && $signal->getDirection() == $signal::DIRECTION_BUY && $price->$indicatorMethod() != $signal::SIGNAL_HOLD) || ($price->$indicatorMethod() <= $indicatorValue && $signal->getDirection() == $signal::DIRECTION_SELL && $price->$indicatorMethod() != $signal::SIGNAL_HOLD) || ($indicatorValue == $price->$indicatorMethod() && $signal->getDirection() == $signal::SIGNAL_HOLD)
+                    if (($price->$indicatorMethod() >= $indicatorValue->getValue() && $signal->getDirection() == $signal::DIRECTION_BUY && $price->$indicatorMethod() != $signal::SIGNAL_HOLD) || ($price->$indicatorMethod() <= $indicatorValue->getValue() && $signal->getDirection() == $signal::DIRECTION_SELL && $price->$indicatorMethod() != $signal::SIGNAL_HOLD) || ($indicatorValue->getValue() == $price->$indicatorMethod() && $signal->getDirection() == $signal::SIGNAL_HOLD)
                     ) {
                         $indicatorsPassed++;
                     }
