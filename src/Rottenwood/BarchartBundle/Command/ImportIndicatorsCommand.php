@@ -23,12 +23,13 @@ class ImportIndicatorsCommand extends ContainerAwareCommand {
 
         $output->writeln('Импорт индикаторов ...');
 
-        foreach (Indicator::getIndicatorsNames() as $indicatorName) {
+        foreach (Indicator::getIndicatorsMethodsAndNames() as $strategyMethod => $indicatorName) {
             $indicator = $repository->findByName($indicatorName);
 
             if (!$indicator) {
                 $indicator = new Indicator();
                 $indicator->setName($indicatorName);
+                $indicator->setStrategyMethod($strategyMethod);
                 $em->persist($indicator);
                 $output->writeln('Запись индикатора ' . $indicatorName);
             }
