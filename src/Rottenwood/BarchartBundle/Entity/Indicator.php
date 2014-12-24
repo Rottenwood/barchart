@@ -26,6 +26,12 @@ class Indicator {
     private $name;
 
     /**
+     * @var string
+     * @ORM\Column(name="strategy_method", type="string", length=255)
+     */
+    private $strategyMethod;
+
+    /**
      * Get id
      * @return integer
      */
@@ -54,6 +60,20 @@ class Indicator {
      */
     public function getName() {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStrategyMethod() {
+        return $this->strategyMethod;
+    }
+
+    /**
+     * @param string $strategyMethod
+     */
+    public function setStrategyMethod($strategyMethod) {
+        $this->strategyMethod = $strategyMethod;
     }
 
     /**
