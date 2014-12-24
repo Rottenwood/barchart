@@ -77,34 +77,34 @@ class Indicator {
     }
 
     /**
-     * Массив соответствия индикаторов их названиям
+     * Массив соответствия названий индикаторов и соответствующих методов в сущности Strategy
      * @return array
      */
-    public static function getIndicatorsNames() {
+    public static function getIndicatorsMethodsAndNames() {
         return [
             // Краткосрочные
-            '7 Day Average Directional Indicator',
-            '10 - 8 Day Moving Average Hilo Channel',
-            '20 Day Moving Average vs Price',
-            '20 - 50 Day MACD Oscillator',
-            '20 Day Bollinger Bands',
+            'Ad'                => '7 Day Average Directional Indicator',
+            'Mahilo'            => '10 - 8 Day Moving Average Hilo Channel',
+            'ShorttermMavp'     => '20 Day Moving Average vs Price',
+            'ShorttermMacd'     => '20 - 50 Day MACD Oscillator',
+            'Bollinger'         => '20 Day Bollinger Bands',
 
             // Среднесрочные
-            '40 Day Commodity Channel Index',
-            '50 Day Moving Average vs Price',
-            '20 - 100 Day MACD Oscillator',
-            '50 Day Parabolic Time/Price',
+            'MediumtermCci'     => '40 Day Commodity Channel Index',
+            'MediumtermMavp'    => '50 Day Moving Average vs Price',
+            'MediumtermMacd'    => '20 - 100 Day MACD Oscillator',
+            'Parabolic'         => '50 Day Parabolic Time/Price',
 
             // Долгосрочные
-            '60 Day Commodity Channel Index',
-            '100 Day Moving Average vs Price',
-            '50 - 100 Day MACD Oscillator',
+            'LongtermCci'       => '60 Day Commodity Channel Index',
+            'LongtermMavp'      => '100 Day Moving Average vs Price',
+            'LongtermMacd'      => '50 - 100 Day MACD Oscillator',
 
             // Коммулятивные
-            'Общий показатель всех индикаторов',
-            'Общий показатель краткосрочных индикаторов',
-            'Общий показатель среднесрочных индикаторов',
-            'Общий показатель долгосрочных индикаторов',
+            'Overall'           => 'Общий показатель всех индикаторов',
+            'ShorttermAverage'  => 'Общий показатель краткосрочных индикаторов',
+            'MediumtermAverage' => 'Общий показатель среднесрочных индикаторов',
+            'LongtermAverage'   => 'Общий показатель долгосрочных индикаторов',
         ];
     }
 }
