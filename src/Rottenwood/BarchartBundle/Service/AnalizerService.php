@@ -13,6 +13,7 @@ use Rottenwood\BarchartBundle\Entity\Price;
 use Rottenwood\BarchartBundle\Entity\Signal;
 use Rottenwood\BarchartBundle\Entity\Strategy;
 use Rottenwood\BarchartBundle\Entity\Trade;
+use Rottenwood\BarchartBundle\Entity\TradeAccount;
 
 /**
  * Сервис анализа данных технических индикаторов
@@ -184,11 +185,13 @@ class AnalizerService {
 
     /**
      * //TODO: Нуждается в рефакторинге!
-     * Бэктестинг стратегии
-     * @param Strategy $strategy
+     * Бэктестинг стратегии на торговом счету
+     * @param TradeAccount $account
      * @return array
      */
-    public function testStrategy(Strategy $strategy) {
+    public function testStrategy(TradeAccount $account, $volume = 1) {
+        $strategy = $account->getStrategy();
+
         // Получение цен для анализа
         $prices = $this->getAllPrices($strategy->getSymbolName()[$strategy->getSymbol()]);
 
@@ -218,6 +221,9 @@ class AnalizerService {
                     $trade->setDirection($signal->getDirection());
                     $trade->setOpen($price->getPrice());
                     $trade->setOpenDate($price->getDate());
+                    $trade->setAccount($account);
+                    $trade->setSymbol($strategy->getSymbol());
+                    $trade->setVolume($volume);
 
                     /** @var Price $comparePrice */
                     foreach (array_slice($prices, $priceKey + 1) as $comparePriceKey => $comparePrice) {
@@ -238,21 +244,27 @@ class AnalizerService {
                         // Стоп в процентах
                         if ($signal->getStopLossPercent() && -$percentProfit > $signal->getStopLossPercent()) {
                             $trade->setClose($comparePrice->getPrice());
+                            $trade->setCloseDate($comparePrice->getDate());
                             break;
                         }
 
                         // Тейк в процентах
                         if ($signal->getTakeProfitPercent() && $percentProfit > $signal->getTakeProfitPercent()) {
                             $trade->setClose($comparePrice->getPrice());
+                            $trade->setCloseDate($comparePrice->getDate());
                             break;
                         }
 
                     }
 
+                    $this->em->persist($trade);
+
                     $trades[] = $trade;
                 }
             }
         }
+
+        $this->em->flush();
 
         return $trades;
     }

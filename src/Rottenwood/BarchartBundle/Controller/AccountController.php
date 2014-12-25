@@ -6,6 +6,7 @@
 
 namespace Rottenwood\BarchartBundle\Controller;
 
+use Rottenwood\BarchartBundle\Entity\Trade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -37,10 +38,13 @@ class AccountController extends Controller {
 
         foreach ($accounts as $account) {
             $strategy = $account->getStrategy();
-            $trades = $analizer->testStrategy($strategy);
+            $trades = $analizer->testStrategy($account);
             foreach ($trades as $trade) {
-                var_dump($trade);
-                var_dump('<hr>');
+                /** @var Trade $trade */
+                var_dump($trade->getDirection());
+                var_dump($trade->getOpen());
+                var_dump($trade->getClose());
+                echo '<hr>';
             }
 
         }

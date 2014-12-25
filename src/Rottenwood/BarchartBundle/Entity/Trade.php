@@ -49,7 +49,7 @@ class Trade extends Symbol {
 
     /**
      * @var float
-     * @ORM\Column(name="close", type="float")
+     * @ORM\Column(name="close", type="float", nullable=true)
      */
     private $close;
 
@@ -85,7 +85,7 @@ class Trade extends Symbol {
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="close_date", type="datetime")
+     * @ORM\Column(name="close_date", type="datetime", nullable=true)
      */
     private $closeDate;
 
