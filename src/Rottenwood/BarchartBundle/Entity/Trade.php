@@ -90,6 +90,12 @@ class Trade extends Symbol {
     private $closeDate;
 
     /**
+     * @var float
+     * @ORM\Column(name="profit", type="float")
+     */
+    private $profit;
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersistCallback() {
@@ -293,5 +299,19 @@ class Trade extends Symbol {
      */
     public function setOpenDate($openDate) {
         $this->openDate = $openDate;
+    }
+
+    /**
+     * @return float
+     */
+    public function getProfit() {
+        return $this->profit;
+    }
+
+    /**
+     * @param float $profit
+     */
+    public function setProfit($profit) {
+        $this->profit = $profit;
     }
 }
