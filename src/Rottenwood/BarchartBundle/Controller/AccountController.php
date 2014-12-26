@@ -36,20 +36,12 @@ class AccountController extends Controller {
 
         $analizer = $this->get('barchart.analizer');
 
+        $allTrades = [];
         foreach ($accounts as $account) {
-            $strategy = $account->getStrategy();
-            $trades = $analizer->testStrategy($account);
-            foreach ($trades as $trade) {
-                /** @var Trade $trade */
-                var_dump($trade->getDirection());
-                var_dump($trade->getOpen());
-                var_dump($trade->getClose());
-                echo '<hr>';
-            }
-
+            $allTrades[] = $analizer->testStrategy($account);
         }
 
-        return ['accounts' => $accounts];
+        return ['accounts' => $accounts, 'allTrades' => $allTrades];
     }
 
     /**

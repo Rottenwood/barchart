@@ -4,12 +4,46 @@
 
 {% block content %}
 
-    <p>Список Ваших торговых счетов:</p>
+    <p>Список сделок на Ваших торговых счетах:</p>
 
-    <ul>
-        {% for account in accounts %}
-            <li>#{{ account.id }} - {{ account.name }}</li>
+    <table id="trades-list">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>Направление</td>
+            <td>Время открытия</td>
+            <td>Время закрытия</td>
+            <td>Цена открытия</td>
+            <td>Цена закрытия</td>
+            <td>Прибыль</td>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for trades in allTrades %}
+            {% for trade in trades %}
+                {% if loop.first %}
+                    <tr>
+                        <td>Аккаунт:</td>
+                        <td><strong>{{ trade.account.name }}</strong></td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td>{{ trade.id }}</td>
+                    <td>{{ trade.direction > 0 ? 'Покупка' : 'Продажа' }}</td>
+                    <td>{{ trade.openDate|date("m-d-Y H-i-s") }}</td>
+                    <td>
+                        {% if trade.closeDate %}
+                            {{ trade.closeDate|date('m-d-Y H-i-s') }}
+                        {% endif %}
+                    </td>
+                    <td>{{ trade.open }}</td>
+                    <td>{{ trade.close }}</td>
+                    <td>прибыль</td>
+                </tr>
+            {% endfor %}
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 
 {% endblock content %}

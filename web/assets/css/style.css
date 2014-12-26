@@ -22,20 +22,24 @@
 
 /* Форма создания стратегий */
 div#strategy-signals div.signal-indicator div {
-display: inline;
+    display: inline;
 }
 
 div.form-error {
-color: red;
-margin-top: 10px;
-margin-bottom: 10px;
+    color: red;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 div.login {
-margin-top: 50px;
+    margin-top: 50px;
 }
 
 div.login input {
-display: block;
+    display: block;
 }
 
+/* Таблица сделок */
+table#trades-list td {
+    padding: 10px;
+}
