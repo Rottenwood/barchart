@@ -45,6 +45,29 @@ class AccountController extends Controller {
     }
 
     /**
+     * @Route("/trades")
+     * @Template()
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function tradesAccountsAction() {
+        $em = $this->getDoctrine()->getManager();
+        $accounts = $em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($this->getUser());
+
+        if (!$accounts) {
+            return $this->redirect($this->generateUrl('rottenwood_barchart_account_createaccount'));
+        }
+
+        $analizer = $this->get('barchart.analizer');
+
+        $allTrades = [];
+        foreach ($accounts as $account) {
+            $allTrades[] = $analizer->testStrategy($account);
+        }
+
+        return ['accounts' => $accounts, 'allTrades' => $allTrades];
+    }
+
+    /**
      * @Route("/create")
      * @Template()
      * @param Request $request

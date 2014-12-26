@@ -33,7 +33,7 @@
                     </tr>
                 {% endif %}
                 <tr>
-                    <td>{{ trade.id }}</td>
+                    <td>{{ loop.index }}</td>
                     <td>{{ trade.direction > 0 ? 'Покупка' : 'Продажа' }}</td>
                     <td>{{ trade.openDate|date("m-d-Y H-i-s") }}</td>
                     <td>

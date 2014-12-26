@@ -225,6 +225,8 @@ class AnalizerService {
                     $trade->setSymbol($strategy->getSymbol());
                     $trade->setVolume($volume);
 
+                    $profit = 0;
+
                     /** @var Price $comparePrice */
                     foreach (array_slice($prices, $priceKey + 1) as $comparePriceKey => $comparePrice) {
                         $analizedTrade = $this->analyseProfit($price, $comparePrice, $signal->getDirection());
@@ -254,13 +256,14 @@ class AnalizerService {
                             break;
                         }
 
-//                        if ($signal->getDirection()) {
-//                            $profit = $price->getPrice() -
-//                        }
-
+                        if ($signal->getDirection() > 0) {
+                            $profit = $comparePrice->getPrice() - $price->getPrice();
+                        } else {
+                            $profit = $price->getPrice() - $comparePrice->getPrice();
+                        }
                     }
 
-                    $this->em->persist($trade);
+                    $trade->setProfit($profit);
 
                     $trades[] = $trade;
                 }
