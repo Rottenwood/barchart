@@ -240,7 +240,6 @@ class AnalizerService {
                         // Критерии закрытия сделки
                         $percentProfit = $analizedTrade->getHigh() / $price->getPrice() * 100;
 
-
                         // Стоп в процентах
                         if ($signal->getStopLossPercent() && -$percentProfit > $signal->getStopLossPercent()) {
                             $trade->setClose($comparePrice->getPrice());
@@ -254,6 +253,10 @@ class AnalizerService {
                             $trade->setCloseDate($comparePrice->getDate());
                             break;
                         }
+
+//                        if ($signal->getDirection()) {
+//                            $profit = $price->getPrice() -
+//                        }
 
                     }
 
