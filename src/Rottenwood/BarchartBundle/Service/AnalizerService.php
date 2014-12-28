@@ -22,10 +22,10 @@ use Rottenwood\BarchartBundle\Entity\TradeAccount;
  */
 class AnalizerService {
 
-    const AVERAGE_SHORTTERM = 1;
+    const AVERAGE_SHORTTERM  = 1;
     const AVERAGE_MIDDLETERM = 2;
-    const AVERAGE_LONGTERM = 3;
-    const AVERAGE_OVERALL = 4;
+    const AVERAGE_LONGTERM   = 3;
+    const AVERAGE_OVERALL    = 4;
 
     private $em;
     private $config;
@@ -198,68 +198,82 @@ class AnalizerService {
         // Массив сделок
         $trades = [];
 
-        /** @var Price $price */
-        foreach ($prices as $priceKey => $price) {
+        /** @var Price $priceObject */
+        foreach ($prices as $priceKey => $priceObject) {
+            $price = $priceObject->getPrice();
+
             // Сигналы
             foreach ($strategy->getSignals() as $signal) {
                 $indicatorsPassed = 0;
-                foreach ($signal->getIndicatorValues() as $indicatorValue) {
-                    /** @var IndicatorValue $indicatorValue */
-                    //                    $indicatorMethod = 'get' . $signal->getIndicatorsMethodNames()[$indicator->getIndicator()->getName()];
-                    $indicator = $indicatorValue->getIndicator();
+                $indicatorValues = $signal->getIndicatorValues();
+                $direction = $signal->getDirection();
+
+                foreach ($indicatorValues as $indicatorValueObject) {
+                    /** @var IndicatorValue $indicatorValueObject */
+                    $indicator = $indicatorValueObject->getIndicator();
                     $indicatorMethod = 'get' . $indicator->getStrategyMethod();
 
-                    if (($price->$indicatorMethod() >= $indicatorValue->getValue() && $signal->getDirection() == $signal::DIRECTION_BUY && $price->$indicatorMethod() != $signal::SIGNAL_HOLD) || ($price->$indicatorMethod() <= $indicatorValue->getValue() && $signal->getDirection() == $signal::DIRECTION_SELL && $price->$indicatorMethod() != $signal::SIGNAL_HOLD) || ($indicatorValue->getValue() == $price->$indicatorMethod() && $signal->getDirection() == $signal::SIGNAL_HOLD)
+                    $priceIndicatorValue = $priceObject->$indicatorMethod();
+                    $indicatorValue = $indicatorValueObject->getValue();
+
+                    if (($direction == $signal::DIRECTION_BUY
+                         && $priceIndicatorValue >=
+                            $indicatorValue)
+                        || ($direction == $signal::DIRECTION_SELL
+                            && $priceIndicatorValue <= $indicatorValue
+                        )
                     ) {
                         $indicatorsPassed++;
                     }
                 }
 
-                if ($indicatorsPassed == count($signal->getIndicatorValues())) {
+                if ($indicatorsPassed == count($indicatorValues)) {
                     // Имитация открытия сделки, расчет ее результатов
                     $trade = new Trade();
-                    $trade->setDirection($signal->getDirection());
-                    $trade->setOpen($price->getPrice());
-                    $trade->setOpenDate($price->getDate());
+                    $trade->setDirection($direction);
+                    $trade->setOpen($price);
+                    $trade->setOpenDate($priceObject->getDate());
                     $trade->setAccount($account);
                     $trade->setSymbol($strategy->getSymbol());
                     $trade->setVolume($volume);
 
                     $profit = 0;
 
-                    /** @var Price $comparePrice */
-                    foreach (array_slice($prices, $priceKey + 1) as $comparePriceKey => $comparePrice) {
-                        $analizedTrade = $this->analyseProfit($price, $comparePrice, $signal->getDirection());
+                    /** @var Price $comparePriceObject */
+                    foreach (array_slice($prices, $priceKey + 1) as $comparePriceKey => $comparePriceObject) {
+                        $comparePrice = $comparePriceObject->getPrice();
+                        $analizedTrade = $this->analyseProfit($priceObject, $comparePriceObject, $direction);
+                        $analizedTradeHigh = $analizedTrade->getHigh();
 
-                        if ($analizedTrade->getHigh() > $trade->getHigh()) {
-                            $trade->setHigh($analizedTrade->getHigh());
+                        if ($analizedTradeHigh > $trade->getHigh()) {
+                            $trade->setHigh($analizedTradeHigh);
                         }
 
-                        if ($analizedTrade->getHigh() < $trade->getDrawdown()) {
-                            $trade->setDrawdown($analizedTrade->getHigh());
+                        if ($analizedTradeHigh < $trade->getDrawdown()) {
+                            $trade->setDrawdown($analizedTradeHigh);
                         }
 
                         // Критерии закрытия сделки
-                        $percentProfit = $analizedTrade->getHigh() / $price->getPrice() * 100;
+                        $percentProfit = $analizedTradeHigh / $price * 100;
 
                         // Стоп в процентах
                         if ($signal->getStopLossPercent() && -$percentProfit > $signal->getStopLossPercent()) {
-                            $trade->setClose($comparePrice->getPrice());
-                            $trade->setCloseDate($comparePrice->getDate());
+                            $trade->setClose($comparePrice);
+                            $trade->setCloseDate($comparePriceObject->getDate());
                             break;
                         }
 
                         // Тейк в процентах
                         if ($signal->getTakeProfitPercent() && $percentProfit > $signal->getTakeProfitPercent()) {
-                            $trade->setClose($comparePrice->getPrice());
-                            $trade->setCloseDate($comparePrice->getDate());
+                            $trade->setClose($comparePrice);
+                            $trade->setCloseDate($comparePriceObject->getDate());
                             break;
                         }
 
-                        if ($signal->getDirection() > 0) {
-                            $profit = $comparePrice->getPrice() - $price->getPrice();
+                        if ($direction > 0) {
+                            $profit = $comparePrice - $price;
                         } else {
-                            $profit = $price->getPrice() - $comparePrice->getPrice();
+                            $profit = $price - $comparePrice;
                         }
                     }
 
@@ -344,5 +358,4 @@ class AnalizerService {
 
         return $limitWeeks * 5 * 19 + $limitDays * 19 + $limitHours;
     }
-
 }
