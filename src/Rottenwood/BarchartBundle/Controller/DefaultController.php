@@ -2,8 +2,10 @@
 
 namespace Rottenwood\BarchartBundle\Controller;
 
+use Rottenwood\BarchartBundle\Entity\Analitic;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Rottenwood\BarchartBundle\Entity\Strategy;
 use Rottenwood\BarchartBundle\Entity\TradeAccount;
@@ -24,8 +26,8 @@ class DefaultController extends Controller {
 
         return [
             'haveStrategies' => count($em->getRepository('RottenwoodBarchartBundle:Strategy')->findByAuthor($user)) > 0,
-            'haveAccounts'   => count($em->getRepository('RottenwoodBarchartBundle:TradeAccount')
-                                         ->findByAnalitic($user)) > 0,
+            'haveAccounts'   =>
+                count($em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($user)) > 0,
         ];
     }
 
@@ -46,6 +48,33 @@ class DefaultController extends Controller {
         $account->setAnalitic($this->getUser());
         $account->setBalance(1000);
         $account->setStrategy($strategy);
+
+        $form = $this->createForm(new StrategyType(), $strategy, ['cascade_validation' => true]);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $strategy = $form->getData();
+
+            $em->persist($strategy);
+            $em->flush();
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * Редактирование стратегий
+     * @Route("/strategy/edit/{id}", requirements={"id"="\d+"})
+     * @Template("RottenwoodBarchartBundle:Default:makeStrategy.html.twig")
+     * @ParamConverter("id", class="RottenwoodBarchartBundle:Strategy")
+     * @param Request  $request
+     * @param Strategy $strategy
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function strategyEditAction(Request $request, Strategy $strategy) {
+        $em = $this->getDoctrine()->getEntityManager();
 
         $form = $this->createForm(new StrategyType(), $strategy, ['cascade_validation' => true]);
         $form->handleRequest($request);
