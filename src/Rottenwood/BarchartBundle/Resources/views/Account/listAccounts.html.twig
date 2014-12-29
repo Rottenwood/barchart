@@ -13,6 +13,7 @@
         <tr>
             <td>#</td>
             <td>Название счета</td>
+            <td>Стратегий</td>
             <td>Баланс</td>
             <td>Средства</td>
             <td>Количество сделок</td>
@@ -23,6 +24,9 @@
         {% for account in accounts %}
             <td>{{ account.id }}</td>
             <td>{{ account.name }}</td>
+            <td>
+                <a href="{{ path('rottenwood_barchart_default_strategyedit', {id: account.strategy.id}) }}">{{ account.strategy.name }}</a>
+            </td>
             <td>{{ account.balance }}</td>
             <td>{{ account.equity }}</td>
             <td>{{ account.trades|length }}</td>
