@@ -86,6 +86,8 @@ class AccountController extends Controller {
 
             $em->persist($tradeAccount);
             $em->flush();
+
+            return $this->redirectToRoute('rottenwood_barchart_account_listaccounts');
         }
 
         return [

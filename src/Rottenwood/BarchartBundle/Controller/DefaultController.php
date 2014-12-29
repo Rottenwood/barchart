@@ -57,6 +57,8 @@ class DefaultController extends Controller {
 
             $em->persist($strategy);
             $em->flush();
+
+            return $this->redirectToRoute('rottenwood_barchart_account_createaccount');
         }
 
         return [
