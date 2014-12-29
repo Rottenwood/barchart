@@ -7,11 +7,9 @@
 namespace Rottenwood\BarchartBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use Rottenwood\BarchartBundle\Entity\Indicator;
 use Rottenwood\BarchartBundle\Entity\IndicatorValue;
 use Rottenwood\BarchartBundle\Entity\Price;
 use Rottenwood\BarchartBundle\Entity\Signal;
-use Rottenwood\BarchartBundle\Entity\Strategy;
 use Rottenwood\BarchartBundle\Entity\Trade;
 use Rottenwood\BarchartBundle\Entity\TradeAccount;
 
