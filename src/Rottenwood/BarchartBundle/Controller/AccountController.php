@@ -34,14 +34,7 @@ class AccountController extends Controller {
             return $this->redirect($this->generateUrl('rottenwood_barchart_account_createaccount'));
         }
 
-        $analizer = $this->get('barchart.analizer');
-
-        $allTrades = [];
-        foreach ($accounts as $account) {
-            $allTrades[] = $analizer->testStrategy($account);
-        }
-
-        return ['accounts' => $accounts, 'allTrades' => $allTrades];
+        return ['accounts' => $accounts];
     }
 
     /**
