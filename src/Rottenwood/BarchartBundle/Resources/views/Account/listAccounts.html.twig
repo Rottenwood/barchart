@@ -24,9 +24,15 @@
         {% for account in accounts %}
             <tr>
                 <td>{{ account.id }}</td>
-                <td>{{ account.name }}</td>
                 <td>
-                    <a href="{{ path('rottenwood_barchart_default_strategyedit', {id: account.strategy.id}) }}">{{ account.strategy.name }}</a>
+                    <a href="{{ path('rottenwood_barchart_account_showaccount', {id: account.id}) }}">
+                        {{ account.name }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('rottenwood_barchart_default_strategyedit', {id: account.strategy.id}) }}">
+                        {{ account.strategy.name }}
+                    </a>
                 </td>
                 <td>{{ account.balance }}</td>
                 <td>{{ account.equity }}</td>
