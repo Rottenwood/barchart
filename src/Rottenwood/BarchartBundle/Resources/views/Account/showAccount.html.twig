@@ -6,6 +6,8 @@
 
     <p>Торговый счет <strong>#{{ account.id }}</strong></p>
 
+    {{ form_start(form) }}
+
     <table id="trades-list">
         <thead>
         <tr>
@@ -19,7 +21,7 @@
         </thead>
         <tr>
             <td>{{ account.name }}</td>
-            <td>{{ account.strategy.name }}</td>
+            <td>{{ form_widget(form.strategy) }}</td>
             <td>{{ account.startbalance }}</td>
             <td>{{ account.balance }} [прибыль]</td>
             <td>{{ account.equity }} [прибыль]</td>
@@ -29,6 +31,11 @@
 
         </tbody>
     </table>
+
+    {{ form_widget(form.save) }}
+    {{ form_end(form) }}
+
+    <div class="break-20"></div>
 
     <a href="{{ path('rottenwood_barchart_account_listaccounts') }}">Список торговых счетов</a>
 

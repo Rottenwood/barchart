@@ -7,7 +7,6 @@
 namespace Rottenwood\BarchartBundle\Form;
 
 use Doctrine\ORM\EntityManager;
-use Rottenwood\BarchartBundle\DataTransformer\StrategyNameTransformer;
 use Rottenwood\BarchartBundle\Entity\Analitic;
 use Rottenwood\BarchartBundle\Entity\TradeAccount;
 use Symfony\Component\Form\AbstractType;
@@ -21,9 +20,9 @@ class TradeAccountType extends AbstractType {
     /** @var EntityManager $em */
     private $em;
 
-    function __construct(Analitic $analitic, EntityManager $em) {
-        $this->analitic = $analitic;
+    function __construct(EntityManager $em, Analitic $analitic) {
         $this->em = $em;
+        $this->analitic = $analitic;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -45,7 +44,7 @@ class TradeAccountType extends AbstractType {
         $builder->add('strategy', 'entity', [
             'label'         => 'Стратегия',
             'required'      => false,
-            'empty_value'   => 'стратегия',
+            'empty_value'   => 'выберите стратегию',
             'class'         => 'RottenwoodBarchartBundle:Strategy',
             'query_builder' => function ($repository) {
                 return $repository->createQueryBuilder('s')
@@ -59,6 +58,7 @@ class TradeAccountType extends AbstractType {
             'required' => false,
         ]);
         $builder->add('send', 'submit', ['label' => 'Создать торговый счет']);
+        $builder->add('save', 'submit', ['label' => 'Сохранить торговый счет']);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

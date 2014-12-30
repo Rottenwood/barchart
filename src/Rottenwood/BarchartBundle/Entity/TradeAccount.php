@@ -240,7 +240,7 @@ class TradeAccount {
     /**
      * @return boolean
      */
-    public function isIsPrivate() {
+    public function isPrivate() {
         return $this->isPrivate;
     }
 
