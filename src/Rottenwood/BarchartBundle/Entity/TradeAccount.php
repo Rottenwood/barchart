@@ -52,6 +52,12 @@ class TradeAccount {
 
     /**
      * @var float
+     * @ORM\Column(name="start_balance", type="float")
+     */
+    private $startBalance;
+
+    /**
+     * @var float
      * @ORM\Column(name="equity", type="float")
      */
     private $equity;
@@ -155,6 +161,20 @@ class TradeAccount {
         $this->balance = $balance;
 
         return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getStartBalance() {
+        return $this->startBalance;
+    }
+
+    /**
+     * @param float $startBalance
+     */
+    public function setStartBalance($startBalance) {
+        $this->startBalance = $startBalance;
     }
 
     /**
