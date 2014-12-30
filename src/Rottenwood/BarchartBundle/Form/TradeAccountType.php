@@ -32,15 +32,15 @@ class TradeAccountType extends AbstractType {
             'required' => true,
         ]);
         $builder->add('balance', 'choice', [
-            'label'    => 'Баланс на счету',
-            'required' => true,
-            'choice_list'  => new ChoiceList([
-                                             100,
-                                             1000
-                                         ], [
-                                             '100$',
-                                             '1000$'
-                                         ]),
+            'label'       => 'Баланс на счету',
+            'required'    => true,
+            'choice_list' => new ChoiceList([
+                                                100,
+                                                1000
+                                            ], [
+                                                '100$',
+                                                '1000$'
+                                            ]),
         ]);
         $builder->add('strategy', 'entity', [
             'label'         => 'Стратегия',
@@ -53,6 +53,10 @@ class TradeAccountType extends AbstractType {
                                   ->setParameter('author', $this->analitic)
                                   ->orderBy('s.name', 'ASC');
             }
+        ]);
+        $builder->add('isPrivate', 'checkbox', [
+            'label'    => 'В закрытом доступе',
+            'required' => false,
         ]);
         $builder->add('send', 'submit', ['label' => 'Создать торговый счет']);
     }
