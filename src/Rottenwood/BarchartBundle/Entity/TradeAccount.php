@@ -69,6 +69,12 @@ class TradeAccount {
      */
     private $trades;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="isPrivate", type="boolean")
+     */
+    private $isPrivate;
+
     function __construct() {
         $this->trades = new ArrayCollection();
     }
@@ -211,9 +217,23 @@ class TradeAccount {
         return $this->trades;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isIsPrivate() {
+        return $this->isPrivate;
+    }
+
+    /**
+     * @param boolean $isPrivate
+     */
+    public function setIsPrivate($isPrivate) {
+        $this->isPrivate = $isPrivate;
+    }
+
     public static function getBalanceChoises() {
         return [
-            self::BALANCE_100 => '100$',
+            self::BALANCE_100  => '100$',
             self::BALANCE_1000 => '1000$',
         ];
     }

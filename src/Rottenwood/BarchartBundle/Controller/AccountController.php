@@ -7,8 +7,10 @@
 namespace Rottenwood\BarchartBundle\Controller;
 
 use Rottenwood\BarchartBundle\Entity\Trade;
+use Rottenwood\BarchartBundle\Entity\TradeAccount;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Rottenwood\BarchartBundle\Form\TradeAccountType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -57,7 +59,10 @@ class AccountController extends Controller {
             $allTrades[] = $analizer->testStrategy($account);
         }
 
-        return ['accounts' => $accounts, 'allTrades' => $allTrades];
+        return [
+            'accounts'  => $accounts,
+            'allTrades' => $allTrades
+        ];
     }
 
     /**
@@ -93,5 +98,23 @@ class AccountController extends Controller {
         return [
             'form' => $form->createView(),
         ];
+    }
+
+    /**
+     * @Route("/show/{id}", requirements={"id"="\d+"})
+     * @Template()
+     * @ParamConverter("id", class="RottenwoodBarchartBundle:TradeAccount")
+     * @param Request      $request
+     * @param TradeAccount $account
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showAccountAction(Request $request, TradeAccount $account) {
+
+        if ($account->getAnalitic() !== $this->getUser()) {
+            //            return [];
+            die('test');
+        }
+
+        return ['account' => $account,];
     }
 }
