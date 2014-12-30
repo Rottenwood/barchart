@@ -43,12 +43,6 @@ class DefaultController extends Controller {
         $strategy = new Strategy();
         $strategy->setAuthor($this->getUser());
 
-        $account = new TradeAccount();
-        $account->setName('Test Account');
-        $account->setAnalitic($this->getUser());
-        $account->setBalance(1000);
-        $account->setStrategy($strategy);
-
         $form = $this->createForm(new StrategyType(), $strategy, ['cascade_validation' => true]);
         $form->handleRequest($request);
 

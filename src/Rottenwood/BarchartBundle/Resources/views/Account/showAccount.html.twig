@@ -1,0 +1,35 @@
+{% extends ':Default:layout.html.twig' %}
+
+{% block title %}Торговый счет #{{ account.id }}{% endblock title %}
+
+{% block content %}
+
+    <p>Торговый счет <strong>#{{ account.id }}</strong></p>
+
+    <table id="trades-list">
+        <thead>
+        <tr>
+            <td>Название счета</td>
+            <td>Стратегия</td>
+            <td>Баланс на начало торговли</td>
+            <td>Текущий Баланс</td>
+            <td>Средства</td>
+            <td>Количество сделок</td>
+        </tr>
+        </thead>
+        <tr>
+            <td>{{ account.name }}</td>
+            <td>{{ account.strategy.name }}</td>
+            <td>{{ account.startbalance }}</td>
+            <td>{{ account.balance }} [прибыль]</td>
+            <td>{{ account.equity }} [прибыль]</td>
+            <td>{{ account.trades|length }}</td>
+        </tr>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <a href="{{ path('rottenwood_barchart_account_listaccounts') }}">Список торговых счетов</a>
+
+{% endblock content %}
