@@ -111,12 +111,14 @@ class AccountController extends Controller {
      */
     public function showAccountAction(Request $request, TradeAccount $account) {
         $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
 
         if ($account->isPrivate() && $account->getAnalitic() !== $this->getUser()) {
             return $this->redirectToRoute('rottenwood_barchart_account_listaccounts');
         }
 
-        $form = $this->createForm(new ChangeStrategyType($em, $this->getUser()), $account);
+        $form = $this->createForm(new ChangeStrategyType($em, $this->getUser(), ($user === $account->getAnalitic())),
+                                  $account);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

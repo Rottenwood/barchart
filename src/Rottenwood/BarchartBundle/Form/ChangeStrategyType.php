@@ -18,26 +18,30 @@ class ChangeStrategyType extends AbstractType {
     private $analitic;
     /** @var EntityManager $em */
     private $em;
+    private $canChange;
 
-    function __construct(EntityManager $em, Analitic $analitic) {
+    function __construct(EntityManager $em, Analitic $analitic, $canChange) {
         $this->em = $em;
         $this->analitic = $analitic;
+        $this->canChange = $canChange;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('strategy', 'entity', [
-            'label'         => 'Стратегия',
-            'required'      => false,
-            'empty_value'   => 'выберите стратегию',
-            'class'         => 'RottenwoodBarchartBundle:Strategy',
-            'query_builder' => function ($repository) {
-                return $repository->createQueryBuilder('s')
-                                  ->where('s.author = :author')
-                                  ->setParameter('author', $this->analitic)
-                                  ->orderBy('s.name', 'ASC');
-            }
-        ]);
-        $builder->add('save', 'submit', ['label' => 'Сохранить торговый счет']);
+        if ($this->canChange) {
+            $builder->add('strategy', 'entity', [
+                'label'         => 'Стратегия',
+                'required'      => false,
+                'empty_value'   => 'выберите стратегию',
+                'class'         => 'RottenwoodBarchartBundle:Strategy',
+                'query_builder' => function ($repository) {
+                    return $repository->createQueryBuilder('s')
+                                      ->where('s.author = :author')
+                                      ->setParameter('author', $this->analitic)
+                                      ->orderBy('s.name', 'ASC');
+                }
+            ]);
+            $builder->add('save', 'submit', ['label' => 'Сохранить торговый счет']);
+        }
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

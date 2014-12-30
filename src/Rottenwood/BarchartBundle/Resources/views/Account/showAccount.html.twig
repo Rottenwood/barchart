@@ -21,7 +21,11 @@
         </thead>
         <tr>
             <td>{{ account.name }}</td>
-            <td>{{ form_widget(form.strategy) }}</td>
+            {% if form.strategy is defined %}
+                <td>{{ form_widget(form.strategy) }}</td>
+            {% else %}
+                <td>{{ account.strategy.name }}</td>
+            {% endif %}
             <td>{{ account.startbalance }}</td>
             <td>{{ account.balance }} [прибыль]</td>
             <td>{{ account.equity }} [прибыль]</td>
@@ -32,7 +36,10 @@
         </tbody>
     </table>
 
-    {{ form_widget(form.save) }}
+    {% if form.strategy is defined %}
+        {{ form_widget(form.save) }}
+    {% endif %}
+
     {{ form_end(form) }}
 
     <div class="break-20"></div>
