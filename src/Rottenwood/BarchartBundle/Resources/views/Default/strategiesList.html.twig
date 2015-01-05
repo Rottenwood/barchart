@@ -1,0 +1,31 @@
+{% extends ':Default:layout.html.twig' %}
+
+{% block title %}Список стратегий{% endblock title %}
+
+{% block content %}
+
+    <p>Список ваших торговых стратегий:</p>
+
+    <table id="trades-list">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>Название стратегии</td>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for strategy in strategies %}
+            <tr>
+                <td>{{ strategy.id }}</td>
+                <td>
+                    <a href="{{ path('rottenwood_barchart_default_strategyedit', {id: strategy.id}) }}">
+                        {{ strategy.name }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}

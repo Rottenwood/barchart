@@ -86,4 +86,19 @@ class DefaultController extends Controller {
             'form' => $form->createView(),
         ];
     }
+
+    /**
+     * Список стратегий
+     * @Route("/strategy/list")
+     * @Template()
+     * @param Request $request
+     * @return array
+     */
+    public function strategiesListAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+
+        return [
+            'strategies' => $em->getRepository('RottenwoodBarchartBundle:Strategy')->findByAuthor($this->getUser()),
+        ];
+    }
 }
