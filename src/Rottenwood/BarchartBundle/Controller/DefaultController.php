@@ -32,7 +32,7 @@ class DefaultController extends Controller {
     }
 
     /**
-     * @Route("/strategy")
+     * @Route("/strategy/create")
      * @Template()
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -43,7 +43,9 @@ class DefaultController extends Controller {
         $strategy = new Strategy();
         $strategy->setAuthor($this->getUser());
 
-        $form = $this->createForm(new StrategyType(), $strategy, ['cascade_validation' => true]);
+        $isStrategyNew = true;
+
+        $form = $this->createForm(new StrategyType($isStrategyNew), $strategy, ['cascade_validation' => true]);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
