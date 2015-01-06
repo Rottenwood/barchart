@@ -3,7 +3,6 @@ parameters:
     barchart.parser.class: Rottenwood\BarchartBundle\Service\BarchartParserService
     barchart.analizer.class: Rottenwood\BarchartBundle\Service\AnalizerService
     listener.fosuser.class: Rottenwood\BarchartBundle\Listener\FOSUserListener
-    handler.login.class: Rottenwood\BarchartBundle\Listener\LoginHandler
 
 services:
     barchart.config:
@@ -24,9 +23,3 @@ services:
         arguments: [@router]
         tags:
             - { name: kernel.event_subscriber }
-
-    # Обработчик успешного логина
-    login.handler:
-        class: %handler.login.class%
-        arguments: [@router]
-
