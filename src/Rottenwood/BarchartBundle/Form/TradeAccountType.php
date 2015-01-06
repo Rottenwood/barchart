@@ -57,7 +57,7 @@ class TradeAccountType extends AbstractType {
             'label'    => 'В закрытом доступе',
             'required' => false,
         ]);
-        $builder->add('send', 'submit', ['label' => 'Создать торговый счет']);
+        $builder->add('save', 'submit', ['label' => 'Создать торговый счет']);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

@@ -36,9 +36,9 @@
         </tbody>
     </table>
 
-    {% if form.strategy is defined %}
-        {{ form_widget(form.save, {'label':'Сохранить торговый счет'}) }}
-    {% endif %}
+    <div>
+        {{ form_widget(form.save) }}
+    </div>
 
     {{ form_end(form) }}
 

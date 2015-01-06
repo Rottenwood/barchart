@@ -63,6 +63,20 @@ class DefaultController extends Controller {
     }
 
     /**
+     * Список стратегий
+     * @Route("/strategy/list")
+     * @Template()
+     * @return array
+     */
+    public function strategiesListAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        return [
+            'strategies' => $em->getRepository('RottenwoodBarchartBundle:Strategy')->findByAuthor($this->getUser()),
+        ];
+    }
+
+    /**
      * Редактирование стратегий
      * @Route("/strategy/edit/{id}", requirements={"id"="\d+"})
      * @Template("RottenwoodBarchartBundle:Default:makeStrategy.html.twig")
@@ -86,21 +100,6 @@ class DefaultController extends Controller {
 
         return [
             'form' => $form->createView(),
-        ];
-    }
-
-    /**
-     * Список стратегий
-     * @Route("/strategy/list")
-     * @Template()
-     * @param Request $request
-     * @return array
-     */
-    public function strategiesListAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-
-        return [
-            'strategies' => $em->getRepository('RottenwoodBarchartBundle:Strategy')->findByAuthor($this->getUser()),
         ];
     }
 }
