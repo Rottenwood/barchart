@@ -68,7 +68,7 @@ class DefaultController extends Controller {
      * @Template()
      * @return array
      */
-    public function strategiesListAction() {
+    public function listStrategiesAction() {
         $em = $this->getDoctrine()->getManager();
 
         return [
