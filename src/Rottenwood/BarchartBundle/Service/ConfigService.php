@@ -6,6 +6,7 @@
 
 namespace Rottenwood\BarchartBundle\Service;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Acl\Exception\Exception;
 use Symfony\Component\Yaml\Yaml;
 
@@ -17,7 +18,7 @@ class ConfigService {
     protected $kernel;
     protected $config;
 
-    public function __construct(Kernel $kernel) {
+    public function __construct(KernelInterface $kernel) {
         $this->kernel = $kernel;
         $this->config = $this->configLoad();
     }
