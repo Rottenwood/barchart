@@ -11,6 +11,7 @@
         <tr>
             <td>#</td>
             <td>Название стратегии</td>
+            <td></td>
         </tr>
         </thead>
 
@@ -19,8 +20,11 @@
             <tr>
                 <td>{{ strategy.id }}</td>
                 <td>
+                    {{ strategy.name }}
+                </td>
+                <td>
                     <a href="{{ path('rottenwood_barchart_default_strategyedit', {id: strategy.id}) }}">
-                        {{ strategy.name }}
+                        редактировать
                     </a>
                 </td>
             </tr>
