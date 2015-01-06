@@ -24,7 +24,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class AccountController extends Controller {
 
     /**
-     * @Route("/list")
+     * @Route("/list", name="account.list")
      * @Template()
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -33,15 +33,49 @@ class AccountController extends Controller {
         $accounts = $em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($this->getUser());
 
         if (!$accounts) {
-            return $this->redirect($this->generateUrl('rottenwood_barchart_account_createaccount'));
+            return $this->redirect($this->generateUrl('account.create'));
         }
 
         return ['accounts' => $accounts];
     }
 
     /**
+     * Страница редактирования торгового аккаунта
+     * @Route("/edit/{id}", requirements={"id"="\d+"}, name="account.edit")
+     * @Template()
+     * @ParamConverter("id", class="RottenwoodBarchartBundle:TradeAccount")
+     * @param Request      $request
+     * @param TradeAccount $account
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAccountAction(Request $request, TradeAccount $account) {
+        if ($account->getAnalitic() !== $this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $form = $this->createForm(new ChangeStrategyType($em, $this->getUser(), ($user === $account->getAnalitic())),
+            $account);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em->flush();
+            return $this->redirectToRoute('account.info', [
+                'id' => $account->getId(),
+            ]);
+        }
+
+        return [
+            'account' => $account,
+            'form'    => $form->createView(),
+        ];
+    }
+
+    /**
      * Страница торгового аккаунта
-     * @Route("/{id}", requirements={"id"="\d+"})
+     * @Route("/{id}", requirements={"id"="\d+"}, name="account.info")
      * @Template()
      * @ParamConverter("id", class="RottenwoodBarchartBundle:TradeAccount")
      * @param Request      $request
@@ -64,7 +98,7 @@ class AccountController extends Controller {
 
         if ($form->isValid()) {
             $em->flush();
-            return $this->redirectToRoute('rottenwood_barchart_account_listaccounts');
+            return $this->redirectToRoute('account.list');
         }
 
         return [
@@ -74,33 +108,7 @@ class AccountController extends Controller {
     }
 
     /**
-     * @Route("/trades")
-     * @Template()
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function tradesAccountsAction() {
-        $em = $this->getDoctrine()->getManager();
-        $accounts = $em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($this->getUser());
-
-        if (!$accounts) {
-            return $this->redirect($this->generateUrl('rottenwood_barchart_account_createaccount'));
-        }
-
-        $analizer = $this->get('barchart.analizer');
-
-        $allTrades = [];
-        foreach ($accounts as $account) {
-            $allTrades[] = $analizer->testStrategy($account);
-        }
-
-        return [
-            'accounts'  => $accounts,
-            'allTrades' => $allTrades
-        ];
-    }
-
-    /**
-     * @Route("/create")
+     * @Route("/create", name="account.create")
      * @Template()
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -110,7 +118,7 @@ class AccountController extends Controller {
         $strategies = $em->getRepository('RottenwoodBarchartBundle:Strategy')->findByAuthor($this->getUser());
 
         if (!$strategies) {
-            return $this->redirect($this->generateUrl('rottenwood_barchart_default_makestrategy'));
+            return $this->redirect($this->generateUrl('strategy.create'));
         }
 
         $form = $this->createForm(new TradeAccountType($em, $this->getUser()));
@@ -126,11 +134,39 @@ class AccountController extends Controller {
             $em->persist($tradeAccount);
             $em->flush();
 
-            return $this->redirectToRoute('rottenwood_barchart_account_listaccounts');
+            return $this->redirectToRoute('account.info',
+                ['id' => $tradeAccount->getId()]
+            );
         }
 
         return [
             'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * @Route("/trades")
+     * @Template()
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function tradesAccountsAction() {
+        $em = $this->getDoctrine()->getManager();
+        $accounts = $em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($this->getUser());
+
+        if (!$accounts) {
+            return $this->redirect($this->generateUrl('account.create'));
+        }
+
+        $analizer = $this->get('barchart.analizer');
+
+        $allTrades = [];
+        foreach ($accounts as $account) {
+            $allTrades[] = $analizer->testStrategy($account);
+        }
+
+        return [
+            'accounts'  => $accounts,
+            'allTrades' => $allTrades
         ];
     }
 }

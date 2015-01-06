@@ -17,6 +17,8 @@
     {% else %}
         <p>Торговый счет <strong>#{{ account.id }}</strong></p>
 
+        {{ form_start(form) }}
+
         <table id="trades-list">
             <thead>
             <tr>
@@ -30,11 +32,18 @@
             </thead>
             <tr>
                 <td>
-                    {{ account.name }}
-
+                    {% if form.name is defined %}
+                        {{ form_widget(form.name) }}
+                    {% else %}
+                        {{ account.name }}
+                    {% endif %}
                 </td>
                 <td>
-                    {{ account.strategy.name }}
+                    {% if form.strategy is defined %}
+                        {{ form_widget(form.strategy) }}
+                    {% else %}
+                        {{ account.strategy.name }}
+                    {% endif %}
                 </td>
                 <td>{{ account.startbalance }}</td>
                 <td>{{ account.balance }} [прибыль]</td>
@@ -46,8 +55,24 @@
             </tbody>
         </table>
 
+        {% if form.save is defined %}
+            <div>
+                {{ form_widget(form.save) }}
+            </div>
+        {% endif %}
+
+        {{ form_end(form) }}
+
         <div class="break-20"></div>
 
-        <a href="{{ path('account.list') }}">Список торговых счетов</a>
+        <p>
+
+            <a href="{{ path('account.list') }}">Список торговых счетов</a>
+        </p>
+        <p>
+            <a href="{{ path('strategy.edit', {id: account.strategy.id}) }}">
+                Редактировать стратегии
+            </a>
+        </p>
     {% endif %}
 {% endblock content %}

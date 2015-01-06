@@ -18,6 +18,7 @@
             <td>Средства</td>
             <td>Количество сделок</td>
             <td></td>
+            <td></td>
         </tr>
         </thead>
 
@@ -26,7 +27,9 @@
             <tr>
                 <td>{{ account.id }}</td>
                 <td>
-                    {{ account.name }}<br>
+                    <a href="{{ path('account.info', {id: account.id}) }}">
+                        {{ account.name }}<br>
+                    </a>
 
                 </td>
                 <td>
@@ -36,7 +39,7 @@
                 <td>{{ account.equity }} [прибыль]</td>
                 <td>{{ account.trades|length }}</td>
                 <td>
-                    <a href="{{ path('rottenwood_barchart_account_showaccount', {id: account.id}) }}">
+                    <a href="{{ path('account.edit', {id: account.id}) }}">
                         редактировать
                     </a>
                 </td>

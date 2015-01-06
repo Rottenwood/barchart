@@ -7,7 +7,6 @@ use Rottenwood\BarchartBundle\Form\StrategyType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-use Rottenwood\BarchartBundle\Entity\Analitic;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -15,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class DefaultController extends Controller {
 
     /**
-     * @Route("/")
+     * @Route("/", name="index")
      * @Template()
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -31,7 +30,7 @@ class DefaultController extends Controller {
     }
 
     /**
-     * @Route("/strategy/create")
+     * @Route("/strategy/create", name="strategy.create")
      * @Template()
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -53,7 +52,7 @@ class DefaultController extends Controller {
             $em->persist($strategy);
             $em->flush();
 
-            return $this->redirectToRoute('rottenwood_barchart_account_createaccount');
+            return $this->redirectToRoute('account.create');
         }
 
         return [
@@ -63,7 +62,7 @@ class DefaultController extends Controller {
 
     /**
      * Список стратегий
-     * @Route("/strategy/list")
+     * @Route("/strategy/list", name="strategy.list")
      * @Template()
      * @return array
      */
@@ -72,7 +71,7 @@ class DefaultController extends Controller {
         $strategies = $em->getRepository('RottenwoodBarchartBundle:Strategy')->findByAuthor($this->getUser());
 
         if (!$strategies) {
-            return $this->redirectToRoute('rottenwood_barchart_default_index');
+            return $this->redirectToRoute('index');
         }
 
         return [
@@ -82,7 +81,7 @@ class DefaultController extends Controller {
 
     /**
      * Редактирование стратегий
-     * @Route("/strategy/edit/{id}", requirements={"id"="\d+"})
+     * @Route("/strategy/edit/{id}", requirements={"id"="\d+"}, name="strategy.edit")
      * @Template("RottenwoodBarchartBundle:Default:makeStrategy.html.twig")
      * @ParamConverter("id", class="RottenwoodBarchartBundle:Strategy")
      * @param Request  $request
@@ -92,7 +91,7 @@ class DefaultController extends Controller {
     public function strategyEditAction(Request $request, Strategy $strategy) {
 
         if ($this->getUser()->getId() != $strategy->getAuthor()->getId()) {
-            return $this->redirectToRoute('rottenwood_barchart_default_liststrategies');
+            return $this->redirectToRoute('strategy.list');
         }
 
         $em = $this->getDoctrine()->getEntityManager();
