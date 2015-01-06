@@ -2,15 +2,24 @@ parameters:
     barchart.config.class: Rottenwood\BarchartBundle\Service\ConfigService
     barchart.parser.class: Rottenwood\BarchartBundle\Service\BarchartParserService
     barchart.analizer.class: Rottenwood\BarchartBundle\Service\AnalizerService
+    listener.fosuser.class: Rottenwood\BarchartBundle\Listener\FOSUserListener
 
 services:
     barchart.config:
         class: %barchart.config.class%
         arguments: [@kernel]
+
     barchart.parser:
         class: %barchart.parser.class%
         arguments: [@barchart.config, @doctrine.orm.entity_manager]
+
     barchart.analizer:
         class: %barchart.analizer.class%
         arguments: [@barchart.config, @doctrine.orm.entity_manager]
 
+    # Слушатель события FOSUserBundle
+    fosuser.listener:
+        class: %listener.fosuser.class%
+        arguments: [@router]
+        tags:
+            - { name: kernel.event_subscriber }
