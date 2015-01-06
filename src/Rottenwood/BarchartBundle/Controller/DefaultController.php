@@ -2,16 +2,15 @@
 
 namespace Rottenwood\BarchartBundle\Controller;
 
+use Rottenwood\BarchartBundle\Entity\Strategy;
+use Rottenwood\BarchartBundle\Form\StrategyType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+
 use Rottenwood\BarchartBundle\Entity\Analitic;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
-use Rottenwood\BarchartBundle\Entity\Strategy;
-use Rottenwood\BarchartBundle\Entity\TradeAccount;
-use Rottenwood\BarchartBundle\Form\StrategyType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller {
 
@@ -70,9 +69,14 @@ class DefaultController extends Controller {
      */
     public function listStrategiesAction() {
         $em = $this->getDoctrine()->getManager();
+        $strategies = $em->getRepository('RottenwoodBarchartBundle:Strategy')->findByAuthor($this->getUser());
+
+        if (!$strategies) {
+            return $this->redirectToRoute('rottenwood_barchart_default_index');
+        }
 
         return [
-            'strategies' => $em->getRepository('RottenwoodBarchartBundle:Strategy')->findByAuthor($this->getUser()),
+            'strategies' => $strategies,
         ];
     }
 
@@ -86,6 +90,11 @@ class DefaultController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function strategyEditAction(Request $request, Strategy $strategy) {
+
+        if ($this->getUser()->getId() != $strategy->getAuthor()->getId()) {
+            return $this->redirectToRoute('rottenwood_barchart_default_liststrategies');
+        }
+
         $em = $this->getDoctrine()->getEntityManager();
 
         $form = $this->createForm(new StrategyType(), $strategy, ['cascade_validation' => true]);
