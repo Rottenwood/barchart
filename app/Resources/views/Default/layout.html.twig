@@ -27,7 +27,9 @@
 {% block content %}
 {% endblock content %}
 
-{% include ':Default:menu.html.twig' %}
+{% block menu %}
+    {% include ':Default:menu.html.twig' %}
+{% endblock menu %}
 
 </body>
 </html>

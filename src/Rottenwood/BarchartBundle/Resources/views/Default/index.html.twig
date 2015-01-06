@@ -2,23 +2,25 @@
 
 {% block content %}
 
-    <div class="row">
-        <div class="col-md-offset-1 col-md-11 top-space">
-            <p>Главная страница</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-1 col-md-11 top-space">
+                <p>Главная страница</p>
 
-            <p><a href="{{ path('strategy.create') }}">Создание новой стратегии</a></p>
+                <p><a href="{{ path('strategy.create') }}">Создание новой стратегии</a></p>
 
-            {% if haveStrategies %}
-                <p><a href="{{ path('strategy.list') }}">Список ваших стратегий</a></p>
-                <p><a href="{{ path('account.create') }}">Создание нового торгового
-                        счета</a></p>
-                {% if haveAccounts %}
-                    <p><a href="{{ path('account.list') }}">Список торговых счетов</a></p>
-                    <p><a href="{{ path('rottenwood_barchart_account_tradesaccounts') }}">Отчет по сделкам на всех
-                            торговых счетах</a></p>
+                {% if haveStrategies %}
+                    <p><a href="{{ path('strategy.list') }}">Список ваших стратегий</a></p>
+                    <p><a href="{{ path('account.create') }}">Создание нового торгового
+                            счета</a></p>
+                    {% if haveAccounts %}
+                        <p><a href="{{ path('account.list') }}">Список торговых счетов</a></p>
+                        <p><a href="{{ path('rottenwood_barchart_account_tradesaccounts') }}">Отчет по сделкам на всех
+                                торговых счетах</a></p>
+                    {% endif %}
+
                 {% endif %}
-
-            {% endif %}
+            </div>
         </div>
     </div>
 
