@@ -13,10 +13,11 @@
         <tr>
             <td>#</td>
             <td>Название счета</td>
-            <td>Стратегий</td>
+            <td>Стратегия</td>
             <td>Баланс</td>
             <td>Средства</td>
             <td>Количество сделок</td>
+            <td></td>
         </tr>
         </thead>
 
@@ -25,18 +26,20 @@
             <tr>
                 <td>{{ account.id }}</td>
                 <td>
-                    <a href="{{ path('rottenwood_barchart_account_showaccount', {id: account.id}) }}">
-                        {{ account.name }}
-                    </a>
+                    {{ account.name }}<br>
+
                 </td>
                 <td>
-                    <a href="{{ path('rottenwood_barchart_default_strategyedit', {id: account.strategy.id}) }}">
-                        {{ account.strategy.name }}
+                    {{ account.strategy.name }}
+                </td>
+                <td>{{ account.balance }} [прибыль]</td>
+                <td>{{ account.equity }} [прибыль]</td>
+                <td>{{ account.trades|length }}</td>
+                <td>
+                    <a href="{{ path('rottenwood_barchart_account_showaccount', {id: account.id}) }}">
+                        редактировать
                     </a>
                 </td>
-                <td>{{ account.balance }}</td>
-                <td>{{ account.equity }}</td>
-                <td>{{ account.trades|length }}</td>
             </tr>
         {% endfor %}
         </tbody>

@@ -28,6 +28,7 @@ class ChangeStrategyType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         if ($this->canChange) {
+            $builder->add('name', 'text');
             $builder->add('strategy', 'entity', [
                 'label'         => 'Стратегия',
                 'required'      => false,
@@ -35,9 +36,9 @@ class ChangeStrategyType extends AbstractType {
                 'class'         => 'RottenwoodBarchartBundle:Strategy',
                 'query_builder' => function ($repository) {
                     return $repository->createQueryBuilder('s')
-                                      ->where('s.author = :author')
-                                      ->setParameter('author', $this->analitic)
-                                      ->orderBy('s.name', 'ASC');
+                        ->where('s.author = :author')
+                        ->setParameter('author', $this->analitic)
+                        ->orderBy('s.name', 'ASC');
                 }
             ]);
             $builder->add('save', 'submit', ['label' => 'Сохранить торговый счет']);
@@ -46,10 +47,10 @@ class ChangeStrategyType extends AbstractType {
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults([
-                                   'label'      => false,
-                                   'empty_data' => new TradeAccount(),
-                                   'data_class' => 'Rottenwood\BarchartBundle\Entity\TradeAccount',
-                               ]);
+            'label'      => false,
+            'empty_data' => new TradeAccount(),
+            'data_class' => 'Rottenwood\BarchartBundle\Entity\TradeAccount',
+        ]);
     }
 
     public function getName() {

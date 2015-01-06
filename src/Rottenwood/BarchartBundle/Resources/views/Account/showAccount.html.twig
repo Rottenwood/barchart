@@ -1,49 +1,70 @@
 {% extends ':Default:layout.html.twig' %}
 
-{% block title %}Торговый счет #{{ account.id }}{% endblock title %}
+{% block title %}
+    Торговый счет #
+    {% if accountIsPrivate is defined %}
+        {{ accountIsPrivate }}
+    {% else %}
+        {{ account.id }}
+    {% endif %}
+{% endblock title %}
 
 {% block content %}
+    {% if accountIsPrivate is defined %}
+        <div>
+            Доступ к счету <strong>#{{ accountIsPrivate }}</strong> ограниен его владельцем.
+        </div>
+    {% else %}
+        <p>Торговый счет <strong>#{{ account.id }}</strong></p>
 
-    <p>Торговый счет <strong>#{{ account.id }}</strong></p>
+        {{ form_start(form) }}
 
-    {{ form_start(form) }}
+        <table id="trades-list">
+            <thead>
+            <tr>
+                <td>Название счета</td>
+                <td>Стратегия</td>
+                <td>Баланс на начало торговли</td>
+                <td>Текущий Баланс</td>
+                <td>Средства</td>
+                <td>Количество сделок</td>
+            </tr>
+            </thead>
+            <tr>
+                <td>
+                    {% if form.name is defined %}
+                        {{ form_widget(form.name) }}
+                    {% else %}
+                        {{ account.name }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if form.strategy is defined %}
+                        {{ form_widget(form.strategy) }}
+                    {% else %}
+                        {{ account.strategy.name }}
+                    {% endif %}
+                </td>
+                <td>{{ account.startbalance }}</td>
+                <td>{{ account.balance }} [прибыль]</td>
+                <td>{{ account.equity }} [прибыль]</td>
+                <td>{{ account.trades|length }}</td>
+            </tr>
+            <tbody>
 
-    <table id="trades-list">
-        <thead>
-        <tr>
-            <td>Название счета</td>
-            <td>Стратегия</td>
-            <td>Баланс на начало торговли</td>
-            <td>Текущий Баланс</td>
-            <td>Средства</td>
-            <td>Количество сделок</td>
-        </tr>
-        </thead>
-        <tr>
-            <td>{{ account.name }}</td>
-            {% if form.strategy is defined %}
-                <td>{{ form_widget(form.strategy) }}</td>
-            {% else %}
-                <td>{{ account.strategy.name }}</td>
-            {% endif %}
-            <td>{{ account.startbalance }}</td>
-            <td>{{ account.balance }} [прибыль]</td>
-            <td>{{ account.equity }} [прибыль]</td>
-            <td>{{ account.trades|length }}</td>
-        </tr>
-        <tbody>
+            </tbody>
+        </table>
 
-        </tbody>
-    </table>
+        {% if form.save is defined %}
+            <div>
+                {{ form_widget(form.save) }}
+            </div>
+        {% endif %}
 
-    <div>
-        {{ form_widget(form.save) }}
-    </div>
+        {{ form_end(form) }}
 
-    {{ form_end(form) }}
+        <div class="break-20"></div>
 
-    <div class="break-20"></div>
-
-    <a href="{{ path('rottenwood_barchart_account_listaccounts') }}">Список торговых счетов</a>
-
+        <a href="{{ path('rottenwood_barchart_account_listaccounts') }}">Список торговых счетов</a>
+    {% endif %}
 {% endblock content %}

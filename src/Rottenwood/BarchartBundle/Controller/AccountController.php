@@ -40,6 +40,40 @@ class AccountController extends Controller {
     }
 
     /**
+     * Страница торгового аккаунта
+     * @Route("/{id}", requirements={"id"="\d+"})
+     * @Template()
+     * @ParamConverter("id", class="RottenwoodBarchartBundle:TradeAccount")
+     * @param Request      $request
+     * @param TradeAccount $account
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showAccountAction(Request $request, TradeAccount $account) {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        if ($account->isPrivate() && $account->getAnalitic() !== $this->getUser()) {
+            return [
+                'accountIsPrivate' => $account->getId(),
+            ];
+        }
+
+        $form = $this->createForm(new ChangeStrategyType($em, $this->getUser(), ($user === $account->getAnalitic())),
+            $account);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em->flush();
+            return $this->redirectToRoute('rottenwood_barchart_account_listaccounts');
+        }
+
+        return [
+            'account' => $account,
+            'form'    => $form->createView(),
+        ];
+    }
+
+    /**
      * @Route("/trades")
      * @Template()
      * @return \Symfony\Component\HttpFoundation\Response
@@ -97,37 +131,6 @@ class AccountController extends Controller {
 
         return [
             'form' => $form->createView(),
-        ];
-    }
-
-    /**
-     * Страница торгового аккаунта
-     * @Route("/show/{id}", requirements={"id"="\d+"})
-     * @Template()
-     * @ParamConverter("id", class="RottenwoodBarchartBundle:TradeAccount")
-     * @param Request      $request
-     * @param TradeAccount $account
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showAccountAction(Request $request, TradeAccount $account) {
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser();
-
-        if ($account->isPrivate() && $account->getAnalitic() !== $this->getUser()) {
-            return $this->redirectToRoute('rottenwood_barchart_account_listaccounts');
-        }
-
-        $form = $this->createForm(new ChangeStrategyType($em, $this->getUser(), ($user === $account->getAnalitic())),
-                                  $account);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em->flush();
-        }
-
-        return [
-            'account' => $account,
-            'form'    => $form->createView(),
         ];
     }
 }

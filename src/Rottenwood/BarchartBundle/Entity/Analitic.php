@@ -26,11 +26,6 @@ class Analitic extends BaseUser {
      **/
     protected $strategies;
 
-    public function __construct() {
-        parent::__construct();
-        $this->strategies = new ArrayCollection();
-    }
-
     /**
      * Get id
      * @return integer
