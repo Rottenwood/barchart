@@ -42,7 +42,10 @@ class StrategyType extends AbstractType {
             'allow_add'    => true,
             'allow_delete' => true,
         ]);
-
+        $builder->add('isPrivate', 'checkbox', [
+            'label'    => 'Видна только мне',
+            'required' => false,
+        ]);
         $builder->add('save', 'submit', [
             'label' => $this->isStrategyNew
                 ? 'Создать стратегию'

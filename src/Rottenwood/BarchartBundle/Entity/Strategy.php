@@ -49,10 +49,14 @@ class Strategy extends Symbol {
      */
     private $symbol;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="is_private", type="boolean")
+     */
+    private $isPrivate;
 
     public function __construct() {
         $this->signals = new ArrayCollection();
-        $this->authors = new ArrayCollection();
     }
 
     /**
@@ -137,5 +141,19 @@ class Strategy extends Symbol {
      */
     public function setSymbol($symbol) {
         $this->symbol = $symbol;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPrivate() {
+        return $this->isPrivate;
+    }
+
+    /**
+     * @param boolean $isPrivate
+     */
+    public function setIsPrivate($isPrivate) {
+        $this->isPrivate = $isPrivate;
     }
 }

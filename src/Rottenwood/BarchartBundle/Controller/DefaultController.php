@@ -31,11 +31,11 @@ class DefaultController extends Controller {
 
     /**
      * @Route("/strategy/create", name="strategy.create")
-     * @Template()
+     * @Template("RottenwoodBarchartBundle:Default:editStrategy.html.twig")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function makeStrategyAction(Request $request) {
+    public function createStrategyAction(Request $request) {
         $em = $this->getDoctrine()->getEntityManager();
 
         $strategy = new Strategy();
@@ -82,13 +82,13 @@ class DefaultController extends Controller {
     /**
      * Редактирование стратегий
      * @Route("/strategy/edit/{id}", requirements={"id"="\d+"}, name="strategy.edit")
-     * @Template("RottenwoodBarchartBundle:Default:makeStrategy.html.twig")
+     * @Template()
      * @ParamConverter("id", class="RottenwoodBarchartBundle:Strategy")
      * @param Request  $request
      * @param Strategy $strategy
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function strategyEditAction(Request $request, Strategy $strategy) {
+    public function editStrategyAction(Request $request, Strategy $strategy) {
 
         if ($this->getUser()->getId() != $strategy->getAuthor()->getId()) {
             return $this->redirectToRoute('strategy.list');
