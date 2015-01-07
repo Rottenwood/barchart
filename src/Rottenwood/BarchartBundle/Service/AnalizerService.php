@@ -21,10 +21,10 @@ use Rottenwood\BarchartBundle\Entity\TradeAccount;
  */
 class AnalizerService {
 
-    const AVERAGE_SHORTTERM  = 1;
+    const AVERAGE_SHORTTERM = 1;
     const AVERAGE_MIDDLETERM = 2;
-    const AVERAGE_LONGTERM   = 3;
-    const AVERAGE_OVERALL    = 4;
+    const AVERAGE_LONGTERM = 3;
+    const AVERAGE_OVERALL = 4;
 
     private $em;
     private $config;
@@ -280,9 +280,39 @@ class AnalizerService {
             }
         }
 
-        $this->em->flush();
-
         return $trades;
+    }
+
+    /**
+     * Получение даты первой котировки по которой анализируется стратегия
+     * @param Strategy $strategy
+     * @return \DateTime|null
+     */
+    public function getFirstPriceDate(Strategy $strategy) {
+        $prices = $this->getAllPrices($strategy->getSymbolName()[$strategy->getSymbol()]);
+        $firstPrice = reset($prices);
+
+        if ($firstPrice instanceof Price) {
+        	return $firstPrice->getDate();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Получение даты последней котировки по которой анализируется стратегия
+     * @param Strategy $strategy
+     * @return \DateTime|null
+     */
+    public function getLastPriceDate(Strategy $strategy) {
+        $prices = $this->getAllPrices($strategy->getSymbolName()[$strategy->getSymbol()]);
+        $lastPrice = end($prices);
+
+        if ($lastPrice instanceof Price) {
+            return $lastPrice->getDate();
+        } else {
+            return null;
+        }
     }
 
     /**

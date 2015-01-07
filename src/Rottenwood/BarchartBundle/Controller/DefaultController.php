@@ -145,7 +145,10 @@ class DefaultController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function testStrategyAction(Strategy $strategy) {
-        $trades = $this->get('barchart.analizer')->testStrategy($strategy);
+        $analizer = $this->get('barchart.analizer');
+        $trades = $analizer->testStrategy($strategy);
+        $firstPriceDate = $analizer->getFirstPriceDate($strategy);
+        $lastPriceDate = $analizer->getLastPriceDate($strategy);
 
         // TODO: добавить проверку на приватность стратегии
         if ($strategy->getAuthor() !== $this->getUser()) {
@@ -155,8 +158,10 @@ class DefaultController extends Controller {
         }
 
         return [
-            'strategy' => $strategy,
-            'trades' => $trades,
+            'strategy'       => $strategy,
+            'trades'         => $trades,
+            'firstPriceDate' => $firstPriceDate,
+            'lastPriceDate'  => $lastPriceDate,
         ];
     }
 }

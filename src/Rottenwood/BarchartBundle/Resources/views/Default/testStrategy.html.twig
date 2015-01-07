@@ -29,6 +29,9 @@
         <p>Результаты тестирования стратегии <strong>{{ strategy.name }}</strong> (автор: {{ strategy.author.username
             }}):</p>
 
+        <p>Торговый инструмент: <strong>{{ strategy.russianSymbolName[strategy.symbol] }}</strong></p>
+        <p>Дата начала тестирования: {{ firstPriceDate|date('Y-m-d H:i') }}</p>
+        <p>Дата конца тестирования: {{ lastPriceDate|date('Y-m-d H:i') }}</p>
         <p>Итоговая прибыль: <strong>{{ profit }}</strong></p>
 
         <div class="break-20"></div>
