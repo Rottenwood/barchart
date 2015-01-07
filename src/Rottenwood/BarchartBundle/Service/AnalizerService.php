@@ -132,7 +132,7 @@ class AnalizerService {
         $averageIndicatorName = $this->getAverageFunctionName($average);
 
         if (!$averageIndicatorName) {
-            throw new \Exception("Функция усреднения $average не найдена");
+            throw new \Exception('Функция усреднения ' . $average . ' не найдена');
         }
 
         $resultPrices = [];

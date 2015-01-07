@@ -152,8 +152,7 @@ class DefaultController extends Controller {
         $firstPriceDate = $analizer->getFirstPriceDate($strategy);
         $lastPriceDate = $analizer->getLastPriceDate($strategy);
 
-        // TODO: добавить проверку на приватность стратегии
-        if ($strategy->getAuthor() !== $this->getUser()) {
+        if ($strategy->isPrivate() && $strategy->getAuthor() !== $this->getUser()) {
             return [
                 'strategyIsPrivate' => $strategy->getId(),
             ];
