@@ -48,4 +48,29 @@ abstract class Symbol {
             self::SYMBOL_FOREX_USDJPY       => 'USDJPY',
         );
     }
+
+    /**
+     * Получение массива русских названий сущностей для торговых символов
+     * @return array
+     */
+    public static function getRussianSymbolName() {
+        return array(
+            self::SYMBOL_FUTURES_CORN       => 'Кукуруза',
+            self::SYMBOL_FUTURES_CRUDEOIL   => 'Нефть марки WTI',
+            self::SYMBOL_FUTURES_DJMINI     => 'Индекс DowJones mini',
+            self::SYMBOL_FUTURES_EMINI      => 'Индекс S&P mini',
+            self::SYMBOL_FUTURES_GOLD       => 'Золото',
+            self::SYMBOL_FUTURES_NATURALGAS => 'Природный газ',
+            self::SYMBOL_FUTURES_SILVER     => 'Серебро',
+            self::SYMBOL_FUTURES_SOYBEANS   => 'Соевые бобы',
+            self::SYMBOL_FUTURES_WHEAT      => 'Пшеница',
+
+            self::SYMBOL_FOREX_AUDUSD       => 'Австралийский доллар к Доллару США',
+            self::SYMBOL_FOREX_EURUSD       => 'Евро к Доллару США',
+            self::SYMBOL_FOREX_GBPUSD       => 'Британский фунт к Доллару США',
+            self::SYMBOL_FOREX_USDCAD       => 'Доллар США к Канадскому доллару',
+            self::SYMBOL_FOREX_USDCHF       => 'Доллар США к Швейцарскому франку',
+            self::SYMBOL_FOREX_USDJPY       => 'Доллар США к Японской йене',
+        );
+    }
 }
