@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManager;
 use Rottenwood\BarchartBundle\Entity\IndicatorValue;
 use Rottenwood\BarchartBundle\Entity\Price;
 use Rottenwood\BarchartBundle\Entity\Signal;
+use Rottenwood\BarchartBundle\Entity\Strategy;
 use Rottenwood\BarchartBundle\Entity\Trade;
 use Rottenwood\BarchartBundle\Entity\TradeAccount;
 
@@ -182,14 +183,12 @@ class AnalizerService {
     }
 
     /**
-     * //TODO: Нуждается в рефакторинге!
-     * Бэктестинг стратегии на торговом счету
-     * @param TradeAccount $account
+     * Бэктестинг стратеги
+     * @param Strategy $strategy
+     * @param int      $volume
      * @return array
      */
-    public function testStrategy(TradeAccount $account, $volume = 1) {
-        $strategy = $account->getStrategy();
-
+    public function testStrategy(Strategy $strategy, $volume = 1) {
         // Получение цен для анализа
         $prices = $this->getAllPrices($strategy->getSymbolName()[$strategy->getSymbol()]);
 
@@ -231,7 +230,6 @@ class AnalizerService {
                     $trade->setDirection($direction);
                     $trade->setOpen($price);
                     $trade->setOpenDate($priceObject->getDate());
-                    $trade->setAccount($account);
                     $trade->setSymbol($strategy->getSymbol());
                     $trade->setVolume($volume);
 

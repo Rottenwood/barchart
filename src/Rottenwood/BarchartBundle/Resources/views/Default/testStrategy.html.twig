@@ -1,0 +1,69 @@
+{% extends ':Default:layout.html.twig' %}
+
+{% set profit = 0 %}
+{% set profitLocal = 0 %}
+
+{% for trade in trades %}
+    {% set profit = profit + trade.profit %}
+{% endfor %}
+
+{% block title %}
+    Тестирование стратегии #
+    {% if strategyIsPrivate is defined %}
+        {{ strategyIsPrivate }}
+    {% else %}
+        {{ strategy.id }}
+    {% endif %}
+
+{% endblock title %}
+
+{% block content %}
+    {% if strategyIsPrivate is defined %}
+        <div>
+            Доступ к стратегии <strong>#{{ strategyIsPrivate }}</strong> ограниен его владельцем.
+        </div>
+    {% else %}
+
+        <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
+
+        <p>Результаты тестирования стратегии <strong>{{ strategy.name }}</strong> (автор: {{ strategy.author.username
+            }}):</p>
+
+        <table id="trades-list">
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>Направление</td>
+                <td>Время открытия</td>
+                <td>Время закрытия</td>
+                <td>Цена открытия</td>
+                <td>Цена закрытия</td>
+                <td>Прибыль</td>
+                <td>Общая прибыль</td>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for trade in trades %}
+                {% set profitLocal = profitLocal + trade.profit %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ trade.direction > 0 ? 'Покупка' : 'Продажа' }}</td>
+                    <td>{{ trade.openDate|date("m-d-Y H-i-s") }}</td>
+                    <td>
+                        {% if trade.closeDate %}
+                            {{ trade.closeDate|date('m-d-Y H-i-s') }}
+                        {% endif %}
+                    </td>
+                    <td>{{ trade.open }}</td>
+                    <td>{{ trade.close }}</td>
+                    <td>{{ trade.profit }}</td>
+                    <td>{{ profitLocal }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
+{% endblock content %}

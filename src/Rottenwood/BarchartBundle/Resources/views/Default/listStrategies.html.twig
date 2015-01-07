@@ -12,6 +12,7 @@
             <td>#</td>
             <td>Название стратегии</td>
             <td></td>
+            <td></td>
         </tr>
         </thead>
 
@@ -25,6 +26,11 @@
                 <td>
                     <a href="{{ path('strategy.edit', {id: strategy.id}) }}">
                         редактировать
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('strategy.test', {id: strategy.id}) }}">
+                        протестировать
                     </a>
                 </td>
             </tr>

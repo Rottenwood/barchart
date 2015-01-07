@@ -112,7 +112,7 @@ class DefaultController extends Controller {
     }
 
     /**
-     * @Route("/trades")
+     * @Route("/test/all", name="test.strategy.all")
      * @Template()
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -134,6 +134,29 @@ class DefaultController extends Controller {
         return [
             'accounts'  => $accounts,
             'allTrades' => $allTrades
+        ];
+    }
+
+    /**
+     * @Route("/test/{id}", requirements={"id"="\d+"}, name="strategy.test")
+     * @Template()
+     * @ParamConverter("id", class="RottenwoodBarchartBundle:Strategy")
+     * @param Strategy $strategy
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function testStrategyAction(Strategy $strategy) {
+        $trades = $this->get('barchart.analizer')->testStrategy($strategy);
+
+        // TODO: добавить проверку на приватность стратегии
+        if ($strategy->getAuthor() !== $this->getUser()) {
+            return [
+                'strategyIsPrivate' => $strategy->getId(),
+            ];
+        }
+
+        return [
+            'strategy' => $strategy,
+            'trades' => $trades,
         ];
     }
 }
