@@ -27,7 +27,7 @@
         <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
 
         <p>Результаты тестирования стратегии <strong>{{ strategy.name }}</strong> (автор: {{ strategy.author.username
-            }}):</p>
+            }})</p>
 
         <p>Торговый инструмент: <strong>{{ strategy.russianSymbolName[strategy.symbol] }}</strong></p>
         <p>Дата начала тестирования: {{ firstPriceDate|date('Y-m-d H:i') }}</p>

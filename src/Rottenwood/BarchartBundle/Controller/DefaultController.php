@@ -104,6 +104,8 @@ class DefaultController extends Controller {
 
             $em->persist($strategy);
             $em->flush();
+
+            return $this->redirectToRoute('strategy.list');
         }
 
         return [
