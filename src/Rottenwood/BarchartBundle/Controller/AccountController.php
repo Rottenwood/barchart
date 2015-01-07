@@ -143,30 +143,4 @@ class AccountController extends Controller {
             'form' => $form->createView(),
         ];
     }
-
-    /**
-     * @Route("/trades")
-     * @Template()
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function tradesAccountsAction() {
-        $em = $this->getDoctrine()->getManager();
-        $accounts = $em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($this->getUser());
-
-        if (!$accounts) {
-            return $this->redirect($this->generateUrl('account.create'));
-        }
-
-        $analizer = $this->get('barchart.analizer');
-
-        $allTrades = [];
-        foreach ($accounts as $account) {
-            $allTrades[] = $analizer->testStrategy($account);
-        }
-
-        return [
-            'accounts'  => $accounts,
-            'allTrades' => $allTrades
-        ];
-    }
 }
