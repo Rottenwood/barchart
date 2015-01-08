@@ -6,6 +6,7 @@
 
 namespace Rottenwood\BarchartBundle\Service;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Rottenwood\BarchartBundle\Entity\IndicatorValue;
 use Rottenwood\BarchartBundle\Entity\Price;
@@ -201,30 +202,9 @@ class AnalizerService {
 
             // Сигналы
             foreach ($strategy->getSignals() as $signal) {
-                $indicatorsPassed = 0;
-                $indicatorValues = $signal->getIndicatorValues();
                 $direction = $signal->getDirection();
 
-                foreach ($indicatorValues as $indicatorValueObject) {
-                    /** @var IndicatorValue $indicatorValueObject */
-                    $indicator = $indicatorValueObject->getIndicator();
-                    $indicatorMethod = 'get' . $indicator->getStrategyMethod();
-
-                    $priceIndicatorValue = $priceObject->$indicatorMethod();
-                    $indicatorValue = $indicatorValueObject->getValue();
-
-                    if (($direction == $signal::DIRECTION_BUY
-                         && $priceIndicatorValue >=
-                            $indicatorValue)
-                        || ($direction == $signal::DIRECTION_SELL
-                            && $priceIndicatorValue <= $indicatorValue
-                        )
-                    ) {
-                        $indicatorsPassed++;
-                    }
-                }
-
-                if ($indicatorsPassed == count($indicatorValues)) {
+                if ($this->indicatorsPassed($signal->getIndicatorValues(), $priceObject, $direction, $signal)) {
                     // Имитация открытия сделки, расчет ее результатов
                     $trade = new Trade();
                     $trade->setDirection($direction);
@@ -293,7 +273,7 @@ class AnalizerService {
         $firstPrice = reset($prices);
 
         if ($firstPrice instanceof Price) {
-        	return $firstPrice->getDate();
+            return $firstPrice->getDate();
         } else {
             return null;
         }
@@ -383,5 +363,33 @@ class AnalizerService {
         $limitHours = $this->config['analizer']['horizon']['hours'];
 
         return $limitWeeks * 5 * 19 + $limitDays * 19 + $limitHours;
+    }
+
+    /**
+     * Проверка на срабатывание всех индикаторов сигнала
+     * @param Collection $indicatorValues
+     * @param Price      $priceObject
+     * @param int        $direction
+     * @param Signal     $signal
+     * @return bool
+     */
+    private function indicatorsPassed(Collection $indicatorValues, Price $priceObject, $direction, Signal $signal) {
+        $indicatorsPassed = 0;
+        foreach ($indicatorValues->toArray() as $indicatorValueObject) {
+            /** @var IndicatorValue $indicatorValueObject */
+            $indicator = $indicatorValueObject->getIndicator();
+            $indicatorMethod = 'get' . $indicator->getStrategyMethod();
+
+            $priceIndicatorValue = $priceObject->$indicatorMethod();
+            $indicatorValue = $indicatorValueObject->getValue();
+
+            if (($direction == $signal::DIRECTION_BUY && $priceIndicatorValue >= $indicatorValue)
+                || ($direction == $signal::DIRECTION_SELL && $priceIndicatorValue <= $indicatorValue)
+            ) {
+                $indicatorsPassed++;
+            }
+        }
+
+        return $indicatorsPassed == count($indicatorValues);
     }
 }

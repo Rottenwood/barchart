@@ -35,25 +35,6 @@ class Analitic extends BaseUser {
     }
 
     /**
-     * Set name
-     * @param string $name
-     * @return Analitic
-     */
-    public function setName($name) {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     * @return string
-     */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
      * Set email
      * @param string $email
      * @return Analitic
