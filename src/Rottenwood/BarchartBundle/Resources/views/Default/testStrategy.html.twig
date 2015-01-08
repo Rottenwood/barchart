@@ -3,10 +3,6 @@
 {% set profit = 0 %}
 {% set profitLocal = 0 %}
 
-{% for trade in trades %}
-    {% set profit = profit + trade.profit %}
-{% endfor %}
-
 {% block title %}
     Тестирование стратегии #
     {% if strategyIsPrivate is defined %}
@@ -23,6 +19,10 @@
             Доступ к стратегии <strong>#{{ strategyIsPrivate }}</strong> ограниен его владельцем.
         </div>
     {% else %}
+        {% for trade in trades %}
+            {% set profit = profit + trade.profit %}
+        {% endfor %}
+
         <p>Результаты тестирования стратегии <strong>{{ strategy.name }}</strong> (автор: {{ strategy.author.username }}
             )</p>
 
@@ -32,7 +32,6 @@
         <p>Итоговая прибыль: <strong>{{ profit }}</strong>
             (<strong>{{ percentProfit > 0 ? '+' ~ percentProfit : percentProfit }}%</strong>)</p>
 
-        <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
         <hr/>
 
         <p>Сделки:</p>
@@ -73,5 +72,8 @@
         </table>
     {% endif %}
 
-    <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
 {% endblock content %}
+
+{% block submenu %}
+        <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
+{% endblock submenu %}
