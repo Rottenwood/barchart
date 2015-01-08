@@ -3,16 +3,24 @@
 {% block title %}Создание торгового счета{% endblock title %}
 
 {% block content %}
-
     {{ form_start(form) }}
 
-    <p>Страница создания торгового счета</p>
+    <p>Создание торгового счета</p>
 
-    {{ form_widget(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.balance) }}
+    {{ form_row(form.strategy) }}
+
+    <div class="break-20"></div>
+
+    {{ form_row(form.isPrivate) }}
+    {{ form_row(form.save) }}
+
     {{ form_end(form) }}
 
-    <div class="padding-10">
-        <a href="{{ path('strategy.create') }}">Создать стратегию</a>
-    </div>
+    <div class="break-20"></div>
+
+
+    <a href="{{ path('strategy.create') }}">Создать стратегию</a>
 
 {% endblock content %}

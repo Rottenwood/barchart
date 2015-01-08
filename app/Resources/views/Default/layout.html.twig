@@ -24,12 +24,14 @@
 </head>
 <body>
 
-{% block content %}
-{% endblock content %}
+<div class="padding-10">
+    {% block content %}
+    {% endblock content %}
 
 {% block menu %}
     {% include ':Default:menu.html.twig' %}
 {% endblock menu %}
+</div>
 
 </body>
 </html>
