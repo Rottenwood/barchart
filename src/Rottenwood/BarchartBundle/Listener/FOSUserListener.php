@@ -31,7 +31,7 @@ class FOSUserListener implements EventSubscriberInterface {
     }
 
     public function onRegistrationSuccess(FormEvent $event) {
-//        $url = $this->router->generate('index');
-//        $event->setResponse(new RedirectResponse($url));
+        $url = $this->router->generate('index');
+        $event->setResponse(new RedirectResponse($url));
     }
 }
