@@ -311,7 +311,7 @@ class AnalizerService {
             }
         }
 
-        return round($percentProfit, 2);
+        return round($percentProfit - 100, 2);
     }
 
     /**
