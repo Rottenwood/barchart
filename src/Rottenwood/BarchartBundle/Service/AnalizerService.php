@@ -241,15 +241,25 @@ class AnalizerService {
 
                         // Стоп в процентах
                         if ($signal->getStopLossPercent() && -$percentProfit > $signal->getStopLossPercent()) {
-                            $trade->setClose($comparePrice);
-                            $trade->setCloseDate($comparePriceObject->getDate());
+                            $this->closeTrade($trade, $comparePrice, $comparePriceObject);
                             break;
                         }
 
                         // Тейк в процентах
                         if ($signal->getTakeProfitPercent() && $percentProfit > $signal->getTakeProfitPercent()) {
-                            $trade->setClose($comparePrice);
-                            $trade->setCloseDate($comparePriceObject->getDate());
+                            $this->closeTrade($trade, $comparePrice, $comparePriceObject);
+                            break;
+                        }
+
+                        // Стоп в пунктах
+                        if ($signal->getStopLoss() && $signal->getStopLoss() > $profit) {
+                            $this->closeTrade($trade, $comparePrice, $comparePriceObject);
+                            break;
+                        }
+
+                        // Тейк в пунктах
+                        if ($signal->getTakeProfit() && $signal->getTakeProfit() < $profit) {
+                            $this->closeTrade($trade, $comparePrice, $comparePriceObject);
                             break;
                         }
                     }
@@ -307,7 +317,7 @@ class AnalizerService {
             if ($trade instanceof Trade) {
                 $price = $trade->getOpen();
                 $profit = $trade->getProfit();
-                $percentProfit = $profit/$price * 100 + $percentProfit;
+                $percentProfit = $profit / $price * 100 + $percentProfit;
             }
         }
 
@@ -410,5 +420,16 @@ class AnalizerService {
         }
 
         return $indicatorsPassed == count($indicatorValues);
+    }
+
+    /**
+     * Закрытие сделки
+     * @param Trade $trade
+     * @param float $comparePrice
+     * @param Price $comparePriceObject
+     */
+    private function closeTrade(Trade $trade, $comparePrice, Price $comparePriceObject) {
+        $trade->setClose($comparePrice);
+        $trade->setCloseDate($comparePriceObject->getDate());
     }
 }
