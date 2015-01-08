@@ -240,26 +240,30 @@ class AnalizerService {
                         }
 
                         // Стоп в процентах
-                        if ($signal->getStopLossPercent() && -$percentProfit > $signal->getStopLossPercent()) {
+                        if ($signal->getStopLossPercent() && -$percentProfit >= $signal->getStopLossPercent()) {
                             $this->closeTrade($trade, $comparePrice, $comparePriceObject);
+                            $profit = $price * $signal->getStopLossPercent() / 100;
                             break;
                         }
 
                         // Тейк в процентах
-                        if ($signal->getTakeProfitPercent() && $percentProfit > $signal->getTakeProfitPercent()) {
+                        if ($signal->getTakeProfitPercent() && $percentProfit >= $signal->getTakeProfitPercent()) {
                             $this->closeTrade($trade, $comparePrice, $comparePriceObject);
+                            $profit = $price * $signal->getTakeProfitPercent() / 100;
                             break;
                         }
 
                         // Стоп в пунктах
-                        if ($signal->getStopLoss() && $signal->getStopLoss() > $profit) {
+                        if ($signal->getStopLoss() && $signal->getStopLoss() >= $profit) {
                             $this->closeTrade($trade, $comparePrice, $comparePriceObject);
+                            $profit = $signal->getStopLoss();
                             break;
                         }
 
                         // Тейк в пунктах
-                        if ($signal->getTakeProfit() && $signal->getTakeProfit() < $profit) {
+                        if ($signal->getTakeProfit() && $signal->getTakeProfit() <= $profit) {
                             $this->closeTrade($trade, $comparePrice, $comparePriceObject);
+                            $profit = $signal->getTakeProfit();
                             break;
                         }
                     }
