@@ -161,6 +161,7 @@ class DefaultController extends Controller {
         return [
             'strategy'       => $strategy,
             'trades'         => $trades,
+            'percentProfit'  => $analizer->calculatePercentProfit($trades),
             'firstPriceDate' => $firstPriceDate,
             'lastPriceDate'  => $lastPriceDate,
         ];

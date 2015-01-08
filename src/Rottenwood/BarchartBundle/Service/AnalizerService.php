@@ -232,6 +232,13 @@ class AnalizerService {
                         // Критерии закрытия сделки
                         $percentProfit = $analizedTradeHigh / $price * 100;
 
+                        // Расчет прибыли
+                        if ($direction > 0) {
+                            $profit = $comparePrice - $price;
+                        } else {
+                            $profit = $price - $comparePrice;
+                        }
+
                         // Стоп в процентах
                         if ($signal->getStopLossPercent() && -$percentProfit > $signal->getStopLossPercent()) {
                             $trade->setClose($comparePrice);
@@ -244,12 +251,6 @@ class AnalizerService {
                             $trade->setClose($comparePrice);
                             $trade->setCloseDate($comparePriceObject->getDate());
                             break;
-                        }
-
-                        if ($direction > 0) {
-                            $profit = $comparePrice - $price;
-                        } else {
-                            $profit = $price - $comparePrice;
                         }
                     }
 
@@ -293,6 +294,24 @@ class AnalizerService {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Расчет прибыли по серии сделок в процентах
+     * @param array $trades
+     * @return float|int
+     */
+    public function calculatePercentProfit(array $trades) {
+        $percentProfit = 100;
+        foreach ($trades as $trade) {
+            if ($trade instanceof Trade) {
+                $price = $trade->getOpen();
+                $profit = $trade->getProfit();
+                $percentProfit = $profit/$price * 100 + $percentProfit;
+            }
+        }
+
+        return round($percentProfit, 2);
     }
 
     /**
