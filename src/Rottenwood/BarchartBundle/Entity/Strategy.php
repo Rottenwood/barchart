@@ -55,6 +55,13 @@ class Strategy extends Symbol {
      */
     private $isPrivate;
 
+    /**
+     * Открывать ли новые сделки если уже есть открытая
+     * @var bool
+     * @ORM\Column(name="open_if_exist", type="boolean")
+     */
+    private $openIfExist;
+
     public function __construct() {
         $this->signals = new ArrayCollection();
     }
@@ -67,8 +74,7 @@ class Strategy extends Symbol {
         return $this->id;
     }
 
-    public function __toString()
-    {
+    public function __toString() {
         return $this->getName();
     }
 
@@ -155,5 +161,19 @@ class Strategy extends Symbol {
      */
     public function setIsPrivate($isPrivate) {
         $this->isPrivate = $isPrivate;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function openIfExist() {
+        return $this->openIfExist;
+    }
+
+    /**
+     * @param boolean $openIfExist
+     */
+    public function setOpenIfExist($openIfExist) {
+        $this->openIfExist = $openIfExist;
     }
 }
