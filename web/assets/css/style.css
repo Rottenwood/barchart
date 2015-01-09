@@ -4,6 +4,10 @@
     text-align: center
 }
 
+.width-full {
+    width: 100%;
+}
+
 .break-20 {
     margin-bottom: 20px;
 }
@@ -46,10 +50,6 @@ div.login input {
 }
 
 /* Таблица сделок */
-table#trades-list {
-    width: 100%;
-}
-
 table#trades-list tr {
     border: white 5px solid;
 }

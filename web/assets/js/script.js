@@ -33,7 +33,7 @@ function addSignal() {
 
 // Отрисовка формы индикатора
 function addIndicator($div) {
-    var $signalIndicators = $('div#strategy-signals div[id$="_indicators"]'),
+    var $signalIndicators = $('div#strategy-signals div[id$="_indicatorValues"]'),
         prototype = $div.data('prototype'),
         newIndicatorDiv = prototype.replace(/<label class="required">__name__label__<\/label>/g, '').replace(/__name__/g, $signalIndicators.children().length);
 
