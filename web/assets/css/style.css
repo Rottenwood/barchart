@@ -20,6 +20,12 @@
     margin-top: 50px;
 }
 
+.gray-box {
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #e3e3e3;
+}
+
 /* Форма создания стратегий */
 div#strategy-signals div.signal-indicator div {
     display: inline;

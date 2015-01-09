@@ -23,14 +23,47 @@
             {% set profit = profit + trade.profit %}
         {% endfor %}
 
-        <p>Результаты тестирования стратегии <strong>{{ strategy.name }}</strong> (автор: {{ strategy.author.username }}
+        <p>Результаты тестирования стратегии "<strong>{{ strategy.name }}</strong>" (автор: {{ strategy.author
+            .username }}
             )</p>
 
-        <p>Торговый инструмент: <strong>{{ strategy.russianSymbolName[strategy.symbol] }}</strong></p>
+        <p>Торговый инструмент: <strong>{{ strategy.russianSymbolName[strategy.symbol] }}</strong> ({{ strategy
+            .symbolName[strategy.symbol] }})
+        </p>
+        <p>Видимость: {{ strategy.isPrivate ? 'только мне' : 'для всех' }}</p>
         <p>Дата начала тестирования: {{ firstPriceDate|date('Y-m-d H:i') }}</p>
         <p>Дата конца тестирования: {{ lastPriceDate|date('Y-m-d H:i') }}</p>
         <p>Итоговая прибыль: <strong>{{ profit }}</strong>
             (<strong>{{ percentProfit > 0 ? '+' ~ percentProfit : percentProfit }}%</strong>)</p>
+
+        <hr/>
+        <p>Сигналы стратегии:</p>
+        {% for signal in form.vars.value.signals %}
+            <div class="gray-box">
+                <p>Направление: {{ signal.direction > 0 ? 'Покупка' : 'Продажа' }}</p>
+
+                {% if signal.stopLoss %}
+                    <p>Стоплосс: {{ signal.stopLoss }}$</p>
+                {% endif %}
+
+                {% if signal.stopLossPercent %}
+                    <p>Стоплосс в процетах: {{ signal.stopLossPercent }}%</p>
+                {% endif %}
+
+                {% if signal.takeProfit %}
+                    <p>Тейкпрофит: {{ signal.takeProfit }}$</p>
+                {% endif %}
+
+                {% if signal.takeProfitPercent %}
+                    <p>Тейкпрофит в процетах: {{ signal.takeProfitPercent }}%</p>
+                {% endif %}
+
+                {% for indicatorValue in signal.indicatorValues %}
+                    <p>Индикатор: <strong>"{{ indicatorValue.indicator.name }}"</strong> с параметром <strong>{{ indicatorValue.value }}</strong></p>
+                {% endfor %}
+
+            </div>
+        {% endfor %}
 
         <hr/>
 
@@ -75,5 +108,5 @@
 {% endblock content %}
 
 {% block submenu %}
-        <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
+    <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
 {% endblock submenu %}

@@ -114,32 +114,7 @@ class DefaultController extends Controller {
     }
 
     /**
-     * @Route("/test/all", name="test.strategy.all")
-     * @Template()
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function allTradesAction() {
-        $em = $this->getDoctrine()->getManager();
-        $accounts = $em->getRepository('RottenwoodBarchartBundle:TradeAccount')->findByAnalitic($this->getUser());
-
-        if (!$accounts) {
-            return $this->redirect($this->generateUrl('account.create'));
-        }
-
-        $analizer = $this->get('barchart.analizer');
-
-        $allTrades = [];
-        foreach ($accounts as $account) {
-            $allTrades[] = $analizer->testStrategy($account);
-        }
-
-        return [
-            'accounts'  => $accounts,
-            'allTrades' => $allTrades
-        ];
-    }
-
-    /**
+     * Бэктестинг стратегии
      * @Route("/test/{id}", requirements={"id"="\d+"}, name="strategy.test")
      * @Template()
      * @ParamConverter("id", class="RottenwoodBarchartBundle:Strategy")
@@ -147,23 +122,23 @@ class DefaultController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function testStrategyAction(Strategy $strategy) {
-        $analizer = $this->get('barchart.analizer');
-        $trades = $analizer->testStrategy($strategy);
-        $firstPriceDate = $analizer->getFirstPriceDate($strategy);
-        $lastPriceDate = $analizer->getLastPriceDate($strategy);
-
         if ($strategy->isPrivate() && $strategy->getAuthor() !== $this->getUser()) {
             return [
                 'strategyIsPrivate' => $strategy->getId(),
             ];
         }
 
+        $analizer = $this->get('barchart.analizer');
+        $trades = $analizer->testStrategy($strategy);
+        $form = $this->createForm(new StrategyType(), $strategy);
+
         return [
             'strategy'       => $strategy,
             'trades'         => $trades,
             'percentProfit'  => $analizer->calculatePercentProfit($trades),
-            'firstPriceDate' => $firstPriceDate,
-            'lastPriceDate'  => $lastPriceDate,
+            'firstPriceDate' => $analizer->getFirstPriceDate($strategy),
+            'lastPriceDate'  => $analizer->getLastPriceDate($strategy),
+            'form'           => $form->createView(),
         ];
     }
 }
