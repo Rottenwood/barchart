@@ -170,19 +170,19 @@ abstract class Price {
      * @var integer
      * @ORM\Column(name="s_mahilo", type="integer")
      */
-    private $maHilo;
+    private $mahilo;
 
     /**
      * @var integer
      * @ORM\Column(name="s_mavp", type="integer")
      */
-    private $sMavp;
+    private $shorttermMavp;
 
     /**
      * @var integer
      * @ORM\Column(name="s_macd", type="integer")
      */
-    private $sMacd;
+    private $shorttermMacd;
 
     /**
      * @var integer
@@ -503,15 +503,15 @@ abstract class Price {
     /**
      * @return int
      */
-    public function getMaHilo() {
-        return $this->maHilo;
+    public function getMahilo() {
+        return $this->mahilo;
     }
 
     /**
-     * @param int $maHilo
+     * @param int $mahilo
      */
-    public function setMaHilo($maHilo) {
-        $this->maHilo = $maHilo;
+    public function setMahilo($mahilo) {
+        $this->mahilo = $mahilo;
     }
 
     /**
@@ -643,29 +643,29 @@ abstract class Price {
     /**
      * @return int
      */
-    public function getSMacd() {
-        return $this->sMacd;
+    public function getShorttermMacd() {
+        return $this->shorttermMacd;
     }
 
     /**
-     * @param int $sMacd
+     * @param int $shorttermMacd
      */
-    public function setSMacd($sMacd) {
-        $this->sMacd = $sMacd;
+    public function setShorttermMacd($shorttermMacd) {
+        $this->shorttermMacd = $shorttermMacd;
     }
 
     /**
      * @return int
      */
-    public function getSMavp() {
-        return $this->sMavp;
+    public function getShorttermMavp() {
+        return $this->shorttermMavp;
     }
 
     /**
-     * @param int $sMavp
+     * @param int $shorttermMavp
      */
-    public function setSMavp($sMavp) {
-        $this->sMavp = $sMavp;
+    public function setSMavp($shorttermMavp) {
+        $this->shorttermMavp = $shorttermMavp;
     }
 
     /**
