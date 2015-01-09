@@ -46,6 +46,25 @@ div.login input {
 }
 
 /* Таблица сделок */
+table#trades-list {
+    width: 100%;
+}
+
+table#trades-list tr {
+    border: white 5px solid;
+}
+
 table#trades-list td {
     padding: 10px;
 }
+
+/* Сделка с прибылью */
+table#trades-list tr.green {
+    background-color: #a1f7a1;
+}
+
+/* Сделка с убытком */
+table#trades-list tr.red {
+    background-color: #fdd4d4;
+}
+

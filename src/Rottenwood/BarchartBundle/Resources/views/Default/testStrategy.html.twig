@@ -59,7 +59,8 @@
                 {% endif %}
 
                 {% for indicatorValue in signal.indicatorValues %}
-                    <p>Индикатор: <strong>"{{ indicatorValue.indicator.name }}"</strong> с параметром <strong>{{ indicatorValue.value }}</strong></p>
+                    <p>Индикатор: <strong>"{{ indicatorValue.indicator.name }}"</strong> с параметром
+                        <strong>{{ indicatorValue.value }}</strong></p>
                 {% endfor %}
 
             </div>
@@ -69,7 +70,7 @@
 
         <p>Сделки:</p>
 
-        <table id="trades-list">
+        <table id="trades-list" class="center">
             <thead>
             <tr>
                 <td>#</td>
@@ -86,13 +87,15 @@
             <tbody>
             {% for trade in trades %}
                 {% set profitLocal = profitLocal + trade.profit %}
-                <tr>
+                <tr class="{{ trade.profit > 0 ? 'green' : 'red' }}">
                     <td>{{ loop.index }}</td>
                     <td>{{ trade.direction > 0 ? 'Покупка' : 'Продажа' }}</td>
                     <td>{{ trade.openDate|date("m-d-Y H-i-s") }}</td>
                     <td>
                         {% if trade.closeDate %}
                             {{ trade.closeDate|date('m-d-Y H-i-s') }}
+                        {% else %}
+                            <p class="center">не закрыта</p>
                         {% endif %}
                     </td>
                     <td>{{ trade.open }}</td>
