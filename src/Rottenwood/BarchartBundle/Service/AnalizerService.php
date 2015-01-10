@@ -6,14 +6,13 @@
 
 namespace Rottenwood\BarchartBundle\Service;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Rottenwood\BarchartBundle\Entity\IndicatorValue;
 use Rottenwood\BarchartBundle\Entity\Price;
 use Rottenwood\BarchartBundle\Entity\Signal;
 use Rottenwood\BarchartBundle\Entity\Strategy;
 use Rottenwood\BarchartBundle\Entity\Trade;
-use Rottenwood\BarchartBundle\Entity\TradeAccount;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 /**
  * Сервис анализа данных технических индикаторов
@@ -29,7 +28,7 @@ class AnalizerService {
 
     private $em;
     private $config;
-    private $lastProfit;
+    private $hasOpenedTrades = false;
 
     public function __construct(ConfigService $configService, EntityManager $em) {
         $this->em = $em;
@@ -192,83 +191,75 @@ class AnalizerService {
     public function testStrategy(Strategy $strategy, $volume = 1) {
         // Получение цен для анализа
         $prices = $this->getAllPrices($strategy->getSymbolName()[$strategy->getSymbol()]);
-
-        // Массив сделок
         $trades = [];
 
         /** @var Price $priceObject */
         foreach ($prices as $priceKey => $priceObject) {
             $price = $priceObject->getPrice();
 
-            // Сигналы
+            // Закрытие сделок
+            /** @var Trade $openedTrade */
+            foreach ($trades as $openedTrade) {
+                if ($openedTrade->getClose()) {
+                    continue;
+                }
+
+                /** @var Signal $openedTradeSignal */
+                $openedTradeSignal = $openedTrade->getSignal();
+                $stopLoss = $openedTradeSignal->getStopLoss();
+                $stopLossPercent = $openedTradeSignal->getStopLossPercent();
+                $takeProfit = $openedTradeSignal->getTakeProfit();
+                $takeProfitPercent = $openedTradeSignal->getTakeProfitPercent();
+                $openedTradePrice = $openedTrade->getOpen();
+
+                // Расчет прибыли
+                if ($openedTrade->getDirection() == $openedTrade::DIRECTION_BUY) {
+                    $profit = $openedTradePrice - $price;
+                } elseif ($openedTrade->getDirection() == $openedTrade::DIRECTION_SELL) {
+                    $profit = $price - $openedTradePrice;
+                } else {
+                    throw new InvalidParameterException($openedTrade->getDirection());
+                }
+
+                // Прибыль в процентах
+                $percentProfit = $profit / $openedTradePrice * 100;
+
+                // Стоп в пунктах
+                if ($stopLoss && -$stopLoss >= $profit) {
+                    $this->closeTrade($openedTrade, $price, $priceObject->getDate(), $stopLoss);
+                } // Стоп в процентах
+                elseif ($stopLossPercent && -$stopLossPercent >= $percentProfit) {
+                    $this->closeTrade($openedTrade, $price, $priceObject->getDate(), $stopLossPercent *
+                                                                                     $openedTradePrice / 100);
+                } // Тейк в пунктах
+                elseif ($takeProfit && $takeProfit <= $profit) {
+                    $this->closeTrade($openedTrade, $price, $priceObject->getDate(), $takeProfit);
+                } // Тейк в процентах
+                elseif ($takeProfitPercent && $takeProfitPercent <= $percentProfit) {
+                    $this->closeTrade($openedTrade, $price, $priceObject->getDate(), $takeProfitPercent *
+                                                                                     $openedTradePrice / 100);
+                }
+            }
+
+            // Проверка наличия открытых сделок
+            if (!$strategy->openIfExist() && $this->hasOpenedTrades) {
+                continue;
+            }
+
+            // Открытие новых сделок
             foreach ($strategy->getSignals() as $signal) {
                 $direction = $signal->getDirection();
 
-                if ($this->indicatorsPassed($signal->getIndicatorValues(), $priceObject, $direction, $signal)) {
-                    // Имитация открытия сделки, расчет ее результатов
+                if ($this->indicatorsPassed($priceObject, $direction, $signal)) {
                     $trade = new Trade();
                     $trade->setDirection($direction);
                     $trade->setOpen($price);
                     $trade->setOpenDate($priceObject->getDate());
                     $trade->setSymbol($strategy->getSymbol());
                     $trade->setVolume($volume);
+                    $trade->setSignal($signal);
 
-                    $profit = 0;
-
-                    /** @var Price $comparePriceObject */
-                    foreach (array_slice($prices, $priceKey + 1) as $comparePriceKey => $comparePriceObject) {
-                        $comparePrice = $comparePriceObject->getPrice();
-                        $analizedTrade = $this->analyseProfit($priceObject, $comparePriceObject, $direction);
-                        $analizedTradeHigh = $analizedTrade->getHigh();
-
-                        if ($analizedTradeHigh > $trade->getHigh()) {
-                            $trade->setHigh($analizedTradeHigh);
-                        }
-
-                        if ($analizedTradeHigh < $trade->getDrawdown()) {
-                            $trade->setDrawdown($analizedTradeHigh);
-                        }
-
-                        // Критерии закрытия сделки
-                        $percentProfit = $analizedTradeHigh / $price * 100;
-
-                        // Расчет прибыли
-                        if ($direction > 0) {
-                            $profit = $comparePrice - $price;
-                        } else {
-                            $profit = $price - $comparePrice;
-                        }
-
-                        // Стоп в процентах
-                        if ($signal->getStopLossPercent() && -$percentProfit >= $signal->getStopLossPercent()) {
-                            $this->closeTrade($trade, $comparePrice, $comparePriceObject);
-                            $profit = $price * $signal->getStopLossPercent() / 100;
-                            break;
-                        }
-
-                        // Тейк в процентах
-                        if ($signal->getTakeProfitPercent() && $percentProfit >= $signal->getTakeProfitPercent()) {
-                            $this->closeTrade($trade, $comparePrice, $comparePriceObject);
-                            $profit = $price * $signal->getTakeProfitPercent() / 100;
-                            break;
-                        }
-
-                        // Стоп в пунктах
-                        if ($signal->getStopLoss() && $signal->getStopLoss() >= $profit) {
-                            $this->closeTrade($trade, $comparePrice, $comparePriceObject);
-                            $profit = $signal->getStopLoss();
-                            break;
-                        }
-
-                        // Тейк в пунктах
-                        if ($signal->getTakeProfit() && $signal->getTakeProfit() <= $profit) {
-                            $this->closeTrade($trade, $comparePrice, $comparePriceObject);
-                            $profit = $signal->getTakeProfit();
-                            break;
-                        }
-                    }
-
-                    $trade->setProfit($profit);
+                    $this->hasOpenedTrades = true;
 
                     $trades[] = $trade;
                 }
@@ -358,35 +349,6 @@ class AnalizerService {
     }
 
     /**
-     * Расчет результата торговой позиции
-     * @param Price $priceObject
-     * @param Price $priceCompareObject
-     * @param int   $direction
-     * @return Trade
-     */
-    private function analyseProfit(Price $priceObject, Price $priceCompareObject, $direction) {
-
-        $openPrice = $priceObject->getPrice();
-        $closePrice = $priceCompareObject->getPrice();
-
-        if ($direction == Signal::DIRECTION_BUY) {
-            $profit = $closePrice - $openPrice;
-        } else {
-            $profit = $openPrice - $closePrice;
-        }
-
-        // Сохранение значения для дальнейшего использования
-        $this->lastProfit = $profit;
-
-        $trade = new Trade();
-        $trade->setHigh($profit);
-        $trade->setOpen($openPrice);
-        $trade->setClose($closePrice);
-
-        return $trade;
-    }
-
-    /**
      * Определение горизонта для анализа
      * @return integer
      */
@@ -400,13 +362,14 @@ class AnalizerService {
 
     /**
      * Проверка на срабатывание всех индикаторов сигнала
-     * @param Collection $indicatorValues
-     * @param Price      $priceObject
-     * @param int        $direction
-     * @param Signal     $signal
+     * @param Price  $priceObject
+     * @param int    $direction
+     * @param Signal $signal
      * @return bool
      */
-    private function indicatorsPassed(Collection $indicatorValues, Price $priceObject, $direction, Signal $signal) {
+    private function indicatorsPassed(Price $priceObject, $direction, Signal $signal) {
+        $indicatorValues = $signal->getIndicatorValues();
+
         $indicatorsPassed = 0;
         foreach ($indicatorValues->toArray() as $indicatorValueObject) {
             /** @var IndicatorValue $indicatorValueObject */
@@ -428,12 +391,15 @@ class AnalizerService {
 
     /**
      * Закрытие сделки
-     * @param Trade $trade
-     * @param float $comparePrice
-     * @param Price $comparePriceObject
+     * @param Trade     $trade
+     * @param float     $closePrice
+     * @param \DateTime $closeDate
+     * @param float     $profit
      */
-    private function closeTrade(Trade $trade, $comparePrice, Price $comparePriceObject) {
-        $trade->setClose($comparePrice);
-        $trade->setCloseDate($comparePriceObject->getDate());
+    private function closeTrade(Trade $trade, $closePrice, \DateTime $closeDate, $profit) {
+        $trade->setClose($closePrice);
+        $trade->setCloseDate($closeDate);
+        $trade->setProfit(round($profit, 2));
+        $this->hasOpenedTrades = false;
     }
 }

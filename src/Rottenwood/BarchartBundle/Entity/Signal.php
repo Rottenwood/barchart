@@ -219,19 +219,6 @@ class Signal {
         $this->trades = $trades;
     }
 
-//    /**
-//     * Массив соответствия индикаторам методов из сущности Price
-//     * @return array
-//     */
-//    public static function getIndicatorsMethodNames() {
-//        return [
-//            self::INDICATOR_OVERALL => 'Overall',
-//            self::INDICATOR_AVERAGE_SHORTTERM => 'ShorttermAverage',
-//            self::INDICATOR_AVERAGE_MIDDLETERM => 'MediumtermAverage',
-//            self::INDICATOR_AVERAGE_LONGTERM => 'LongtermAverage',
-//        ];
-//    }
-
     /**
      * Массив соответствия направлений для открытия сделки
      * @return array
