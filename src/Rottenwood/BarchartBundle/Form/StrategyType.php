@@ -43,7 +43,7 @@ class StrategyType extends AbstractType {
             'allow_delete' => true,
         ]);
         $builder->add('openIfExist', 'checkbox', [
-            'label'    => 'Открывать новую сделку если уже есть открытые',
+            'label'    => 'Открывать ли параллельные сделки? (если уже есть открытые)',
             'required' => false,
         ]);
         $builder->add('isPrivate', 'checkbox', [

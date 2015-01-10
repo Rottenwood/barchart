@@ -33,6 +33,7 @@
         <p>Видимость: {{ strategy.isPrivate ? 'только мне' : 'для всех' }}</p>
         <p>Дата начала тестирования: {{ firstPriceDate|date('Y-m-d H:i') }}</p>
         <p>Дата конца тестирования: {{ lastPriceDate|date('Y-m-d H:i') }}</p>
+        <p>Открываются ли параллельные сделки: <strong>{{ strategy.openIfExist ? 'да' : 'нет' }}</strong></p>
         <p>Количество сделок: {{ trades|length }}</p>
         <p>Итоговая прибыль: <strong>{{ profit }}</strong>
             (<strong>{{ percentProfit > 0 ? '+' ~ percentProfit : percentProfit }}%</strong>)</p>
