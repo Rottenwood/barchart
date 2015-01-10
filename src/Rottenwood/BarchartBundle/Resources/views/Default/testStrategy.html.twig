@@ -33,6 +33,7 @@
         <p>Видимость: {{ strategy.isPrivate ? 'только мне' : 'для всех' }}</p>
         <p>Дата начала тестирования: {{ firstPriceDate|date('Y-m-d H:i') }}</p>
         <p>Дата конца тестирования: {{ lastPriceDate|date('Y-m-d H:i') }}</p>
+        <p>Количество сделок: {{ trades|length }}</p>
         <p>Итоговая прибыль: <strong>{{ profit }}</strong>
             (<strong>{{ percentProfit > 0 ? '+' ~ percentProfit : percentProfit }}%</strong>)</p>
 
@@ -75,8 +76,8 @@
             <tr>
                 <td>#</td>
                 <td>Направление</td>
-                <td>Время открытия</td>
-                <td>Время закрытия</td>
+                <td>Дата открытия</td>
+                <td>Дата закрытия</td>
                 <td>Цена открытия</td>
                 <td>Цена закрытия</td>
                 <td>Прибыль</td>
@@ -90,10 +91,10 @@
                 <tr class="{{ trade.profit > 0 ? 'green' : 'red' }}">
                     <td>{{ loop.index }}</td>
                     <td>{{ trade.direction > 0 ? 'Покупка' : 'Продажа' }}</td>
-                    <td>{{ trade.openDate|date("m-d-Y H-i-s") }}</td>
+                    <td>{{ trade.openDate|date("d-m-Y H-i-s") }}</td>
                     <td>
                         {% if trade.closeDate %}
-                            {{ trade.closeDate|date('m-d-Y H-i-s') }}
+                            {{ trade.closeDate|date('d-m-Y H-i-s') }}
                         {% else %}
                             <p class="center">не закрыта</p>
                         {% endif %}
