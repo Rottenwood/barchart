@@ -3,6 +3,7 @@ parameters:
     barchart.parser.class: Rottenwood\BarchartBundle\Service\BarchartParserService
     barchart.analizer.class: Rottenwood\BarchartBundle\Service\AnalizerService
     listener.fosuser.class: Rottenwood\BarchartBundle\Listener\FOSUserListener
+    twig.date.class: Rottenwood\BarchartBundle\Twig\DateExtension
 
 services:
     barchart.config:
@@ -23,3 +24,9 @@ services:
         arguments: [@router]
         tags:
             - { name: kernel.event_subscriber }
+
+    # Расширения Twig
+    restonet.twig.extension:
+        class: %twig.date.class%
+        tags:
+            - { name: twig.extension }

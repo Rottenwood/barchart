@@ -78,6 +78,8 @@
                 <td>Направление</td>
                 <td>Дата открытия</td>
                 <td>Дата закрытия</td>
+                <td>Длительность<br>
+                    (час:мин)</td>
                 <td>Цена открытия</td>
                 <td>Цена закрытия</td>
                 <td>Прибыль</td>
@@ -91,12 +93,17 @@
                 <tr class="{{ trade.profit > 0 ? 'green' : 'red' }}">
                     <td>{{ loop.index }}</td>
                     <td>{{ trade.direction > 0 ? 'Покупка' : 'Продажа' }}</td>
-                    <td>{{ trade.openDate|date("d-m-Y H-i-s") }}</td>
+                    <td>{{ trade.openDate|date('d-m-Y H-i-s') }}</td>
                     <td>
                         {% if trade.closeDate %}
                             {{ trade.closeDate|date('d-m-Y H-i-s') }}
                         {% else %}
                             <p class="center">не закрыта</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if trade.closeDate %}
+                            {{ dates_diff(trade.openDate, trade.closeDate)|date('%h:%I') }}
                         {% endif %}
                     </td>
                     <td>{{ trade.open }}</td>
