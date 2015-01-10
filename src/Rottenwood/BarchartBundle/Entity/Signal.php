@@ -22,10 +22,10 @@ class Signal {
     const SIGNAL_MAXIMUM_BUY = 100;
     const SIGNAL_MAXIMUM_SELL = -100;
 
-    const INDICATOR_OVERALL = 20;
-    const INDICATOR_AVERAGE_SHORTTERM = 21;
-    const INDICATOR_AVERAGE_MIDDLETERM = 22;
-    const INDICATOR_AVERAGE_LONGTERM = 23;
+//    const INDICATOR_OVERALL = 20;
+//    const INDICATOR_AVERAGE_SHORTTERM = 21;
+//    const INDICATOR_AVERAGE_MIDDLETERM = 22;
+//    const INDICATOR_AVERAGE_LONGTERM = 23;
 
     const FILTER_TREND_DIRECTION = 1;
     const FILTER_TREND_STRENGTH = 2;
@@ -90,6 +90,11 @@ class Signal {
      */
     private $timeStop;
 
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Trade", mappedBy="signal")
+     */
+    private $trades;
 
     /**
      * Get id
@@ -201,32 +206,31 @@ class Signal {
     }
 
     /**
-     * Массив соответствия индикаторам методов из сущности Price
-     * @return array
+     * @return Collection
      */
-    public static function getIndicatorsMethodNames() {
-        return [
-            self::INDICATOR_7_DAY_AVERAGE_DIRECTION => 'Ad',
-            self::INDICATOR_10_8_DAY_MOVING_AVERAGE_HILO_CHANNEL => 'Mahilo',
-            self::INDICATOR_20_DAY_MOVING_AVERAGE_VS_PRICE => 'ShorttermMavp',
-            self::INDICATOR_20_50_DAY_MACD => 'ShorttermMacd',
-            self::INDICATOR_20_DAY_BOLLINGER_BANDS => 'Bollinger',
-
-            self::INDICATOR_40_DAY_COMMIDITY_CHANNEL_INDEX => 'MediumtermCci',
-            self::INDICATOR_50_DAY_MOVING_AVERAGE_VS_PRICE => 'MediumtermMavp',
-            self::INDICATOR_20_100_DAY_MACD => 'MediumtermMacd',
-            self::INDICATOR_50_DAY_PARABOLIC_TIME_PRICE => 'Parabolic',
-
-            self::INDICATOR_60_DAY_COMMODITY_CHANNEL_INDEX => 'LongtermCci',
-            self::INDICATOR_100_DAY_MOVING_AVERAGE_VS_PRICE => 'LongtermMavp',
-            self::INDICATOR_50_100_DAY_MACD => 'LongtermMacd',
-
-            self::INDICATOR_OVERALL => 'Overall',
-            self::INDICATOR_AVERAGE_SHORTTERM => 'ShorttermAverage',
-            self::INDICATOR_AVERAGE_MIDDLETERM => 'MediumtermAverage',
-            self::INDICATOR_AVERAGE_LONGTERM => 'LongtermAverage',
-        ];
+    public function getTrades() {
+        return $this->trades;
     }
+
+    /**
+     * @param Collection $trades
+     */
+    public function setTrades($trades) {
+        $this->trades = $trades;
+    }
+
+//    /**
+//     * Массив соответствия индикаторам методов из сущности Price
+//     * @return array
+//     */
+//    public static function getIndicatorsMethodNames() {
+//        return [
+//            self::INDICATOR_OVERALL => 'Overall',
+//            self::INDICATOR_AVERAGE_SHORTTERM => 'ShorttermAverage',
+//            self::INDICATOR_AVERAGE_MIDDLETERM => 'MediumtermAverage',
+//            self::INDICATOR_AVERAGE_LONGTERM => 'LongtermAverage',
+//        ];
+//    }
 
     /**
      * Массив соответствия направлений для открытия сделки

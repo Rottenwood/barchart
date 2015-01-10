@@ -30,6 +30,12 @@ class Trade extends Symbol {
     private $account;
 
     /**
+     * @var Signal
+     * @ORM\ManyToOne(targetEntity="Signal", inversedBy="trades")
+     */
+    private $signal;
+
+    /**
      * @var int
      * @ORM\Column(name="symbol", type="smallint")
      */
@@ -129,6 +135,20 @@ class Trade extends Symbol {
      */
     public function setAccount($account) {
         $this->account = $account;
+    }
+
+    /**
+     * @return Signal
+     */
+    public function getSignal() {
+        return $this->signal;
+    }
+
+    /**
+     * @param Signal $signal
+     */
+    public function setSignal($signal) {
+        $this->signal = $signal;
     }
 
     /**
