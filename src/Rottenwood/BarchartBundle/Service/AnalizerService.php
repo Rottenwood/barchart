@@ -379,6 +379,13 @@ class AnalizerService {
             $priceIndicatorValue = $priceObject->$indicatorMethod();
             $indicatorValue = $indicatorValueObject->getValue();
 
+            // Если индикатор является коммулятивным
+            if ($priceIndicatorValue > 1) {
+                $indicatorValue = Signal::SIGNAL_MAXIMUM_BUY;
+            } elseif ($priceIndicatorValue < -1) {
+                $indicatorValue = Signal::SIGNAL_MAXIMUM_SELL;
+            }
+
             if (($direction == $signal::DIRECTION_BUY && $priceIndicatorValue >= $indicatorValue)
                 || ($direction == $signal::DIRECTION_SELL && $priceIndicatorValue <= $indicatorValue)
             ) {

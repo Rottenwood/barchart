@@ -8,6 +8,7 @@ namespace Rottenwood\BarchartBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
 use Rottenwood\BarchartBundle\Entity\IndicatorValue;
+use Rottenwood\BarchartBundle\Entity\Signal;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -23,9 +24,10 @@ class IndicatorValueType extends AbstractType {
                 return $er->createQueryBuilder('i')->orderBy('i.name', 'ASC');
             },
         ]);
-        $builder->add('value', 'integer', [
+        $builder->add('value', 'choice', [
             'label'    => 'Значение',
             'required' => true,
+            'choices'  => Signal::getDirectionsNames(),
         ]);
         $builder->add('deleteIndicator', 'button', [
             'label' => 'Удалить индикатор',
