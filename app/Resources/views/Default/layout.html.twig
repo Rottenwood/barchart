@@ -16,11 +16,12 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-theme.min.css') }}">
     {# Шрифты #}
-    <link type="text/css" href="{{ asset('assets/css/font-awesome.css') }}" rel="stylesheet"/>
+    {#<link type="text/css" href="{{ asset('assets/css/font-awesome.css') }}" rel="stylesheet"/>#}
     {# Скрипты #}
     <script type="text/javascript" src="{{ asset('assets/js/script.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/bootstrap.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/bootstrap-confirmation.js') }}"></script>
+    {#<script type="text/javascript" src="{{ asset('assets/js/bootstrap-confirmation.js') }}"></script>#}
+    {% block javascript %}{% endblock javascript %}
 </head>
 <body>
 

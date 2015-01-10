@@ -3,6 +3,10 @@
 {% set profit = 0 %}
 {% set profitLocal = 0 %}
 
+{% block javascript %}
+    <script type="text/javascript" src="{{ asset('assets/js/chart.min.js') }}"></script>
+{% endblock javascript %}
+
 {% block title %}
     Тестирование стратегии #
     {% if strategyIsPrivate is defined %}
