@@ -9,7 +9,7 @@
 }
 
 .break-20 {
-    margin-bottom: 20px;
+    margin-bottom: 20px !important;
 }
 
 .padding-10 {
@@ -33,6 +33,14 @@
 /* Форма создания стратегий */
 div#strategy-signals div.signal-indicator div {
     display: inline;
+}
+
+div#strategy input {
+    margin-left: 10px;
+}
+
+div#strategy div {
+    margin-bottom: 5px;
 }
 
 div.form-error {

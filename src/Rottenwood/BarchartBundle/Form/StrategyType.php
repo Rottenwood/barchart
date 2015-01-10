@@ -42,6 +42,10 @@ class StrategyType extends AbstractType {
             'allow_add'    => true,
             'allow_delete' => true,
         ]);
+        $builder->add('openIfExist', 'checkbox', [
+            'label'    => 'Открывать новую сделку если уже есть открытые',
+            'required' => false,
+        ]);
         $builder->add('isPrivate', 'checkbox', [
             'label'    => 'Видна только мне',
             'required' => false,
