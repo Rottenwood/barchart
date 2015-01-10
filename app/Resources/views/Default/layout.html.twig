@@ -31,6 +31,7 @@
 {% block menu %}
     {% include ':Default:menu.html.twig' %}
     {% block submenu %}{% endblock submenu %}
+    <p><a href="{{ path('fos_user_security_logout') }}">Выход</a></p>
 {% endblock menu %}
 </div>
 
