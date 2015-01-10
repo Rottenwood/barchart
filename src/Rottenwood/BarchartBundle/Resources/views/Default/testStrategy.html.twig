@@ -60,8 +60,10 @@
                 {% endif %}
 
                 {% for indicatorValue in signal.indicatorValues %}
-                    <p>Индикатор <strong>"{{ indicatorValue.indicator.name }}"</strong>
-                        с параметром <strong>{{ indicatorValue.value }}</strong></p>
+                    <p>
+                        Индикатор <strong>"{{ indicatorValue.indicator.name }}"</strong>
+                        с параметром <strong>{{ indicatorValue.value|direction_name }}</strong>
+                    </p>
                 {% endfor %}
 
             </div>
@@ -79,7 +81,8 @@
                 <td>Дата открытия</td>
                 <td>Дата закрытия</td>
                 <td>Длительность<br>
-                    (час:мин)</td>
+                    (час:мин)
+                </td>
                 <td>Цена открытия</td>
                 <td>Цена закрытия</td>
                 <td>Прибыль</td>

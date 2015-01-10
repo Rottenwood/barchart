@@ -6,18 +6,27 @@
 
 namespace Rottenwood\BarchartBundle\Twig;
 
-class DateExtension extends \Twig_Extension {
+use Rottenwood\BarchartBundle\Entity\Signal;
+
+class Extension extends \Twig_Extension {
 
     public function getFunctions() {
         $functions = [
-            'dates_diff' => new \Twig_Function_Method($this, 'datesDiff'),
+            'dates_diff'     => new \Twig_Function_Method($this, 'datesDiff'),
+//            'direction_name' => new \Twig_Function_Method($this, 'getDirectionName'),
         ];
 
         return $functions;
     }
 
+    public function getFilters() {
+        return [
+            'direction_name' => new \Twig_Filter_Method($this, 'getDirectionName'),
+        ];
+    }
+
     public function getName() {
-        return 'foracle.twig.extension.date';
+        return 'foracle.twig.extension';
     }
 
     /**
@@ -30,6 +39,10 @@ class DateExtension extends \Twig_Extension {
         $interval = $firstDate->diff($secondDate);
 
         return $interval;
+    }
+
+    public function getDirectionName($direction) {
+        return Signal::getDirectionsNames()[$direction];
     }
 
 }
