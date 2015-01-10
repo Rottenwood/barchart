@@ -31,16 +31,17 @@
 }
 
 /* Форма создания стратегий */
-div#strategy-signals div.signal-indicator div {
-    display: inline;
-}
 
-div#strategy input {
+div#strategy input, div#strategy select {
     margin-left: 10px;
 }
 
 div#strategy div {
     margin-bottom: 5px;
+}
+
+div#strategy-signals div.signal-indicator div {
+    display: inline;
 }
 
 div.form-error {
@@ -55,6 +56,15 @@ div.login {
 
 div.login input {
     display: block;
+}
+
+/* Форма создания торговых счетов */
+div#account input, div#account select {
+    margin-left: 10px;
+}
+
+div#account div {
+    margin-bottom: 5px;
 }
 
 /* Таблица сделок */

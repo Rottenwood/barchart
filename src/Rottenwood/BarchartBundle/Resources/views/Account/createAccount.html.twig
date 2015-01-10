@@ -5,22 +5,25 @@
 {% block content %}
     {{ form_start(form) }}
 
-    <p>Создание торгового счета</p>
+    <div id="account">
+        <p>Создание торгового счета</p>
 
-    {{ form_row(form.name) }}
-    {{ form_row(form.balance) }}
-    {{ form_row(form.strategy) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.balance) }}
+        {{ form_row(form.strategy) }}
 
-    <div class="break-20"></div>
+        <div class="break-20"></div>
 
-    {{ form_row(form.isPrivate) }}
-    {{ form_row(form.save) }}
+        {{ form_row(form.isPrivate) }}
+        {{ form_row(form.save) }}
 
-    {{ form_end(form) }}
+        {{ form_end(form) }}
 
-    <div class="break-20"></div>
-
-
-    <a href="{{ path('strategy.create') }}">Создать стратегию</a>
+        <div class="break-20"></div>
+    </div>
 
 {% endblock content %}
+
+{% block submenu %}
+    <a href="{{ path('strategy.create') }}">Создать стратегию</a>
+{% endblock submenu %}
