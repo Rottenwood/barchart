@@ -62,9 +62,13 @@ $(document).ready(function () {
         pointHitDetectionRadius: 5
     });
 
-    //backTestChart.addData([45], "August");
-    //backTestChart.addData([50], "Sept");
-    //backTestChart.addData([55], "Ppp");
-    // Would update the first dataset's value of 'March' to be 50
-    //backTestChart.update();
+    var $lastTradeData = $('#last-trade-data');
+    var lastTradeDate = $lastTradeData.data('date');
+    var lastProfit = Math.floor($lastTradeData.data('profit'));
+
+    if (balanceArray[balanceArray.length-1] != lastProfit) {
+        backTestChart.addData([lastProfit], lastTradeDate);
+        backTestChart.update();
+    }
+
 });

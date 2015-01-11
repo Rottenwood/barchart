@@ -30,7 +30,7 @@
         {% endfor %}
 
         {# График доходности стратегии #}
-        <canvas id="chart-backtest" width="800" height="200"></canvas>
+        <canvas id="chart-backtest" width="800" height="300"></canvas>
 
         <p>
             Тестирование стратегии "<strong>{{ strategy.name }}</strong>"
@@ -48,7 +48,8 @@
         <p>Итоговая прибыль: <strong>{{ profit }}</strong>
             (<strong>{{ percentProfit > 0 ? '+' ~ percentProfit : percentProfit }}%</strong>)</p>
 
-        <hr/>
+        <div class="break-50"></div>
+
         <p>Сигналы стратегии:</p>
         {% for signal in strategy.signals %}
             <div class="gray-box">
@@ -128,16 +129,28 @@
                     <td>{{ trade.close }}</td>
                     <td>{{ trade.profit }}</td>
                     <td class="profit-local" data-profit="{{ profitLocal }}">{{ profitLocal }}
-                        {% if trade.profit > 0 %}
+                        {% if trade.profit %}
                             {% set profitPercent = profitPercent + trade.profit / trade.open * 100 %}
-                            ({{ profitPercent > 0 ? '+' : '-' }}<span>{{ profitPercent }}</span>%)
+                            ({{ profitPercent > 0 ? '+' : '' }}<span>{{ profitPercent }}</span>%)
                         {% endif %}
                     </td>
                 </tr>
+
+                {% if trade.closeDate %}
+                    {% set lastTradeDate = trade.closeDate|date('d.m') %}
+                    {% set lastTradeProfit = profitPercent %}
+                {% endif %}
+
+                {% if loop.last %}
+                    <span id="last-trade-data" data-date="{{ lastTradeDate }}"
+                          data-profit="{{ lastTradeProfit }}"></span>
+                {% endif %}
+
             {% endfor %}
             </tbody>
         </table>
     {% endif %}
+
 
 {% endblock content %}
 

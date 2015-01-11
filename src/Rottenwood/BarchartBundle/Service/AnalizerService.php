@@ -208,15 +208,16 @@ class AnalizerService {
                 $openedTradeSignal = $openedTrade->getSignal();
                 $stopLoss = $openedTradeSignal->getStopLoss();
                 $stopLossPercent = $openedTradeSignal->getStopLossPercent();
+
                 $takeProfit = $openedTradeSignal->getTakeProfit();
                 $takeProfitPercent = $openedTradeSignal->getTakeProfitPercent();
                 $openedTradePrice = $openedTrade->getOpen();
 
                 // Расчет прибыли
                 if ($openedTrade->getDirection() == $openedTrade::DIRECTION_BUY) {
-                    $profit = $openedTradePrice - $price;
-                } elseif ($openedTrade->getDirection() == $openedTrade::DIRECTION_SELL) {
                     $profit = $price - $openedTradePrice;
+                } elseif ($openedTrade->getDirection() == $openedTrade::DIRECTION_SELL) {
+                    $profit = $openedTradePrice - $price;
                 } else {
                     throw new InvalidParameterException($openedTrade->getDirection());
                 }
@@ -229,7 +230,7 @@ class AnalizerService {
                     $this->closeTrade($openedTrade, $price, $priceObject->getDate(), $stopLoss);
                 } // Стоп в процентах
                 elseif ($stopLossPercent && -$stopLossPercent >= $percentProfit) {
-                    $this->closeTrade($openedTrade, $price, $priceObject->getDate(), $stopLossPercent *
+                    $this->closeTrade($openedTrade, $price, $priceObject->getDate(), -$stopLossPercent *
                                                                                      $openedTradePrice / 100);
                 } // Тейк в пунктах
                 elseif ($takeProfit && $takeProfit <= $profit) {
