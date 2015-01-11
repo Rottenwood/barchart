@@ -10,6 +10,7 @@ use FOS\UserBundle\Model\User as BaseUser;
  * Аналитики (юзеры)
  * @ORM\Table(name="analitics")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Analitic extends BaseUser {
 
@@ -25,6 +26,19 @@ class Analitic extends BaseUser {
      * @ORM\ManyToOne(targetEntity="Strategy")
      **/
     protected $strategies;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="creationDate", type="datetime")
+     */
+    private $creationDate;
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistCallback() {
+        $this->setCreationDate(new \Datetime());
+    }
 
     /**
      * Get id
@@ -70,5 +84,19 @@ class Analitic extends BaseUser {
      */
     public function getStrategies() {
         return $this->strategies;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreationDate() {
+        return $this->creationDate;
+    }
+
+    /**
+     * @param \DateTime $creationDate
+     */
+    public function setCreationDate($creationDate) {
+        $this->creationDate = $creationDate;
     }
 }
