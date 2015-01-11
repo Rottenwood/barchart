@@ -35,8 +35,8 @@
                 <td>
                     {{ account.strategy.name }}
                 </td>
-                <td>{{ account.balance }} [прибыль]</td>
-                <td>{{ account.equity }} [прибыль]</td>
+                <td>{{ account.balance }}</td>
+                <td>{{ account.equity }}</td>
                 <td>{{ account.trades|length }}</td>
                 <td>
                     <a href="{{ path('account.edit', {id: account.id}) }}">
