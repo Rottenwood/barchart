@@ -21,16 +21,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class AnaliticController extends Controller {
 
     /**
-     * @Route("/", defaults={"id"=0})
-     * @Route("/{id}", requirements={"id"="\d+"})
+     * @Route("/{id}", requirements={"id"="\d+"}, name="analitic.show")
      * @Template()
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction($id) {
+    public function showAnaliticAction($id) {
         $em = $this->getDoctrine()->getManager();
-        $analitic = $em->getRepository('RottenwoodBarchartBundle:Analitic')->find($id);
 
-        return $analitic ? ['analitic' => $analitic] : [];
+        return [
+            'analitic' => $em->getRepository('RottenwoodBarchartBundle:Analitic')->find($id),
+        ];
+    }
+
+    /**
+     * @Route("/", name="analitic.cabinet")
+     * @Template()
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function cabinetAction() {
+        return ['analitic' => $this->getUser()];
     }
 }

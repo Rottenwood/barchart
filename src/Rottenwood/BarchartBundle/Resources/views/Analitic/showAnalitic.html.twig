@@ -1,0 +1,11 @@
+{% extends ':Default:layout.html.twig' %}
+
+{% if analitic %}
+    {% block title %}Страница аналитика: {{ analitic.username }}{% endblock title %}
+{% endif %}
+
+{% block content %}
+
+    <p>Страница аналитика: <strong>{{ analitic.username }}</strong></p>
+
+{% endblock content %}
