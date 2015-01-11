@@ -22,37 +22,34 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class AnaliticController extends Controller {
 
     /**
+     * Личный кабинет и Страница аналитика
      * @Route("", name="analitic.cabinet")
      * @Route("/")
+     * @Route("/{id}", requirements={"id"="\d+"}, name="analitic.sshow")
      * @Template()
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function cabinetAction() {
+    public function showAnaliticAction($id = 0) {
         $em = $this->getDoctrine()->getManager();
-        $analitic = $em->getRepository('RottenwoodBarchartBundle:Analitic')->find($this->getUser());
+
+        $twigParameters = [];
+
+        if (!$id) {
+        	$id = $this->getUser();
+            $twigParameters['itIsCabinet'] = true;
+        }
+
+        $analitic = $em->getRepository('RottenwoodBarchartBundle:Analitic')->find($id);
         /** @var ArrayCollection $strategies */
         $strategies = $analitic->getStrategies();
 
         $criteria = Criteria::create()->where(Criteria::expr()->eq("isPrivate", false));
 
-        return [
-            'analitic'       => $analitic,
-            'strategies'     => $strategies,
-            'openStrategies' => $strategies->matching($criteria),
-        ];
-    }
+        $twigParameters['analitic'] = $analitic;
+        $twigParameters['strategies'] = $strategies;
+        $twigParameters['openStrategies'] = $strategies->matching($criteria);
 
-    /**
-     * @Route("/{id}", requirements={"id"="\d+"}, name="analitic.show")
-     * @Template()
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showAnaliticAction($id) {
-        $em = $this->getDoctrine()->getManager();
-
-        return [
-            'analitic' => $em->getRepository('RottenwoodBarchartBundle:Analitic')->find($id),
-        ];
+        return $twigParameters;
     }
 }

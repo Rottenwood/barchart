@@ -1,24 +1,80 @@
 {% extends ':Default:layout.html.twig' %}
 
 {% if analitic %}
-    {% block title %}Страница аналитика: {{ analitic.username }}{% endblock title %}
+    {% block title %}
+        {{ itIsCabinet is defined ? 'Личный кабинет' : 'Страница' }}
+        аналитика: {{ analitic.username }}
+    {% endblock title %}
 {% endif %}
 
 {% block content %}
 
-    <p>Страница аналитика: <strong>{{ analitic.username }}</strong></p>
+    <p>
+        {{ itIsCabinet is defined ? 'Личный кабинет' : 'Страница' }}
+        аналитика: <strong>{{ analitic.username }}</strong>
+    </p>
     <p>Дата регистрации: <strong>{{ analitic.creationDate|date('d-m-Y') }}</strong></p>
-    <p>Создано торговых стратегий: <strong>{{ analitic.strategies|length }}</strong> (из них {{ openStrategies|length }}
-        открытых)</p>
+    <p>Создано торговых стратегий: <strong>{{ analitic.strategies|length }}</strong></p>
+    <p>Из них открытых: <strong>{{ openStrategies|length }}</strong></p>
 
-    <div class="break-20"></div>
+    <hr/>
 
-    {% if openStrategies|length %}
-        <p>Стратегии:</p>
+    {% if itIsCabinet is defined %}
+
+        {% set strategies = analitic.strategies %}
+
+        {% if analitic.strategies|length %}
+            <p>Мои стратегии:</p>
+        {% endif %}
+
+    {% else %}
+
+        {% set strategies = openStrategies %}
+
+        {% if openStrategies|length %}
+            <p>Стратегии:</p>
+        {% endif %}
+
     {% endif %}
 
-    {% for strategy in openStrategies %}
-        <p><a href="{{ path('strategy.test', { id : strategy.id }) }}">{{ strategy.name }}</a></p>
-    {% endfor %}
+    <table id="strategies-list" class="list">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>Название стратегии</td>
+            {% if itIsCabinet is defined %}
+                <td>Видимость</td>
+                <td></td>
+            {% endif %}
+            <td></td>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for strategy in strategies %}
+            <tr>
+                <td>{{ strategy.id }}</td>
+                <td>
+                    {{ strategy.name }}
+                </td>
+                {% if itIsCabinet is defined %}
+                    <td>
+                        {{ strategy.isPrivate ? 'только мне' : 'для всех' }}
+                    </td>
+                    <td>
+                        <a href="{{ path('strategy.edit', {id: strategy.id}) }}">
+                            редактировать
+                        </a>
+                    </td>
+                {% endif %}
+                <td>
+                    <a href="{{ path('strategy.test', {id: strategy.id}) }}">
+                        протестировать
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock content %}

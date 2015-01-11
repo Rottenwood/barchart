@@ -76,7 +76,7 @@ table#trades-list tr {
     border: white 5px solid;
 }
 
-table#trades-list td {
+table.list td {
     padding: 10px;
 }
 
