@@ -4,7 +4,9 @@
 {% set profitLocal = 0 %}
 
 {% block javascript %}
+    {# Скрипты для отрисовки графиков #}
     <script type="text/javascript" src="{{ asset('assets/js/chart.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/barchart.js') }}"></script>
 {% endblock javascript %}
 
 {% block title %}
@@ -27,9 +29,13 @@
             {% set profit = profit + trade.profit %}
         {% endfor %}
 
-        <p>Результаты тестирования стратегии "<strong>{{ strategy.name }}</strong>" (автор: {{ strategy.author
-            .username }}
-            )</p>
+        {# График доходности стратегии #}
+        <canvas id="chart-backtest" width="800" height="200"></canvas>
+
+        <p>
+            Тестирование стратегии "<strong>{{ strategy.name }}</strong>"
+            (автор: {{ strategy.author.username }})
+        </p>
 
         <p>Торговый инструмент: <strong>{{ strategy.russianSymbolName[strategy.symbol] }}</strong> ({{ strategy
             .symbolName[strategy.symbol] }})
@@ -44,7 +50,7 @@
 
         <hr/>
         <p>Сигналы стратегии:</p>
-        {% for signal in form.vars.value.signals %}
+        {% for signal in strategy.signals %}
             <div class="gray-box">
                 <p>Направление: {{ signal.direction > 0 ? 'Покупка' : 'Продажа' }}</p>
 
@@ -96,19 +102,23 @@
             </thead>
 
             <tbody>
+            {% set profitPercent = 0 %}
+
             {% for trade in trades %}
                 {% set profitLocal = profitLocal + trade.profit %}
                 <tr class="{{ trade.profit > 0 ? 'green' : 'red' }}">
                     <td>{{ loop.index }}</td>
                     <td>{{ trade.direction > 0 ? 'Покупка' : 'Продажа' }}</td>
-                    <td>{{ trade.openDate|date('d-m-Y H-i-s') }}</td>
-                    <td>
-                        {% if trade.closeDate %}
-                            {{ trade.closeDate|date('d-m-Y H-i-s') }}
-                        {% else %}
+                    <td>{{ trade.openDate|date('d-m-Y H-i') }}</td>
+                    {% if trade.closeDate %}
+                        <td class="close-date" data-date="{{ trade.closeDate|date('d.m') }}">
+                            {{ trade.closeDate|date('d-m-Y H-i') }}
+                        </td>
+                    {% else %}
+                        <td>
                             <p class="center">не закрыта</p>
-                        {% endif %}
-                    </td>
+                        </td>
+                    {% endif %}
                     <td>
                         {% if trade.closeDate %}
                             {{ dates_diff(trade.openDate, trade.closeDate)|date('%h:%I') }}
@@ -117,7 +127,12 @@
                     <td>{{ trade.open }}</td>
                     <td>{{ trade.close }}</td>
                     <td>{{ trade.profit }}</td>
-                    <td>{{ profitLocal }}</td>
+                    <td class="profit-local" data-profit="{{ profitLocal }}">{{ profitLocal }}
+                        {% if trade.profit > 0 %}
+                            {% set profitPercent = profitPercent + trade.profit / trade.open * 100 %}
+                            ({{ profitPercent > 0 ? '+' : '-' }}<span>{{ profitPercent }}</span>%)
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

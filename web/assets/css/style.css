@@ -86,3 +86,8 @@ table#trades-list tr.red {
     background-color: #fdd4d4;
 }
 
+/* График бэктеста */
+canvas#chart-backtest {
+    position: absolute;
+    right: 10px;
+}

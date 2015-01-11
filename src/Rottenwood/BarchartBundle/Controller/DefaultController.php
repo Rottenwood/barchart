@@ -130,7 +130,6 @@ class DefaultController extends Controller {
 
         $analizer = $this->get('barchart.analizer');
         $trades = $analizer->testStrategy($strategy);
-        $form = $this->createForm(new StrategyType(), $strategy);
 
         return [
             'strategy'       => $strategy,
@@ -138,7 +137,6 @@ class DefaultController extends Controller {
             'percentProfit'  => $analizer->calculatePercentProfit($trades),
             'firstPriceDate' => $analizer->getFirstPriceDate($strategy),
             'lastPriceDate'  => $analizer->getLastPriceDate($strategy),
-            'form'           => $form->createView(),
         ];
     }
 }
