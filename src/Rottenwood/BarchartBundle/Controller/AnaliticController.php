@@ -6,7 +6,8 @@
 
 namespace Rottenwood\BarchartBundle\Controller;
 
-use Rottenwood\BarchartBundle\Entity\Analitic;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -21,6 +22,27 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class AnaliticController extends Controller {
 
     /**
+     * @Route("", name="analitic.cabinet")
+     * @Route("/")
+     * @Template()
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function cabinetAction() {
+        $em = $this->getDoctrine()->getManager();
+        $analitic = $em->getRepository('RottenwoodBarchartBundle:Analitic')->find($this->getUser());
+        /** @var ArrayCollection $strategies */
+        $strategies = $analitic->getStrategies();
+
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("isPrivate", false));
+
+        return [
+            'analitic'       => $analitic,
+            'strategies'     => $strategies,
+            'openStrategies' => $strategies->matching($criteria),
+        ];
+    }
+
+    /**
      * @Route("/{id}", requirements={"id"="\d+"}, name="analitic.show")
      * @Template()
      * @param $id
@@ -32,14 +54,5 @@ class AnaliticController extends Controller {
         return [
             'analitic' => $em->getRepository('RottenwoodBarchartBundle:Analitic')->find($id),
         ];
-    }
-
-    /**
-     * @Route("/", name="analitic.cabinet")
-     * @Template()
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function cabinetAction() {
-        return ['analitic' => $this->getUser()];
     }
 }

@@ -29,7 +29,7 @@ class Strategy extends Symbol {
 
     /**
      * @Assert\NotNull
-     * @ORM\ManyToOne(targetEntity="Analitic")
+     * @ORM\ManyToOne(targetEntity="Analitic", inversedBy="strategies")
      */
     private $author;
 

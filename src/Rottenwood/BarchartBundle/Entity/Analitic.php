@@ -23,7 +23,7 @@ class Analitic extends BaseUser {
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Strategy")
+     * @ORM\OneToMany(targetEntity="Strategy", mappedBy="author")
      **/
     protected $strategies;
 

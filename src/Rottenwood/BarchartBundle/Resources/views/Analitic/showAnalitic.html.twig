@@ -7,5 +7,18 @@
 {% block content %}
 
     <p>Страница аналитика: <strong>{{ analitic.username }}</strong></p>
+    <p>Дата регистрации: <strong>{{ analitic.creationDate|date('d-m-Y') }}</strong></p>
+    <p>Создано торговых стратегий: <strong>{{ analitic.strategies|length }}</strong> (из них {{ openStrategies|length }}
+        открытых)</p>
+
+    <div class="break-20"></div>
+
+    {% if openStrategies|length %}
+        <p>Стратегии:</p>
+    {% endif %}
+
+    {% for strategy in openStrategies %}
+        <p><a href="{{ path('strategy.test', { id : strategy.id }) }}">{{ strategy.name }}</a></p>
+    {% endfor %}
 
 {% endblock content %}
