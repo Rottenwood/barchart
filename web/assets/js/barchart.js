@@ -4,8 +4,8 @@
 
 $(document).ready(function () {
     var config = {
-        'eachTrades': 100,
-        'eachTradesCheck': 100
+        'eachTrades': 50,
+        'eachTradesCheck': 50
     };
 
     var chartBacktestCanvas = $("#chart-backtest").get(0).getContext("2d");
@@ -58,7 +58,7 @@ $(document).ready(function () {
     };
 
     var backTestChart = new Chart(chartBacktestCanvas).Line(data, {
-        pointDotRadius: 4,
+        pointDotRadius: 6,
         pointHitDetectionRadius: 1
     });
 
