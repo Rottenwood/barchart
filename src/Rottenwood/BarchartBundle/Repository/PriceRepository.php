@@ -17,7 +17,7 @@ class PriceRepository extends EntityRepository {
      * @param $limit
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function findPricesFromId($id, $limit) {
+    public function findPricesFromId($id, $limit = 1000000) {
         if (!$id) {
             $limit++;
         }
@@ -25,6 +25,19 @@ class PriceRepository extends EntityRepository {
         $expr = Criteria::expr();
         $criteria = Criteria::create();
         $criteria->where($expr->andX($expr->gte('id', $id), $expr->lt('id', ($id + $limit))));
+
+        return $this->matching($criteria);
+    }
+
+    /**
+     * Поиск цен до определенного ID
+     * @param $id
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function findPricesBeforeId($id) {
+        $expr = Criteria::expr();
+        $criteria = Criteria::create();
+        $criteria->where($expr->lt('id', $id));
 
         return $this->matching($criteria);
     }
