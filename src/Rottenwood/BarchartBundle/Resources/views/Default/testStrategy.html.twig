@@ -47,6 +47,8 @@
         <p>Количество сделок: {{ trades|length }}</p>
         <p>Итоговая прибыль: <strong>{{ profit }}</strong>
             (<strong>{{ percentProfit > 0 ? '+' ~ percentProfit : percentProfit }}%</strong>)</p>
+        <p>Итоговая прибыль с учетом рекапитализации:
+            <strong>{{ percentProfitComplex > 0 ? '+' ~ percentProfitComplex : percentProfitComplex }}%</strong></p>
 
         <div class="break-50"></div>
 
@@ -104,6 +106,7 @@
 
             <tbody>
             {% set profitPercent = 0 %}
+            {% set profitPercentComplex = 100 %}
 
             {% for trade in trades %}
                 {% set profitLocal = profitLocal + trade.profit %}
@@ -131,7 +134,9 @@
                     <td class="profit-local" data-profit="{{ profitLocal }}">{{ profitLocal }}
                         {% if trade.profit %}
                             {% set profitPercent = profitPercent + trade.profit / trade.open * 100 %}
-                            ({{ profitPercent > 0 ? '+' : '' }}<span>{{ profitPercent }}</span>%)
+                            {% set profitPercentComplex = profitPercentComplex * (1 + (trade.profit / trade.open * 100) / 100) %}
+                            / {{ profitPercent > 0 ? '+' : '' }}<span>{{ profitPercent }}</span>%
+                            / <strong>{{ profitPercentComplex > 0 ? '+' : '' }}{{ (profitPercentComplex - 100)|round(2, 'floor') }}%</strong>
                         {% endif %}
                     </td>
                 </tr>

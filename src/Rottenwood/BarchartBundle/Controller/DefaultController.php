@@ -132,11 +132,12 @@ class DefaultController extends Controller {
         $trades = $analizer->testStrategy($strategy);
 
         return [
-            'strategy'       => $strategy,
-            'trades'         => $trades,
-            'percentProfit'  => $analizer->calculatePercentProfit($trades),
-            'firstPriceDate' => $analizer->getFirstPriceDate($strategy),
-            'lastPriceDate'  => $analizer->getLastPriceDate($strategy),
+            'strategy'             => $strategy,
+            'trades'               => $trades,
+            'percentProfit'        => $analizer->calculatePercentProfit($trades)['simple'],
+            'percentProfitComplex' => $analizer->calculatePercentProfit($trades)['complex'],
+            'firstPriceDate'       => $analizer->getFirstPriceDate($strategy),
+            'lastPriceDate'        => $analizer->getLastPriceDate($strategy),
         ];
     }
 }

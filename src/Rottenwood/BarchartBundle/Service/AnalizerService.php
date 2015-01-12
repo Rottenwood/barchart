@@ -305,19 +305,24 @@ class AnalizerService {
     /**
      * Расчет прибыли по серии сделок в процентах
      * @param array $trades
-     * @return float|int
+     * @return array
      */
     public function calculatePercentProfit(array $trades) {
         $percentProfit = 100;
+        $percentProfitComplex = 100;
         foreach ($trades as $trade) {
             if ($trade instanceof Trade) {
                 $price = $trade->getOpen();
                 $profit = $trade->getProfit();
                 $percentProfit = $profit / $price * 100 + $percentProfit;
+                $percentProfitComplex = $percentProfitComplex * (1 + ($profit / $price * 100) / 100);
             }
         }
 
-        return round($percentProfit - 100, 2);
+        return [
+            'simple' => round($percentProfit - 100, 2),
+            'complex' => round($percentProfitComplex - 100, 2),
+        ];
     }
 
     /**
