@@ -34,11 +34,11 @@ class PriceRepository extends EntityRepository {
      * @param $id
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function findPricesBeforeId($id) {
+    public function findPricesBeforeId($id, $orderBy = 'DESC') {
         $expr = Criteria::expr();
         $criteria = Criteria::create();
         $criteria->where($expr->lte('id', $id));
-        $criteria->orderBy(['id' => Criteria::DESC]);
+        $criteria->orderBy(['id' => $orderBy]);
 
         return $this->matching($criteria);
     }

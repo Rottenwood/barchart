@@ -6,6 +6,7 @@
 
 namespace Rottenwood\BarchartBundle\Command;
 
+use Doctrine\Common\Collections\Criteria;
 use Rottenwood\BarchartBundle\Entity\Price;
 use Rottenwood\BarchartBundle\Entity\Symbol;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -37,17 +38,19 @@ class FixDatabaseCommand extends ContainerAwareCommand {
             $prices = $repository->findPricesBeforeId(self::VALID_PRICE_ID);
             /** @var Price[] $prices */
             $date = $prices[0]->getDate();
+            $prices = $repository->findPricesBeforeId(self::VALID_PRICE_ID, Criteria::ASC);
 
             $pricesCount = count($prices);
             $progress->start($output, $pricesCount);
             for ($x = $pricesCount - 1; $x >= 0; $x--) {
-                $date->modify('-1 hour');
                 $prices[$x]->setDate($date);
                 $em->flush();
+                $date->modify('-1 hour');
                 $progress->advance();
+                $output->writeln('');
             };
         }
 
-        $output->writeln('Реконструкция дат котировок завершена!');
+        $output->writeln('Реконструкция дат всех котировок завершена!');
     }
 }
