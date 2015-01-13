@@ -66,7 +66,7 @@ $(document).ready(function () {
     var lastTradeDate = $lastTradeData.data('date');
     var lastProfit = Math.floor($lastTradeData.data('profit'));
 
-    if (balanceArray[balanceArray.length-1] != lastProfit) {
+    if (balanceArray[balanceArray.length - 1] != lastProfit) {
         backTestChart.addData([lastProfit], lastTradeDate);
         backTestChart.update();
     }

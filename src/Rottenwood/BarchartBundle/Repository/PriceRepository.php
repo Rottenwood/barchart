@@ -38,6 +38,7 @@ class PriceRepository extends EntityRepository {
         $expr = Criteria::expr();
         $criteria = Criteria::create();
         $criteria->where($expr->lte('id', $id));
+        $criteria->orderBy(['id' => Criteria::DESC]);
 
         return $this->matching($criteria);
     }

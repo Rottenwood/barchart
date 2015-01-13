@@ -6,13 +6,19 @@
 
 namespace Rottenwood\BarchartBundle\Command;
 
-use Rottenwood\BarchartBundle\Entity\Indicator;
 use Rottenwood\BarchartBundle\Entity\Price;
+use Rottenwood\BarchartBundle\Entity\Symbol;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Команда восстановления корректных дат всех котировок (до определенного ID) в базе данных
+ * @package Rottenwood\BarchartBundle\Command
+ */
 class FixDatabaseCommand extends ContainerAwareCommand {
+
+    const VALID_PRICE_ID = 1500;
 
     protected function configure() {
         $this->setName('barchart:fix:database')->setDescription('Fix price dates in database');
@@ -20,40 +26,26 @@ class FixDatabaseCommand extends ContainerAwareCommand {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $progress = $this->getHelper('progress');
 
         $output->writeln('Обработка котировок ...');
 
-        $repositories = [
-            $em->getRepository('RottenwoodBarchartBundle:CrudeOil'),
-            $em->getRepository('RottenwoodBarchartBundle:Corn'),
-            $em->getRepository('RottenwoodBarchartBundle:DJMini'),
-        ];
-
-        //        $repository = $em->getRepository('RottenwoodBarchartBundle:CrudeOil');
-        //        $id = 909;
-
-        //        $repository = $em->getRepository('RottenwoodBarchartBundle:CrudeOil');
-        //        $id = 909;
-
-        foreach ($repositories as $repository) {
-            $prices = $repository->findPricesBeforeId(1500);
-
-            $validPrice = end($prices);
-
-            $date = $validPrice->getDate();
-
-            var_dump($date->format('d-m-Y H:i') . ':00');die;
-
+        foreach (Symbol::getSymbolName() as $repositoryName) {
+            $repositoryNamespace = 'RottenwoodBarchartBundle:' . $repositoryName;
+            $repository = $em->getRepository($repositoryNamespace);
+            $output->writeln('Обработка репозитория ' . $repositoryName . ' ...');
+            $prices = $repository->findPricesBeforeId(self::VALID_PRICE_ID);
             /** @var Price[] $prices */
-            for ($x = count($prices) - 1; $x >= 0; $x--) {
-                $output->writeln($prices[$x]->getDate()->format('d-m-Y H:i') . ':00');
-                die;
+            $date = $prices[0]->getDate();
 
+            $pricesCount = count($prices);
+            $progress->start($output, $pricesCount);
+            for ($x = $pricesCount - 1; $x >= 0; $x--) {
                 $date->modify('-1 hour');
                 $prices[$x]->setDate($date);
                 $em->flush();
+                $progress->advance();
             };
-
         }
 
         $output->writeln('Реконструкция дат котировок завершена!');
