@@ -15,41 +15,47 @@ use Symfony\Component\Console\Output\OutputInterface;
 class FixDatabaseCommand extends ContainerAwareCommand {
 
     protected function configure() {
-        $this->setName('barchart:fix:database')->setDescription('Fix prica dates in database');
+        $this->setName('barchart:fix:database')->setDescription('Fix price dates in database');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $repository = $em->getRepository('RottenwoodBarchartBundle:Corn');
 
         $output->writeln('Обработка котировок ...');
 
-        //        foreach (Indicator::getIndicatorsMethodsAndNames() as $strategyMethod => $indicatorName) {
-        //            $indicator = $repository->findByName($indicatorName);
-        //
-        //            if (!$indicator) {
-        //                $indicator = new Indicator();
-        //                $indicator->setName($indicatorName);
-        //                $indicator->setStrategyMethod($strategyMethod);
-        //                $em->persist($indicator);
-        //                $output->writeln('Запись индикатора ' . $indicatorName);
-        //            }
-        //        }
-        //
-        //        $em->flush();
+        $repositories = [
+            $em->getRepository('RottenwoodBarchartBundle:CrudeOil'),
+            $em->getRepository('RottenwoodBarchartBundle:Corn'),
+            $em->getRepository('RottenwoodBarchartBundle:DJMini'),
+        ];
 
-        //        /** @var Price $price */
-        //        foreach ($repository->findPricesBeforeId(742) as $price) {
-        //            $output->writeln($price->getDate()->format('d-m-Y H-i-s'));
-        //        }
+        //        $repository = $em->getRepository('RottenwoodBarchartBundle:CrudeOil');
+        //        $id = 909;
 
-        $prices = $repository->findPricesBeforeId(742);
-        /** @var Price $price */
-        for ($x = 742; $x == 0; $x--) {
-                        $output->writeln($prices[$x]->getData()->format('d-m-Y H-i-s'));
-        };
+        //        $repository = $em->getRepository('RottenwoodBarchartBundle:CrudeOil');
+        //        $id = 909;
 
+        foreach ($repositories as $repository) {
+            $prices = $repository->findPricesBeforeId(1500);
 
-        $output->writeln('Импорт завершен!');
+            $validPrice = end($prices);
+
+            $date = $validPrice->getDate();
+
+            var_dump($date->format('d-m-Y H:i') . ':00');die;
+
+            /** @var Price[] $prices */
+            for ($x = count($prices) - 1; $x >= 0; $x--) {
+                $output->writeln($prices[$x]->getDate()->format('d-m-Y H:i') . ':00');
+                die;
+
+                $date->modify('-1 hour');
+                $prices[$x]->setDate($date);
+                $em->flush();
+            };
+
+        }
+
+        $output->writeln('Реконструкция дат котировок завершена!');
     }
 }

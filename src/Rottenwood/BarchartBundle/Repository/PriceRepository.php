@@ -37,7 +37,7 @@ class PriceRepository extends EntityRepository {
     public function findPricesBeforeId($id) {
         $expr = Criteria::expr();
         $criteria = Criteria::create();
-        $criteria->where($expr->lt('id', $id));
+        $criteria->where($expr->lte('id', $id));
 
         return $this->matching($criteria);
     }
