@@ -1,7 +1,7 @@
 {
     "name": "rottenwood/barchartBundle",
     "description": "Barchart Parser and Analysis System",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "type": "project",
     "time": "2015-01-01",
     "license": "MIT",
