@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Стратегии
  * @ORM\Table(name="strategies")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Strategy extends Symbol {
 
@@ -62,8 +63,35 @@ class Strategy extends Symbol {
      */
     private $openIfExist;
 
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="update_at", type="datetime")
+     */
+    private $updatedAt;
+
+
     public function __construct() {
         $this->signals = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistCallback() {
+        $this->setCreatedAt(new \Datetime());
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdateCallback() {
+        $this->setUpdatedAt(new \Datetime());
     }
 
     /**
@@ -175,5 +203,33 @@ class Strategy extends Symbol {
      */
     public function setOpenIfExist($openIfExist) {
         $this->openIfExist = $openIfExist;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt($createdAt) {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt() {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt) {
+        $this->updatedAt = $updatedAt;
     }
 }
