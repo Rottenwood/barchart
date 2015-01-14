@@ -119,22 +119,32 @@
                             {{ trade.closeDate|date('d-m-Y H-i') }}
                         </td>
                     {% else %}
-                        <td>
-                            <p class="center">не закрыта</p>
-                        </td>
+                        <td></td>
                     {% endif %}
                     <td>
                         {% if trade.closeDate %}
                             {% set tradeInterval = dates_diff(trade.openDate, trade.closeDate) %}
                             {% set tradeIntervalDays = tradeInterval|date('%d') %}
+                            {% set tradeIntervalHours = tradeInterval|date('%h') %}
+                            {% set tradeIntervalMinutes = tradeInterval|date('%i') %}
 
-                            {% if tradeIntervalDays %}
-                                {#{{ tradeIntervalDays|transchoice('day', tradeIntervalDays) }}#}
-                                {% set message = 'day' %}
-                                {{ message|trans }}
+                            {% if tradeIntervalDays and tradeIntervalHours and tradeIntervalMinutes %}
+                                {% if tradeIntervalDays %}
+                                    {{ tradeIntervalDays }} {{ 'day'|transchoice(tradeIntervalDays) }}
+                                {% endif %}
+
+                                {% if tradeIntervalHours %}
+                                    {{ tradeIntervalHours }} {{ 'hour'|transchoice(tradeIntervalHours) }}
+                                {% endif %}
+
+                                {% if tradeIntervalMinutes %}
+                                    {{ tradeIntervalMinutes }} {{ 'minute'|transchoice(tradeIntervalMinutes) }}
+                                {% endif %}
+                            {% else %}
+                                -
                             {% endif %}
-
-                            {{ tradeInterval|date('%h:%I') }}
+                        {% else %}
+                            открыта
                         {% endif %}
                     </td>
                     <td>{{ trade.open }}</td>
