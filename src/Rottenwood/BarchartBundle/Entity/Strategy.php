@@ -64,6 +64,13 @@ class Strategy extends Symbol {
     private $openIfExist;
 
     /**
+     * Процентный расчет лота при открытии сделки
+     * @var bool
+     * @ORM\Column(name="complex_percent", type="boolean")
+     */
+    private $complexPercent;
+
+    /**
      * @var \DateTime
      * @ORM\Column(name="created_at", type="datetime")
      */
@@ -203,6 +210,20 @@ class Strategy extends Symbol {
      */
     public function setOpenIfExist($openIfExist) {
         $this->openIfExist = $openIfExist;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isComplexPercent() {
+        return $this->complexPercent;
+    }
+
+    /**
+     * @param boolean $complexPercent
+     */
+    public function setComplexPercent($complexPercent) {
+        $this->complexPercent = $complexPercent;
     }
 
     /**
