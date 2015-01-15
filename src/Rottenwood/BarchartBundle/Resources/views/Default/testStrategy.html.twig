@@ -2,6 +2,9 @@
 
 {% set profit = 0 %}
 {% set profitLocal = 0 %}
+{% set profitTrades = 0 %}
+{% set lossTrades = 0 %}
+{% set unclosedTrades = 0 %}
 
 {% block javascript %}
     {# Скрипты для отрисовки графиков #}
@@ -25,8 +28,18 @@
             Доступ к стратегии <strong>#{{ strategyIsPrivate }}</strong> ограниен его владельцем.
         </div>
     {% else %}
+
         {% for trade in trades %}
             {% set profit = profit + trade.profit %}
+            {% if trade.closeDate %}
+                {% if trade.profit > 0 %}
+                    {% set profitTrades = profitTrades + 1 %}
+                {% else %}
+                    {% set lossTrades = lossTrades + 1 %}
+                {% endif %}
+            {% else %}
+                {% set unclosedTrades = unclosedTrades + 1 %}
+            {% endif %}
         {% endfor %}
 
         {# График доходности стратегии #}
@@ -44,11 +57,14 @@
         <p>Дата начала тестирования: {{ firstPriceDate|date('Y-m-d H:i') }}</p>
         <p>Дата конца тестирования: {{ lastPriceDate|date('Y-m-d H:i') }}</p>
         <p>Открываются ли параллельные сделки: <strong>{{ strategy.openIfExist ? 'да' : 'нет' }}</strong></p>
-        <p>Количество сделок: {{ trades|length }}</p>
+        <p>Количество открытых сделок: {{ trades|length  }} ({{ unclosedTrades }} незакрытых)</p>
+        <p>Количество закрытых сделок: {{ trades|length - unclosedTrades }} ({{ profitTrades }} прибыльных, {{ lossTrades }} убыточных)</p>
+        <p>Соотношение прибыльных к убыточным: {{ (profitTrades/lossTrades)|round(2, 'floor') }}</p>
         <p>Итоговая прибыль: <strong>{{ profit }}</strong>
             (<strong>{{ percentProfit > 0 ? '+' ~ percentProfit : percentProfit }}%</strong>)</p>
         <p>Итоговая прибыль с учетом рекапитализации:
-            <strong>{{ percentProfitComplex > 0 ? '+' ~ percentProfitComplex : percentProfitComplex }}%</strong></p>
+            <strong>{{ percentProfitComplex > 0 ? '+' ~ percentProfitComplex : percentProfitComplex }}%</strong>
+        </p>
 
         <div class="break-50"></div>
 
@@ -180,6 +196,6 @@
 
 {% endblock content %}
 
-{% block submenu %}
-    <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
-{% endblock submenu %}
+            {% block submenu %}
+                <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
+            {% endblock submenu %}
