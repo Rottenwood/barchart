@@ -300,7 +300,7 @@ class BarchartParserService {
         $symbolEntity->setMediumtermMavp($this->buySellToInt($symbolData["m.50-MAvsPrice"]));
         $symbolEntity->setMahilo($this->buySellToInt($symbolData["s.10-8-MAHiloChannel"]));
         $symbolEntity->setParabolic($this->buySellToInt($symbolData["m.50-ParabolicTimePrice"]));
-        $symbolEntity->setSMacd($this->buySellToInt($symbolData["s.20-50-MACD"]));
+        $symbolEntity->setShorttermMacd($this->buySellToInt($symbolData["s.20-50-MACD"]));
         $symbolEntity->setSMavp($this->buySellToInt($symbolData["s.20-MAvsPrice"]));
         $symbolEntity->setTrendspotter($this->buySellToInt($symbolData["TrendSpotter"]));
         $symbolEntity->setShorttermAverage($this->buySellProcToInt($symbolData["ShortTermAverage"]));
