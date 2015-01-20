@@ -29,6 +29,7 @@ class AnalizerService {
     private $em;
     private $config;
     private $hasOpenedTrades = false;
+    private $entityNamespace = 'Rottenwood\\BarchartBundle\\Entity\\';
 
     public function __construct(ConfigService $configService, EntityManager $em) {
         $this->em = $em;
@@ -43,7 +44,7 @@ class AnalizerService {
      * @return array
      */
     public function getPrices($symbol, $priceFrom = 1, $bars = 0) {
-        $symbolRepositoryName = "RottenwoodBarchartBundle:" . $symbol;
+        $symbolRepositoryName = $this->entityNamespace . $symbol;
 
         // Если количество анализируемых цен не указано, берем их из конфига
         $bars = $bars ?: $this->getLimit();
@@ -57,7 +58,7 @@ class AnalizerService {
      * @return array
      */
     public function getAllPrices($symbol) {
-        $symbolRepositoryName = "RottenwoodBarchartBundle:" . $symbol;
+        $symbolRepositoryName = $this->entityNamespace . $symbol;
 
         return $this->em->getRepository($symbolRepositoryName)->findAll();
     }
@@ -230,15 +231,15 @@ class AnalizerService {
                     $this->closeTrade($openedTrade, $price, $priceObject->getDate(), $stopLoss);
                 } // Стоп в процентах
                 elseif ($stopLossPercent && -$stopLossPercent >= $percentProfit) {
-                    $this->closeTrade($openedTrade, $price, $priceObject->getDate(), -$stopLossPercent *
-                                                                                     $openedTradePrice / 100);
+                    $this->closeTrade($openedTrade, $price, $priceObject->getDate(),
+                                      -$stopLossPercent * $openedTradePrice / 100);
                 } // Тейк в пунктах
                 elseif ($takeProfit && $takeProfit <= $profit) {
                     $this->closeTrade($openedTrade, $price, $priceObject->getDate(), $takeProfit);
                 } // Тейк в процентах
                 elseif ($takeProfitPercent && $takeProfitPercent <= $percentProfit) {
-                    $this->closeTrade($openedTrade, $price, $priceObject->getDate(), $takeProfitPercent *
-                                                                                     $openedTradePrice / 100);
+                    $this->closeTrade($openedTrade, $price, $priceObject->getDate(),
+                                      $takeProfitPercent * $openedTradePrice / 100);
                 }
             }
 
@@ -303,6 +304,16 @@ class AnalizerService {
     }
 
     /**
+     * Получение последней котировки используемого в стратегии символа
+     * @param Strategy $strategy
+     * @return Price
+     */
+    public function getLastPrice(Strategy $strategy) {
+        return $this->em->getRepository($this->entityNamespace . $strategy->getSymbol())
+                        ->findOneBy([], ['id' => 'DESC']);
+    }
+
+    /**
      * Расчет прибыли по серии сделок в процентах
      * @param array $trades
      * @return array
@@ -320,7 +331,7 @@ class AnalizerService {
         }
 
         return [
-            'simple' => round($percentProfit - 100, 2),
+            'simple'  => round($percentProfit - 100, 2),
             'complex' => round($percentProfitComplex - 100, 2),
         ];
     }
