@@ -57,8 +57,9 @@
         <p>Дата начала тестирования: {{ firstPriceDate|date('Y-m-d H:i') }}</p>
         <p>Дата конца тестирования: {{ lastPriceDate|date('Y-m-d H:i') }}</p>
         <p>Открываются ли параллельные сделки: <strong>{{ strategy.openIfExist ? 'да' : 'нет' }}</strong></p>
-        <p>Количество открытых сделок: {{ trades|length  }} ({{ unclosedTrades }} незакрытых)</p>
-        <p>Количество закрытых сделок: {{ trades|length - unclosedTrades }} ({{ profitTrades }} прибыльных, {{ lossTrades }} убыточных)</p>
+        <p>Количество открытых сделок: {{ trades|length }} ({{ unclosedTrades }} незакрытых)</p>
+        <p>Количество закрытых сделок: {{ trades|length - unclosedTrades }} ({{ profitTrades }}
+            прибыльных, {{ lossTrades }} убыточных)</p>
         <p>Соотношение прибыльных к убыточным: {{ (profitTrades/lossTrades)|round(2, 'floor') }}</p>
         <p>Итоговая прибыль: <strong>{{ profit }}</strong>
             (<strong>{{ percentProfit > 0 ? '+' ~ percentProfit : percentProfit }}%</strong>)</p>

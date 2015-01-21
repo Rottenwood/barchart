@@ -191,7 +191,7 @@ class AnalizerService {
      */
     public function testStrategy(Strategy $strategy, $volume = 1) {
         // Получение цен для анализа
-        $prices = $this->getAllPrices($strategy->getSymbolName()[$strategy->getSymbol()]);
+        $prices = $this->getAllPrices(Strategy::getSymbolName()[$strategy->getSymbol()]);
         $trades = [];
 
         /** @var Price $priceObject */
@@ -276,8 +276,8 @@ class AnalizerService {
      * @param Strategy $strategy
      * @return \DateTime|null
      */
-    public function getFirstPriceDate(Strategy $strategy) {
-        $prices = $this->getAllPrices($strategy->getSymbolName()[$strategy->getSymbol()]);
+    public function getFirstTradeDate(Strategy $strategy) {
+        $prices = $this->getAllPrices(Strategy::getSymbolName()[$strategy->getSymbol()]);
         $firstPrice = reset($prices);
 
         if ($firstPrice instanceof Price) {
@@ -292,8 +292,8 @@ class AnalizerService {
      * @param Strategy $strategy
      * @return \DateTime|null
      */
-    public function getLastPriceDate(Strategy $strategy) {
-        $prices = $this->getAllPrices($strategy->getSymbolName()[$strategy->getSymbol()]);
+    public function getLastTradeDate(Strategy $strategy) {
+        $prices = $this->getAllPrices(Strategy::getSymbolName()[$strategy->getSymbol()]);
         $lastPrice = end($prices);
 
         if ($lastPrice instanceof Price) {
@@ -309,7 +309,7 @@ class AnalizerService {
      * @return Price
      */
     public function getLastPrice(Strategy $strategy) {
-        return $this->em->getRepository($this->entityNamespace . $strategy->getSymbol())
+        return $this->em->getRepository($this->entityNamespace . Strategy::getSymbolName()[$strategy->getSymbol()])
                         ->findOneBy([], ['id' => 'DESC']);
     }
 

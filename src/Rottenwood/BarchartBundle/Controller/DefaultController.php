@@ -131,13 +131,16 @@ class DefaultController extends Controller {
         $analizer = $this->get('barchart.analizer');
         $trades = $analizer->testStrategy($strategy);
 
+        $lastPrice = $analizer->getLastPrice($strategy);
+
         return [
             'strategy'             => $strategy,
             'trades'               => $trades,
+            'currentPrice'            => $lastPrice ? $lastPrice->getPrice() : 0,
             'percentProfit'        => $analizer->calculatePercentProfit($trades)['simple'],
             'percentProfitComplex' => $analizer->calculatePercentProfit($trades)['complex'],
-            'firstPriceDate'       => $analizer->getFirstPriceDate($strategy),
-            'lastPriceDate'        => $analizer->getLastPriceDate($strategy),
+            'firstPriceDate'       => $analizer->getFirstTradeDate($strategy),
+            'lastPriceDate'        => $analizer->getLastTradeDate($strategy),
         ];
     }
 }
