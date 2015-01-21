@@ -166,7 +166,11 @@
                     </td>
                     <td>{{ trade.open }}</td>
                     <td>{{ trade.close }}</td>
-                    <td>{{ trade.profit }}</td>
+                    <td>
+                        {% if trade.profit %}
+                            {{ trade.profit }}
+                        {% endif %}
+                    </td>
                     <td class="profit-local" data-profit="{{ profitLocal }}">{{ profitLocal }}
                         {% if trade.profit %}
                             {% set profitPercent = profitPercent + trade.profit / trade.open * 100 %}
