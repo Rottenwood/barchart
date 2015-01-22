@@ -169,6 +169,12 @@
                     <td>
                         {% if trade.profit %}
                             {{ trade.profit }}
+                        {% else %}
+                            {% if trade.direction = constant('DIRECTION_BUY', trade) %}
+                                {{ trade.open - currentPrice }}
+                            {% else %}
+                                {{ trade.open + currentPrice }}
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td class="profit-local" data-profit="{{ profitLocal }}">{{ profitLocal }}
