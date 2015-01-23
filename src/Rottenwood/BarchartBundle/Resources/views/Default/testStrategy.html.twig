@@ -170,7 +170,7 @@
                         {% if trade.profit %}
                             {{ trade.profit }}
                         {% else %}
-                            {% if trade.direction = constant('DIRECTION_BUY', trade) %}
+                            {% if trade.direction is constant('DIRECTION_BUY', trade) %}
                                 {{ trade.open - currentPrice }}
                             {% else %}
                                 {{ trade.open + currentPrice }}
