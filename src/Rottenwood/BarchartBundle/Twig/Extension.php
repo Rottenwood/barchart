@@ -6,6 +6,7 @@
 
 namespace Rottenwood\BarchartBundle\Twig;
 
+use Rottenwood\BarchartBundle\Entity\Signal;
 use Rottenwood\BarchartBundle\Entity\Strategy;
 
 class Extension extends \Twig_Extension {
@@ -50,5 +51,16 @@ class Extension extends \Twig_Extension {
         $symbolNames = Strategy::getRussianSymbolName();
 
         return array_key_exists($symbol, $symbolNames) ? $symbolNames[$symbol] : '';
+    }
+
+    /**
+     * Название направления сделки
+     * @param int $direction
+     * @return string
+     */
+    public function getDirectionName($direction) {
+        $directionNames = Signal::getDirectionsNames();
+
+        return array_key_exists($direction, $directionNames) ? $directionNames[$direction] : '';
     }
 }

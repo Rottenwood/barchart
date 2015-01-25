@@ -60,7 +60,9 @@
         <p>Количество открытых сделок: {{ trades|length }} ({{ unclosedTrades }} незакрытых)</p>
         <p>Количество закрытых сделок: {{ trades|length - unclosedTrades }} ({{ profitTrades }}
             прибыльных, {{ lossTrades }} убыточных)</p>
-        <p>Соотношение прибыльных к убыточным: <strong>{{ (profitTrades/lossTrades)|round(2, 'floor') }}</strong></p>
+        <p>Соотношение прибыльных к убыточным: <strong>
+                {{ lossTrades ? (profitTrades/lossTrades)|round(2, 'floor') : profitTrades }}
+            </strong></p>
         <p>Итоговая прибыль: <strong>{{ profit }}</strong>
             (<strong>{{ percentProfit > 0 ? '+' ~ percentProfit : percentProfit }}%</strong>)</p>
         <p>Итоговая прибыль с учетом рекапитализации:
