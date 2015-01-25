@@ -61,7 +61,7 @@ class DefaultController extends Controller {
     }
 
     /**
-     * Список стратегий
+     * Список стратегий пользователя
      * @Route("/strategy/list", name="strategy.list")
      * @Template()
      * @return array
@@ -69,6 +69,25 @@ class DefaultController extends Controller {
     public function listStrategiesAction() {
         $em = $this->getDoctrine()->getManager();
         $strategies = $em->getRepository('RottenwoodBarchartBundle:Strategy')->findByAuthor($this->getUser());
+
+        if (!$strategies) {
+            return $this->redirectToRoute('index');
+        }
+
+        return [
+            'strategies' => $strategies,
+        ];
+    }
+
+    /**
+     * Рейтинг открытых стратегий
+     * @Route("/strategy/rating", name="strategy.rating")
+     * @Template()
+     * @return array
+     */
+    public function showStrategyRatingAction() {
+        $em = $this->getDoctrine()->getManager();
+        $strategies = $em->getRepository('RottenwoodBarchartBundle:Strategy')->findByIsPrivate(false);
 
         if (!$strategies) {
             return $this->redirectToRoute('index');

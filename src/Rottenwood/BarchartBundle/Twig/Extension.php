@@ -6,14 +6,13 @@
 
 namespace Rottenwood\BarchartBundle\Twig;
 
-use Rottenwood\BarchartBundle\Entity\Signal;
+use Rottenwood\BarchartBundle\Entity\Strategy;
 
 class Extension extends \Twig_Extension {
 
     public function getFunctions() {
         $functions = [
-            'dates_diff'     => new \Twig_Function_Method($this, 'datesDiff'),
-//            'direction_name' => new \Twig_Function_Method($this, 'getDirectionName'),
+            'dates_diff' => new \Twig_Function_Method($this, 'datesDiff'),
         ];
 
         return $functions;
@@ -22,6 +21,7 @@ class Extension extends \Twig_Extension {
     public function getFilters() {
         return [
             'direction_name' => new \Twig_Filter_Method($this, 'getDirectionName'),
+            'symbol_name'    => new \Twig_Filter_Method($this, 'getSymbolName'),
         ];
     }
 
@@ -41,8 +41,14 @@ class Extension extends \Twig_Extension {
         return $interval;
     }
 
-    public function getDirectionName($direction) {
-        return Signal::getDirectionsNames()[$direction];
-    }
+    /**
+     * Название торгового инструмента
+     * @param int $symbol
+     * @return string
+     */
+    public function getSymbolName($symbol) {
+        $symbolNames = Strategy::getRussianSymbolName();
 
+        return array_key_exists($symbol, $symbolNames) ? $symbolNames[$symbol] : '';
+    }
 }

@@ -1,0 +1,43 @@
+{% extends ':Default:layout.html.twig' %}
+
+{% block title %}Список стратегий{% endblock title %}
+
+{% block content %}
+
+    <p>Список ваших торговых стратегий:</p>
+
+    <table id="strategies-list" class="list">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>Автор</td>
+            <td>Название стратегии</td>
+            <td>Торговый инструмент</td>
+            <td></td>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for strategy in strategies %}
+            <tr>
+                <td>{{ strategy.id }}</td>
+                <td>
+                    {{ strategy.author.username }}
+                </td>
+                <td>
+                    {{ strategy.name }}
+                </td>
+                <td>
+                    {{ strategy.symbol|symbol_name }}
+                </td>
+                <td>
+                    <a href="{{ path('strategy.test', {id: strategy.id}) }}">
+                        протестировать
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}
