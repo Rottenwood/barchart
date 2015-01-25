@@ -90,6 +90,11 @@ table#trades-list tr.red {
     background-color: #fdd4d4;
 }
 
+/* Незакрытая сделка */
+table#trades-list tr.yellow {
+    background-color: #fcfda7;
+}
+
 /* График бэктеста */
 canvas#chart-backtest {
     position: absolute;

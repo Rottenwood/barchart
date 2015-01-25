@@ -31,14 +31,14 @@
 
         {% for trade in trades %}
             {% set profit = profit + trade.profit %}
-            {% if trade.closeDate %}
-                {% if trade.profit > 0 %}
-                    {% set profitTrades = profitTrades + 1 %}
-                {% else %}
-                    {% set lossTrades = lossTrades + 1 %}
-                {% endif %}
-            {% else %}
+            {% if not trade.closeDate %}
                 {% set unclosedTrades = unclosedTrades + 1 %}
+            {% endif %}
+
+            {% if trade.profit > 0 %}
+                {% set profitTrades = profitTrades + 1 %}
+            {% elseif trade.profit < 0 %}
+                {% set lossTrades = lossTrades + 1 %}
             {% endif %}
         {% endfor %}
 
@@ -60,7 +60,7 @@
         <p>Количество открытых сделок: {{ trades|length }} ({{ unclosedTrades }} незакрытых)</p>
         <p>Количество закрытых сделок: {{ trades|length - unclosedTrades }} ({{ profitTrades }}
             прибыльных, {{ lossTrades }} убыточных)</p>
-        <p>Соотношение прибыльных к убыточным: {{ (profitTrades/lossTrades)|round(2, 'floor') }}</p>
+        <p>Соотношение прибыльных к убыточным: <strong>{{ (profitTrades/lossTrades)|round(2, 'floor') }}</strong></p>
         <p>Итоговая прибыль: <strong>{{ profit }}</strong>
             (<strong>{{ percentProfit > 0 ? '+' ~ percentProfit : percentProfit }}%</strong>)</p>
         <p>Итоговая прибыль с учетом рекапитализации:
@@ -126,8 +126,19 @@
             {% set profitPercentComplex = 100 %}
 
             {% for trade in trades %}
+                {% if trade.profit > 0 %}
+                    {% set rowColor = 'green' %}
+                {% elseif trade.profit < 0 %}
+                    {% set rowColor = 'red' %}
+                {% endif %}
+
+                {% if not trade.closeDate %}
+                    {% set rowColor = 'yellow' %}
+                {% endif %}
+
                 {% set profitLocal = profitLocal + trade.profit %}
-                <tr class="{{ trade.profit > 0 ? 'green' : 'red' }}">
+
+                <tr class="{{ rowColor }}">
                     <td>{{ loop.index }}</td>
                     <td>{{ trade.direction > 0 ? 'Покупка' : 'Продажа' }}</td>
                     <td>{{ trade.openDate|date('d-m-Y H-i') }}</td>
@@ -157,35 +168,46 @@
                                 {% if tradeIntervalMinutes %}
                                     {{ tradeIntervalMinutes }} {{ 'minute'|transchoice(tradeIntervalMinutes) }}
                                 {% endif %}
-                            {% else %}
-                                -
                             {% endif %}
                         {% else %}
                             открыта
                         {% endif %}
                     </td>
                     <td>{{ trade.open }}</td>
-                    <td>{{ trade.close }}</td>
                     <td>
-                        {% if trade.profit %}
-                            {{ trade.profit }}
+                        {% if trade.close %}
+                            {{ trade.close }}
                         {% else %}
+                            {{ currentPrice }}
+                        {% endif %}
+
+                    </td>
+                    <td>
+                        {% if not trade.profit %}
                             {% if trade.direction is constant('DIRECTION_BUY', trade) %}
-                                {{ trade.open - currentPrice }}
+                                {% set tradeProfit = currentPrice - trade.open %}
                             {% else %}
-                                {{ trade.open + currentPrice }}
+                                {% set tradeProfit = trade.open - currentPrice %}
                             {% endif %}
                         {% endif %}
+
+                        {{ trade.profit ?: tradeProfit }}
                     </td>
-                    <td class="profit-local" data-profit="{{ profitLocal }}">{{ profitLocal }}
+                    <td class="profit-local" data-profit="{{ profitLocal }}">
                         {% if trade.profit %}
                             {% set profitPercent = profitPercent + trade.profit / trade.open * 100 %}
                             {% set profitPercentComplex = profitPercentComplex * (1 + (trade.profit / trade.open * 100) / 100) %}
-                            / {{ profitPercent > 0 ? '+' : '' }}<span>{{ profitPercent }}</span>%
-                                                                                                /
-                            <strong>{{ profitPercentComplex > 0 ? '+' : '' }}{{ (profitPercentComplex - 100)|round(2, 'floor') }}
-                                %</strong>
+                        {% else %}
+                            {% set profitPercent = profitPercent + tradeProfit / trade.open * 100 %}
+                            {% set profitPercentComplex = profitPercentComplex * (1 + (tradeProfit / trade.open * 100) / 100) %}
                         {% endif %}
+
+                        {{ profitLocal }} / {{ profitPercent > 0 ? '+' : '' }}
+                        <span>{{ profitPercent|round(2, 'floor') }}</span>% /
+                        <strong>
+                            {{ profitPercentComplex - 100 > 0 ? '+' : '' }}
+                            {{ (profitPercentComplex - 100)|round(2, 'floor') }}%
+                        </strong>
                     </td>
                 </tr>
 
@@ -207,6 +229,6 @@
 
 {% endblock content %}
 
-            {% block submenu %}
-                <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
-            {% endblock submenu %}
+{% block submenu %}
+    <p><a href="{{ path('strategy.list') }}">Вернться к списку стратегий</a></p>
+{% endblock submenu %}
