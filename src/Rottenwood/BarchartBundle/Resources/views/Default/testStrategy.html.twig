@@ -145,7 +145,7 @@
                             {% set tradeIntervalHours = tradeInterval|date('%h') %}
                             {% set tradeIntervalMinutes = tradeInterval|date('%i') %}
 
-                            {% if tradeIntervalDays and tradeIntervalHours and tradeIntervalMinutes %}
+                            {% if tradeIntervalDays or tradeIntervalHours or tradeIntervalMinutes %}
                                 {% if tradeIntervalDays %}
                                     {{ tradeIntervalDays }} {{ 'day'|transchoice(tradeIntervalDays) }}
                                 {% endif %}
