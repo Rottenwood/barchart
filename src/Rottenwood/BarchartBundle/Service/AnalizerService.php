@@ -215,9 +215,9 @@ class AnalizerService {
                 $openedTradePrice = $openedTrade->getOpen();
 
                 // Расчет прибыли
-                if ($openedTrade->getDirection() == $openedTrade::DIRECTION_BUY) {
+                if ($openedTrade->getDirection() == Trade::DIRECTION_BUY) {
                     $profit = $price - $openedTradePrice;
-                } elseif ($openedTrade->getDirection() == $openedTrade::DIRECTION_SELL) {
+                } elseif ($openedTrade->getDirection() == Trade::DIRECTION_SELL) {
                     $profit = $openedTradePrice - $price;
                 } else {
                     throw new InvalidParameterException($openedTrade->getDirection());
