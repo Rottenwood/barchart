@@ -63,12 +63,12 @@ class Strategy extends Symbol {
      */
     private $openIfExist;
 
-    /**
-     * Процентный расчет лота при открытии сделки
-     * @var bool
-     * @ORM\Column(name="complex_percent", type="boolean")
-     */
-    private $complexPercent;
+//    /**
+//     * Процентный расчет лота при открытии сделки
+//     * @var bool
+//     * @ORM\Column(name="complex_percent", type="boolean")
+//     */
+//    private $complexPercent;
 
     /**
      * @var \DateTime
@@ -78,7 +78,7 @@ class Strategy extends Symbol {
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="update_at", type="datetime")
+     * @ORM\Column(name="update_at", type="datetime", nullable=true)
      */
     private $updatedAt;
 
