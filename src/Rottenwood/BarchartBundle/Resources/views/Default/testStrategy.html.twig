@@ -193,7 +193,7 @@
                             {% endif %}
                         {% endif %}
 
-                        {{ trade.profit ?: tradeProfit }}
+                        {{ trade.profit ?: tradeProfit|round(2, 'floor') }}
                     </td>
                     <td class="profit-local" data-profit="{{ profitLocal }}">
                         {% if trade.profit %}
