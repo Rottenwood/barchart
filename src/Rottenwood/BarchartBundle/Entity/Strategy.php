@@ -92,6 +92,7 @@ class Strategy extends Symbol {
      */
     public function prePersistCallback() {
         $this->setCreatedAt(new \Datetime());
+        $this->setUpdatedAt(new \Datetime());
     }
 
     /**
